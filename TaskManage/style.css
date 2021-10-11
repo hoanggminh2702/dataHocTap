@@ -1,0 +1,42 @@
+/* list task */
+.list-task {
+    margin: 5px auto;
+    border-collapse: collapse;
+    border: 1px solid lightblue;
+}
+
+th,td {
+    border: 1px solid lightblue;
+    padding: 5px;
+}
+
+/* form create task */
+.form {
+    width: 350px;
+    margin: 5px auto;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lightblue;
+    row-gap: 5px;
+}
+
+.row {
+    display: flex;
+}
+
+.label {
+    width: 25%;
+    align-self: center;
+}
+
+.input {
+    width: 70%;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 30%;
+    height: 35px;
+    margin: auto;
+}

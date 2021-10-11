@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <section class="form-container">
+        <table class="list-task">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Name Task</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Hôm nay</td>
+                    <td>Làm html</td>
+                    <td>Làm html list task và form đăng ký</td>
+                </tr>
+            </tbody>
+        </table>
+        <form class="form" action="">
+            <div class="row">
+                <label class="label" for="name-task">Task</label>
+                <input class="input" type="text" name="name">
+            </div>
+            <div class="row">
+                <label class="label" for="description">Description</label>
+                <textarea class="input" type="text" name="description" rows="3" required></textarea>
+            </div> 
+            <Button class="btn">Create</Button>
+            
+        </form>
+    </section>
+    <script src="main.js"></script>
+</body>
+</html>
