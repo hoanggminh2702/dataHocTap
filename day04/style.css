@@ -1,0 +1,76 @@
+:root {
+    --border-color: rgb(10,137, 211);
+    --boder-hover-color: rgba(10,137, 211, 0.5);
+    --background-color: #61bef4
+}
+.form {
+    width: 350px;
+    margin: auto;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    row-gap: 7px;
+    column-gap: 5px;
+
+}
+
+.form .infor {
+    display: flex;
+}
+
+.lable {
+    width: 20%;
+    padding: 5px;
+    margin: 0 15px 0 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
+}
+
+.input {
+    width: 35%;
+    padding: 0;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.input:hover {
+    border-color: var(--boder-hover-color);
+}
+
+.name {
+    width: 70%;
+}
+
+.form .infor .gender-chosen {
+    display: flex;
+    align-items: center;
+    
+}
+
+.btn-submit {
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    border-radius: 10px;
+    width: 30%;
+    height: 35px;
+    margin: auto;
+}
+
+.btn-submit:hover {
+    opacity: 0.9;
+}
+
+#alert {
+    color: red;
+    margin: 0 auto;
+}
+
+/*Completed Form*/
+.result-form {
+    height: 150px;
+}
+
+.input-value {
+    align-self: center;
+}
