@@ -15,17 +15,17 @@
                     <th>Time</th>
                     <th>Name Task</th>
                     <th>Description</th>
+                    <th style="width: 65px;"></th>
+                    <th style="width: 65px;"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Hôm nay</td>
-                    <td>Làm html</td>
-                    <td>Làm html list task và form đăng ký</td>
-                </tr>
+
             </tbody>
         </table>
-        <form class="form" action="">
+        <div class="page-container">
+        </div>
+        <form class="form create-form">
             <div class="row">
                 <label class="label" for="name-task">Task</label>
                 <input class="input" type="text" name="name">
@@ -34,8 +34,28 @@
                 <label class="label" for="description">Description</label>
                 <textarea class="input" type="text" name="description" rows="3" required></textarea>
             </div> 
-            <Button class="btn">Create</Button>
+            <div class="row">
+                <label class="label" for="datetime">Time</label>
+                <input class="input" type="datetime-local" name="datetime">
+            </div>
+            <button type="button" class="btn create-submit">Create</button>
             
+        </form>
+
+        <form class="form edit-form">
+            <div class="row">
+                <label class="label" for="name-task">Task</label>
+                <input class="input" type="text" name="name">
+            </div>
+            <div class="row">
+                <label class="label" for="description">Description</label>
+                <textarea class="input" type="text" name="description" rows="3" required></textarea>
+            </div> 
+            <div class="row">
+                <label class="label" for="datetime">Time</label>
+                <input class="input" type="datetime-local" name="datetime">
+            </div>
+            <button class="btn edit-submit">Edit</button>
         </form>
     </section>
     <script src="main.js"></script>
