@@ -50,12 +50,12 @@ async function main() {
         // var skip = req.query.skip ?? 0;
         // var limit = req.query.limit ?? 10;
 
-        let skip = req.query.page == null ? 0 : req.query.page*2 - 2
+        let skip = req.query.page == null ? 0 : (req.query.page - 1) * 5
         let limit = req.query.page == null ? 5 : 5*1
 
-        // TODO: Implement pagination logic here
+        console.log(skip)
 
-        console.log(skip, limit)
+        // TODO: Implement pagination logic here
 
         let totalCount = await TaskModel.countDocuments({}).exec();
         let data = await TaskModel.find({}).skip(skip).limit(limit).exec();
@@ -127,10 +127,10 @@ async function main() {
     app.post('/api/deleteTask', async (req, res) => {
         try {
             const body = req.body;
-            
+            let item = await TaskModel.findById(body.id).exec();
             await TaskModel.deleteOne({ _id: body.id });
             
-            res.status(204).send();
+            res.status(204).send(item);
         } catch {
             res.status(400).send();
         }

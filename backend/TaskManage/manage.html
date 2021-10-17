@@ -17,8 +17,6 @@
                     <th>Description</th>
                     <th style="width: 65px;"></th>
                     <th style="width: 65px;"></th>
-                    <th style="width: 65px;"></th>
-                    <th style="width: 65px;"></th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +43,7 @@
         </form>
 
         <form class="form edit-form">
+            <input class="id-row" name="id" disabled></input>
             <div class="row">
                 <label class="label" for="name-task">Task</label>
                 <input class="input" type="text" name="name">
@@ -57,11 +56,11 @@
                 <label class="label" for="datetime">Time</label>
                 <input class="input" type="datetime-local" name="datetime">
             </div>
-            <button class="btn edit-submit">Edit</button>
+            <button type="button" class="btn edit-submit">Edit</button>
         </form>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="test.js"></script>
+    <!-- <script src="test.js"></script> -->
     <!-- <script src="main.js"></script> -->
     <script src="main2.js"></script>
 </body>

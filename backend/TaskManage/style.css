@@ -64,6 +64,10 @@ section .edit-form {
     display: none;
 }
 
+.id-row {
+    display: none;
+}
+
 td[name='delete'] {
     background-color: rgb(233, 21, 21)
 }
