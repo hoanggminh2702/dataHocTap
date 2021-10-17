@@ -44,7 +44,6 @@ function genDefaultDate() {
 /* update pagination button */
 function updatePaginationBtn(task) {
     let page = Math.ceil(task.length/10)
-    console.log(page)
     let paginationHTMLString = ""
     for (let i = 1; i <= page; i++) {
         paginationHTMLString+=`

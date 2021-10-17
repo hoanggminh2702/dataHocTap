@@ -52,11 +52,14 @@ async function main() {
 
         let skip = req.query.page == null ? 0 : (req.query.page - 1) * 5
         let limit = req.query.page == null ? 5 : 5*1
+        let sortField = req.query.sort
+
+        console.log(sortField)
 
         // TODO: Implement pagination logic here
 
         let totalCount = await TaskModel.countDocuments({}).exec();
-        let data = await TaskModel.find({}).skip(skip).limit(limit).exec();
+        let data = await TaskModel.find({}).sort( sortField ).skip(skip).limit(limit).exec();
 
         let returnData = {
             totalCount: totalCount,
@@ -128,7 +131,6 @@ async function main() {
 
             res.status(200).send(item);
         } catch (e) {
-            console.log(e);
             res.status(400).send();
         }
     });

@@ -1,15 +1,14 @@
+var search = "";
+var sort = "name";
+const nameSortState = ["name", "-name", ""]
+const timeSortState = ["time", "-time", ""]
+
+// URL
 const BASE_URL = 'http://localhost:8080';
-var search = ""
 const GET_LIST_TASK_URL = `${BASE_URL}/api/getTaskList`;
 const EDIT_TASK_URL = `${BASE_URL}/api/editTask`
 const CREATE_TASK_URL = `${BASE_URL}/api/createTask`
 const DELETE_TASK_URL = `${BASE_URL}/api/deleteTask`
-
-// currentTotalRecord để tính ra được currentPage khi thêm 1 task vào cuối
-var currentTotalRecord = 0
-// currentPage để khi xoá hay delete vẫn render được page hiện tại
-var currentPage = 1
-var take = 5
 
 /* Add 0 to number < 10 */
 function addZeros(number) {
@@ -18,18 +17,14 @@ function addZeros(number) {
 }
 
 /* Gen right format date */
+// if input is empty => use today is default date
 function genRightFormatDate(input) {
-    let date = new Date(input)
-    if (input == "") {
+    if (input == "" || arguments.length == 0) {
         return new Date()
+    } else {
+        // Mai hỏi cách convert Date do chưa biết cách convert nên hard code để cắt chuỗi ngày
+        return input.slice(0,16)
     }
-    let fullYear = date.getFullYear().toString()
-    let fullMonth = addZeros(date.getMonth() + 1).toString()
-    let fullDay = addZeros(date.getDay()).toString()
-    let fullHours = addZeros(date.getHours()).toString()
-    let fullMinutes = addZeros(date.getMinutes()).toString()
-    // 2017-06-01T08:30
-    return `${fullYear}-${fullMonth}-${fullDay}T${fullHours}:${fullMinutes}`
 }
 
 /* Change form display style */
@@ -44,6 +39,25 @@ function switchDisplayForm(code) {
             document.forms[0].style.display = 'flex'
     }
 }
+
+/* Validate input */
+function alertEmptyInput(name, des) {
+    if (name == "") {
+        alert('Hãy nhập tên task')
+    }
+    if (des == "") {
+        alert('Hãy nhập description')
+    }
+}
+
+
+/* ----Render---- */
+
+// currentTotalRecord để tính ra được currentPage khi thêm 1 task vào cuối
+var currentTotalRecord = 0
+// currentPage để khi xoá hay delete vẫn render được page hiện tại
+var currentPage = 1
+var take = 5
 
 /* Render Page Bar */
 function renderPaginationBar(totalRecord, choosenPage = 1) {
@@ -67,7 +81,7 @@ function renderPaginationBar(totalRecord, choosenPage = 1) {
 // Nhận vào 1 tham số là số page, tương ứng với page được hiển thị
 async function renderTable(choosenPage=1) {
     let renderTableHTML = "";
-    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}`);
+    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}`);
     currentTotalRecord = response.data.totalCount
     const listTask = response.data.items;
     listTask.forEach(function(task) {
@@ -88,11 +102,6 @@ async function renderTable(choosenPage=1) {
         renderPaginationBar(currentTotalRecord,choosenPage);
 }
 
-/* First Load */
-document.querySelector('body').onload = async function(e) {
-    await renderTable();
-}
-
 /* Render Table By Clicking Page Button */
 document.querySelector('.page-container').onmouseenter = function(e) {
     let pageButtons = e.currentTarget.children;
@@ -108,28 +117,44 @@ document.querySelector('.page-container').onmouseenter = function(e) {
     }
 };
 
+/* First Load */
+document.querySelector('body').onload = async function(e) {
+    await renderTable();
+}
+
+
+/* ----Action---- */
+
 /* Create Task */
 document.querySelector('.create-submit').onclick = async function(e) {
     e.stopPropagation();
-
-    let newTask = {
-        name: document.forms[0].name.value.trim(),
-        description: document.forms[0].description.value,
-        time: genRightFormatDate(document.forms[0].datetime.value)
+    let name = document.forms[0].name.value.trim()
+    let description = document.forms[0].description.value.trim()
+    // Validate if the input is empty, same action with edit
+    if ( name == ""
+        || description == "") {
+        alertEmptyInput(name, description)
+    } else {
+        let newTask = {
+            name: name,
+            description: description,
+            time: genRightFormatDate(document.forms[0].datetime.value)
+        }
+    
+        try {
+            let response = await axios.post(CREATE_TASK_URL, newTask);
+            console.log('Successfull Create Task', response)
+            currentPage = Math.ceil((currentTotalRecord + 1)/take)
+            renderTable(currentPage);
+    
+            // Đoạn render này gặp khó khăn
+            // Do quên làm tròn currentTotalRecord + 1)/take
+            // Nhớ Gán currenPage vào
+        } catch (error) {
+            console.log(error);
+        }
     }
-
-    try {
-        let response = await axios.post(CREATE_TASK_URL, newTask);
-        console.log('Successfull Create Task', response)
-        currentPage = Math.ceil((currentTotalRecord + 1)/take)
-        renderTable(currentPage);
-
-        // Đoạn render này gặp khó khăn
-        // Do quên làm tròn currentTotalRecord + 1)/take
-        // Nhớ Gán currenPage vào
-    } catch (error) {
-        console.log(error);
-    }
+    
 }
 
 /* Edit And Delete Task */
@@ -151,6 +176,7 @@ document.querySelector('tbody').onmouseenter = function(e) {
             editForm.id.value = editedTask.editedId;
             editForm.name.value = editedTask.editedName;
             editForm.description.value = editedTask.editedDescription;
+            console.log(genRightFormatDate(editedTask.editedTime))
             editForm.datetime.value = genRightFormatDate(editedTask.editedTime);
         }
     }
@@ -194,17 +220,64 @@ document.onkeyup = function(e) {
 
 /* Submit the edit */
 document.querySelector('.edit-submit').onclick = async function(e) {
-    let editedTask = {
-        id: document.forms[1].id.value,
-        name: document.forms[1].name.value.trim(),
-        description: document.forms[1].description.value,
-        time: document.forms[1].datetime.value,
-    }
-    try {
-        let response = await axios.post(EDIT_TASK_URL, editedTask)
-        console.log('Edit Successful', response);
-    } catch(error) {
-        console.log(error);
-    }
-    renderTable(currentPage);
+    let time = document.forms[1].datetime.value ? document.forms[1].datetime.value : genRightFormatDate()
+    let name = document.forms[1].name.value.trim()
+    let description = document.forms[1].description.value.trim()
+    if ( name == ""
+        || description == "") {
+        alertEmptyInput(name, description)
+    } else {
+        let editedTask = {
+            id: document.forms[1].id.value,
+            name: document.forms[1].name.value.trim(),
+            description: document.forms[1].description.value,
+            time: time
+        }
+        try {
+            let response = await axios.post(EDIT_TASK_URL, editedTask)
+            console.log('Edit Successful', response);
+        } catch(error) {
+            console.log(error);
+        }
+        renderTable(currentPage);
+    }   
 }
+
+/* ----Sort---- */
+
+/* Change sort state */
+function changeSortState(sortStateArr, currentSortState) {
+    // Lỗi do không chú ý bị nhầm giữa sortStateArr và currentSortState
+    if (!sortStateArr.includes(currentSortState)) {
+        return [sortStateArr[0], "asc"]
+    } else {
+        switch (currentSortState) {
+            case sortStateArr[0]:
+                console.log(sort)
+                return [sortStateArr[1], "desc"];
+            case sortStateArr[1]:
+                return [sortStateArr[2], ""];
+            case sortStateArr[2]:
+                return [sortStateArr[0], "asc"];
+            default:
+                return ""
+        }
+    }
+}
+
+document.querySelector("thead th[name='time']").onclick = function(e) {
+    e.stopPropagation()
+    document.querySelector("thead th[name='name']").innerText = 'Name Task';
+    [sort, type] = changeSortState(timeSortState, sort)
+    e.currentTarget.innerText = `Time ${type}`
+    renderTable()
+}
+
+document.querySelector("thead th[name='name']").onclick = function(e) {
+    e.stopPropagation()
+    document.querySelector("thead th[name='time']").innerText = 'Time';
+    [sort, type] = changeSortState(nameSortState, sort)
+    e.currentTarget.innerText = `Name Task ${type}`
+    renderTable()
+}
+
