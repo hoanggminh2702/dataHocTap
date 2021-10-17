@@ -47,18 +47,19 @@ async function main() {
 
     // API get Task for Table Listing
     app.get('/api/getTaskList', async (req, res) => {
-        // var skip = req.query.skip ?? 0;
-        // var limit = req.query.limit ?? 10;
 
         let skip = req.query.page == null ? 0 : (req.query.page - 1) * 5
         let limit = req.query.page == null ? 5 : 5*1
         let sortField = req.query.sort
 
-        console.log(sortField)
-
         // TODO: Implement pagination logic here
 
-        let totalCount = await TaskModel.countDocuments({}).exec();
+        let totalCount = await TaskModel.countDocuments({}).sort( sortField ).exec();
+        // Sử dụng reg để tìm những record có chứa từ khoá
+        // 'name description time' chỉ số trường hiển thị
+        // sort 'time' asc, '-time' desc
+        /*let data = await TaskModel.find({ name: / /i }, 'name description time').sort( sortField ).skip(skip).limit(limit).exec();*/
+        
         let data = await TaskModel.find({}).sort( sortField ).skip(skip).limit(limit).exec();
 
         let returnData = {

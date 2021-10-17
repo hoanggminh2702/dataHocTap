@@ -1,4 +1,5 @@
-var search = "";
+var searchByName = "";
+var searchByDate = "";
 var sort = "name";
 const nameSortState = ["name", "-name", ""]
 const timeSortState = ["time", "-time", ""]
@@ -81,9 +82,9 @@ function renderPaginationBar(totalRecord, choosenPage = 1) {
 // Nhận vào 1 tham số là số page, tương ứng với page được hiển thị
 async function renderTable(choosenPage=1) {
     let renderTableHTML = "";
-    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}`);
-    currentTotalRecord = response.data.totalCount
+    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}&date=${searchByDate}&name=${searchByName}`);
     const listTask = response.data.items;
+    currentTotalRecord = response.data.totalCount
     listTask.forEach(function(task) {
         renderTableHTML += `
         <tr id="${task['_id']}">
