@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <section class="form-container">
+        <table class="list-task">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Name Task</th>
+                    <th>Description</th>
+                    <th style="width: 65px;"></th>
+                    <th style="width: 65px;"></th>
+                    <th style="width: 65px;"></th>
+                    <th style="width: 65px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+        <div class="page-container">
+        </div>
+        <form class="form create-form">
+            <div class="row">
+                <label class="label" for="name-task">Task</label>
+                <input class="input" type="text" name="name">
+            </div>
+            <div class="row">
+                <label class="label" for="description">Description</label>
+                <textarea class="input" type="text" name="description" rows="3" required></textarea>
+            </div> 
+            <div class="row">
+                <label class="label" for="datetime">Time</label>
+                <input class="input" type="datetime-local" name="datetime">
+            </div>
+            <button type="button" class="btn create-submit">Create</button>
+            
+        </form>
+
+        <form class="form edit-form">
+            <div class="row">
+                <label class="label" for="name-task">Task</label>
+                <input class="input" type="text" name="name">
+            </div>
+            <div class="row">
+                <label class="label" for="description">Description</label>
+                <textarea class="input" type="text" name="description" rows="3" required></textarea>
+            </div> 
+            <div class="row">
+                <label class="label" for="datetime">Time</label>
+                <input class="input" type="datetime-local" name="datetime">
+            </div>
+            <button class="btn edit-submit">Edit</button>
+        </form>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="test.js"></script>
+    <!-- <script src="main.js"></script> -->
+    <script src="main2.js"></script>
+</body>
+</html>

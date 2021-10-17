@@ -1,0 +1,96 @@
+:root {
+    --border-color : lightblue
+}
+/* container */
+section {
+    position: relative;
+}
+
+/* list task */
+.list-task {
+    margin: 5px auto;
+    border-collapse: collapse;
+    border: 1px solid var(--border-color);
+}
+
+th,td {
+    border: 1px solid var(--border-color);
+    padding: 5px;
+}
+
+/* form create task */
+.form {
+    width: 350px;
+    margin: 5px 0;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    row-gap: 5px;
+    position: absolute;
+    left: 35%;
+}
+
+.row {
+    display: flex;
+}
+
+.label {
+    width: 25%;
+    align-self: center;
+}
+
+.input {
+    width: 70%;
+    box-sizing: border-box;
+}
+
+.btn {
+    width: 30%;
+    height: 35px;
+    margin: auto;
+}
+
+td[name='edit'] {
+    background-color: rgb(28, 190, 211);
+}
+
+td[name='edit']:hover {
+    opacity: 0.8;
+}
+
+/* form edit task */
+section .edit-form {
+    display: none;
+}
+
+td[name='delete'] {
+    background-color: rgb(233, 21, 21)
+}
+
+td[name='delete']:hover {
+    opacity: 0.8;
+}
+
+.page-container {
+    display: flex;
+    width: fit-content;
+    margin: auto;
+}
+
+.page {
+    height: 25px;
+    width: 25px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+    vertical-align: middle;
+
+}
+
+.page:hover {
+    background-color: rgb(28, 190, 211);
+}
+
+.page p {
+    margin: 5px 0 0 0;
+}

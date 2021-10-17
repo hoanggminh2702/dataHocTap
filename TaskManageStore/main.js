@@ -121,7 +121,6 @@ function createTask(e) {
             tasksRow[i].onmouseenter = function(e) {
                 e.stopPropagation()
                 // Tìm task có tên trùng với task đang được chọn
-                console.log(e);
                 let getTaskInfo = task.find(function(taskk) {
                     return taskk.name == e.currentTarget.querySelectorAll('td')[1].innerText
                 })

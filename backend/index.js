@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const app = express();
+const cors = require('cors');
 const port = 8080;
 
 function randomDate(start, end) {
@@ -21,6 +22,9 @@ async function main() {
 
     const TaskModel = mongoose.model('Task', taskSchema);
 
+    app.use(cors({
+        origin: '*',
+    }));
     app.use(express.json());
 
     // API get Task by Id
@@ -43,13 +47,18 @@ async function main() {
 
     // API get Task for Table Listing
     app.get('/api/getTaskList', async (req, res) => {
-        let skip = req.query.skip ?? 0;
-        let take = req.query.take ?? 10;
+        // var skip = req.query.skip ?? 0;
+        // var limit = req.query.limit ?? 10;
+
+        let skip = req.query.page == null ? 0 : req.query.page*2 - 2
+        let limit = req.query.page == null ? 5 : 5*1
 
         // TODO: Implement pagination logic here
 
+        console.log(skip, limit)
+
         let totalCount = await TaskModel.countDocuments({}).exec();
-        let data = await TaskModel.find({}).exec();
+        let data = await TaskModel.find({}).skip(skip).limit(limit).exec();
 
         let returnData = {
             totalCount: totalCount,
