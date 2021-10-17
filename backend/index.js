@@ -53,8 +53,6 @@ async function main() {
         let skip = req.query.page == null ? 0 : (req.query.page - 1) * 5
         let limit = req.query.page == null ? 5 : 5*1
 
-        console.log(skip)
-
         // TODO: Implement pagination logic here
 
         let totalCount = await TaskModel.countDocuments({}).exec();
@@ -72,8 +70,12 @@ async function main() {
     app.post('/api/createTask', async (req, res) => {
         try {
             const body = req.body;
-            console.log(body);
 
+            let existedTask = await TaskModel.find({ name: body.name }).exec();
+            if(existedTask.length) {
+                res.status(500).send('Trùng tên task');
+                return;
+            } 
             // TODO: Implement validation logic here
 
             let item = new TaskModel({
@@ -86,8 +88,9 @@ async function main() {
             await item.save();
 
             res.status(200).send(item);
+
+            
         } catch (e) {
-            console.log(e);
             res.status(400).send();
         }
     });
@@ -103,8 +106,15 @@ async function main() {
             }
 
             let item = await TaskModel.findById(body.id).exec();
+            let existedTask = await TaskModel.find({ name: body.name }).exec();
+
             if (!item) {
                 res.status(404).send();
+                return;
+            }
+
+            if (item.name != body.name && existedTask.length) {
+                res.status(500).send('Trùng tên task');
                 return;
             }
 

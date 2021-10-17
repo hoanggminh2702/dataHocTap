@@ -5,7 +5,9 @@ const EDIT_TASK_URL = `${BASE_URL}/api/editTask`
 const CREATE_TASK_URL = `${BASE_URL}/api/createTask`
 const DELETE_TASK_URL = `${BASE_URL}/api/deleteTask`
 
-var totalPageGlobal = 1
+// currentTotalRecord để tính ra được currentPage khi thêm 1 task vào cuối
+var currentTotalRecord = 0
+// currentPage để khi xoá hay delete vẫn render được page hiện tại
 var currentPage = 1
 var take = 5
 
@@ -46,7 +48,6 @@ function switchDisplayForm(code) {
 /* Render Page Bar */
 function renderPaginationBar(totalRecord, choosenPage = 1) {
     const totalPage = Math.ceil(totalRecord/take);
-    totalPageGlobal = totalPage + 1
     let renderPageBarHTML = ""
     for (let i = 1; i <= totalPage; i++) {
         let div = `div id="${i}" class="page"`
@@ -63,9 +64,11 @@ function renderPaginationBar(totalRecord, choosenPage = 1) {
 }
 
 /* Render Table */
+// Nhận vào 1 tham số là số page, tương ứng với page được hiển thị
 async function renderTable(choosenPage=1) {
     let renderTableHTML = "";
     const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}`);
+    currentTotalRecord = response.data.totalCount
     const listTask = response.data.items;
     listTask.forEach(function(task) {
         renderTableHTML += `
@@ -80,8 +83,9 @@ async function renderTable(choosenPage=1) {
 
     document.querySelector('tbody').innerHTML = renderTableHTML;
 
+    // Render page bar sau khi render table
     document.querySelector('.page-container').innerHTML = 
-        renderPaginationBar(response.data.totalCount,choosenPage);
+        renderPaginationBar(currentTotalRecord,choosenPage);
 }
 
 /* First Load */
@@ -95,6 +99,8 @@ document.querySelector('.page-container').onmouseenter = function(e) {
     for(let i = 0; i < pageButtons.length; i++) {
         pageButtons[i].onclick = async function(e) {
             e.stopPropagation();
+            // Mỗi page button được gán với id tương ứng với page đó
+            // => page được chọn gán bằng với id và render ra table với page tương ứng
             let choosenPage = Number(e.currentTarget.id);
             currentPage = choosenPage;
             await renderTable(currentPage);
@@ -107,7 +113,7 @@ document.querySelector('.create-submit').onclick = async function(e) {
     e.stopPropagation();
 
     let newTask = {
-        name: document.forms[0].name.value,
+        name: document.forms[0].name.value.trim(),
         description: document.forms[0].description.value,
         time: genRightFormatDate(document.forms[0].datetime.value)
     }
@@ -115,7 +121,12 @@ document.querySelector('.create-submit').onclick = async function(e) {
     try {
         let response = await axios.post(CREATE_TASK_URL, newTask);
         console.log('Successfull Create Task', response)
-        renderTable(totalPageGlobal);
+        currentPage = Math.ceil((currentTotalRecord + 1)/take)
+        renderTable(currentPage);
+
+        // Đoạn render này gặp khó khăn
+        // Do quên làm tròn currentTotalRecord + 1)/take
+        // Nhớ Gán currenPage vào
     } catch (error) {
         console.log(error);
     }
@@ -160,6 +171,8 @@ document.querySelector('tbody').onmouseenter = function(e) {
             try {
                 let reponseDelete = await axios.post(DELETE_TASK_URL, deletedTask);
                 console.log('Delete Successful', reponseDelete)
+                // Kiểm tra xem trang hiện tại còn bao nhiêu record
+                // Nếu bằng 1 thì sau khi xoá chuyển về trang trước
                 if (task.parentElement.querySelectorAll('tr').length < 2) {
                     currentPage -= 1
                 }
@@ -172,6 +185,7 @@ document.querySelector('tbody').onmouseenter = function(e) {
     }
 }
 
+// Bấm esc để thoát chế độ edit
 document.onkeyup = function(e) {
     if (e.keyCode == 27) {
         switchDisplayForm(1);
@@ -182,7 +196,7 @@ document.onkeyup = function(e) {
 document.querySelector('.edit-submit').onclick = async function(e) {
     let editedTask = {
         id: document.forms[1].id.value,
-        name: document.forms[1].name.value,
+        name: document.forms[1].name.value.trim(),
         description: document.forms[1].description.value,
         time: document.forms[1].datetime.value,
     }
