@@ -145,6 +145,10 @@ document.querySelector('.create-submit').onclick = async function(e) {
             let response = await axios.post(CREATE_TASK_URL, newTask);
             console.log('Successfull Create Task', response)
             currentPage = Math.ceil((currentTotalRecord + 1)/take)
+            /* change sort to default */
+            sort = ""
+            document.querySelector("thead th[name='time']").innerText = 'Time';
+            document.querySelector("thead th[name='name']").innerText = 'Name Task';
             renderTable(currentPage);
     
             // Đoạn render này gặp khó khăn
