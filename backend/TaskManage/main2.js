@@ -253,7 +253,6 @@ function changeSortState(sortStateArr, currentSortState) {
     } else {
         switch (currentSortState) {
             case sortStateArr[0]:
-                console.log(sort)
                 return [sortStateArr[1], "desc"];
             case sortStateArr[1]:
                 return [sortStateArr[2], ""];
