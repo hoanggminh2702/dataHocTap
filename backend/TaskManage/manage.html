@@ -14,7 +14,9 @@
                 <input type="text" name="search">
             </div>
             <div class="datetime-group">
-                <input type="datetime-local" name="datetime-filter">
+                <input type="datetime-local" name="datetime-filter-start">
+                <input type="datetime-local" name="datetime-filter-end">
+                <button type="button" name="date-filter-submit">Filter</button>
             </div>
             <button type="button" name="clear-filter">Clear Filter</button>
         </div>
@@ -32,6 +34,7 @@
 
             </tbody>
         </table>
+        <div class="no-record">No Record Found</div>
         <div class="page-container">
         </div>
         <form class="form create-form">

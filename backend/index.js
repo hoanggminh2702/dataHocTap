@@ -55,14 +55,17 @@ async function main() {
         let filter = {}
         let searchByName = req.query.name
         let filterByDate = req.query.date
+        let filterByDate2 = req.query.date2
+
+
         if (searchByName != "") {
             let regEx = new RegExp(searchByName, "i")
             filter.name = regEx
         }
 
-        if (filterByDate != "") {
+        if (filterByDate != "" && filterByDate2 != "") {
             let start = (new Date(Date.parse(filterByDate))).setHours(0,0,0,0)
-            let end = (new Date(Date.parse(filterByDate))).setHours(23,59,59,999)
+            let end = (new Date(Date.parse(filterByDate2))).setHours(23,59,59,999)
             
             filter.time = {
                 "$gte": start, 

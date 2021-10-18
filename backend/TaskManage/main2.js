@@ -1,5 +1,6 @@
 var searchByName = "";
 var filterByDate = "";
+var filterByDate2 = "";
 var sort = "name";
 const nameSortState = ["name", "-name", ""]
 const timeSortState = ["time", "-time", ""]
@@ -95,25 +96,30 @@ function renderPaginationBar(totalRecord, choosenPage = 1) {
 // Nhận vào 1 tham số là số page, tương ứng với page được hiển thị
 async function renderTable(choosenPage=1) {
     let renderTableHTML = "";
-    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}&date=${filterByDate}&name=${searchByName}&limit=${take}`);
+    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}&date=${filterByDate}&date2=${filterByDate2}&name=${searchByName}&limit=${take}`);
     const listTask = response.data.items;
     currentTotalRecord = response.data.totalCount
-    listTask.forEach(function(task) {
-        renderTableHTML += `
-        <tr id="${task['_id']}">
-        <td name="time">${task.time}</td>
-        <td name="name">${task.name}</td>
-        <td name="description">${task.description}</td>
-        <td name="edit">Edit</td>
-        <td name="delete">Delete</td>
-        </tr>`;
-    })
-
+    // Nếu không tìm thấy record nào thì hiển thị div no record found
+    if (currentTotalRecord > 0) {
+        listTask.forEach(function(task) {
+            renderTableHTML += `
+            <tr id="${task['_id']}">
+            <td name="time">${task.time}</td>
+            <td name="name">${task.name}</td>
+            <td name="description">${task.description}</td>
+            <td name="edit">Edit</td>
+            <td name="delete">Delete</td>
+            </tr>`;
+        })
+        document.querySelector('.no-record').style.display = "none";
+    } else if (currentTotalRecord == 0) {
+        renderTableHTML = "";
+        document.querySelector('.no-record').style.display = "block" 
+    }
     document.querySelector('tbody').innerHTML = renderTableHTML;
-
     // Render page bar sau khi render table
     document.querySelector('.page-container').innerHTML = 
-        renderPaginationBar(currentTotalRecord,choosenPage);
+    renderPaginationBar(currentTotalRecord,choosenPage);
 }
 
 /* Render Table By Clicking Page Button */
@@ -227,9 +233,10 @@ document.querySelector('tbody').onmouseenter = function(e) {
                 // Kiểm tra xem trang hiện tại còn bao nhiêu record
                 // Nếu bằng 1 thì sau khi xoá chuyển về trang trước
                 if (task.parentElement.querySelectorAll('tr').length < 2) {
-                    if (searchByName != "" || filterByDate != "") {
+                    if (searchByName != "" || (filterByDate != "" && filterByDate2 != "")) {
                         searchByName = "";
                         filterByDate = "";
+                        filterByDate2 = "";
                         if(currentPage > 1) {
                             currentPage -= 1
                         }
@@ -334,18 +341,42 @@ document.querySelector("input[name='search']").oninput = function(e) {
 }
 
 /* filter by date */
-document.querySelector('.datetime-group').querySelector('input').onchange = function(e) {
+document.querySelector('.datetime-group').querySelector("input[name='datetime-filter-start']").onchange = function(e) {
     filterByDate = e.currentTarget.value;
-    renderTable();
+}
+
+document.querySelector('.datetime-group').querySelector("input[name='datetime-filter-end']").onchange = function(e) {
+    filterByDate2 = e.currentTarget.value;
+}
+document.querySelector("button[name='date-filter-submit']").onclick = function(e) {
+    // Nếu cả 2 ô đều không rỗng thì mới bấm nút filter được
+    if (filterByDate != "" && filterByDate2 == "") {
+        // Nếu chỉ chọn from thì filter từ from đến hôm nay
+        filterByDate2 = genRightFormatDate()
+    }
+    else if (filterByDate2 != "" && filterByDate == "") {
+        // Nếu chỉ chọn to thì filter theo to
+        filterByDate = filterByDate2
+    }
+    // parse sang cùng 1 kiểu để xem ngày nào lớn hơn
+    let date1 = Date.parse(filterByDate)
+    let date2 = Date.parse(filterByDate2)
+    if (date1 <= date2) {
+        renderTable()
+    } else {
+        alert('Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc')
+    }
 }
 
 /* Clear filter */
 document.querySelector("button[name='clear-filter']").onclick = function(e) {
-    document.querySelector("input[name='search']").value = ""
+    document.querySelector("input[name='search']").value = null
     // set value cho input không làm cho các sự kiện được kích hoạt => phải gán lại searchByName và filterByDate để render lại table
     searchByName = ""
-    document.querySelector("input[name='datetime-filter']").value = ""
+    document.querySelector("input[name='datetime-filter-start']").value = null
     filterByDate = ""
+    document.querySelector("input[name='datetime-filter-end']").value = null
+    filterByDate2 = ""
     renderTable()
 }
 

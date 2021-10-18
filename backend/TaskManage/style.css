@@ -99,12 +99,33 @@ td[name='delete']:hover {
     margin: 5px 0 0 0;
 }
 
+/* filter bar */
+
 .filter-bar {
     display: flex;
-    max-width: 500px;
+    flex-direction: column;
+    max-width: 200px;
     margin: auto;
-    justify-content: space-evenly;
 }
 
 .search-group {
+    display: flex;
+}
+
+.search-group input {
+    width: 200px;
+    margin: 5px 0;
+    
+}
+
+.datetime-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* no record found */
+
+.no-record {
+    display: none;
+    text-align: center;
 }
