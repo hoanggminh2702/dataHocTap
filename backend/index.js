@@ -47,20 +47,39 @@ async function main() {
 
     // API get Task for Table Listing
     app.get('/api/getTaskList', async (req, res) => {
+        // limit = null => default = 10
+        let limit = Number(req.query.limit) ?? 10;
+        // skip = page hiện tại - 1 * limit
+        let skip = (req.query.page == null || Number(req.query.page) == 0) ? 0 : (req.query.page - 1) * limit;
+        let sortField = req.query.sort;
+        let filter = {}
+        let searchByName = req.query.name
+        let filterByDate = req.query.date
+        if (searchByName != "") {
+            let regEx = new RegExp(searchByName, "i")
+            filter.name = regEx
+        }
 
-        let skip = req.query.page == null ? 0 : (req.query.page - 1) * 5
-        let limit = req.query.page == null ? 5 : 5*1
-        let sortField = req.query.sort
+        if (filterByDate != "") {
+            let start = (new Date(Date.parse(filterByDate))).setHours(0,0,0,0)
+            let end = (new Date(Date.parse(filterByDate))).setHours(23,59,59,999)
+            
+            filter.time = {
+                "$gte": start, 
+                "$lt": end
+            }
+            
+        }
 
         // TODO: Implement pagination logic here
-
-        let totalCount = await TaskModel.countDocuments({}).sort( sortField ).exec();
+        // filter là 1 Object do đó chỉ cần thêm filter vào không cần dấu Object
+        let totalCount = await TaskModel.countDocuments( filter ).sort( sortField ).exec();
         // Sử dụng reg để tìm những record có chứa từ khoá
         // 'name description time' chỉ số trường hiển thị
         // sort 'time' asc, '-time' desc
         /*let data = await TaskModel.find({ name: / /i }, 'name description time').sort( sortField ).skip(skip).limit(limit).exec();*/
         
-        let data = await TaskModel.find({}).sort( sortField ).skip(skip).limit(limit).exec();
+        let data = await TaskModel.find( filter ).sort( sortField ).skip(skip).limit(limit).exec();
 
         let returnData = {
             totalCount: totalCount,
@@ -142,8 +161,8 @@ async function main() {
             const body = req.body;
             let item = await TaskModel.findById(body.id).exec();
             await TaskModel.deleteOne({ _id: body.id });
-            
             res.status(204).send(item);
+            console.log(item)
         } catch {
             res.status(400).send();
         }

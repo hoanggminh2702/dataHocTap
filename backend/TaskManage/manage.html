@@ -9,6 +9,15 @@
 </head>
 <body>
     <section class="form-container">
+        <div class="filter-bar">
+            <div class="search-group">
+                <input type="text" name="search">
+            </div>
+            <div class="datetime-group">
+                <input type="datetime-local" name="datetime-filter">
+            </div>
+            <button type="button" name="clear-filter">Clear Filter</button>
+        </div>
         <table class="list-task">
             <thead>
                 <tr>
@@ -36,7 +45,7 @@
             </div> 
             <div class="row">
                 <label class="label" for="datetime">Time</label>
-                <input class="input" type="datetime-local" name="datetime">
+                <input class="input" type="datetime-local" name="datetime" step="1">
             </div>
             <button type="button" class="btn create-submit">Create</button>
             
@@ -54,7 +63,7 @@
             </div> 
             <div class="row">
                 <label class="label" for="datetime">Time</label>
-                <input class="input" type="datetime-local" name="datetime">
+                <input class="input" type="datetime-local" name="datetime" step="1">
             </div>
             <button type="button" class="btn edit-submit">Edit</button>
         </form>

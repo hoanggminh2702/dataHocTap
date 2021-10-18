@@ -1,5 +1,5 @@
 var searchByName = "";
-var searchByDate = "";
+var filterByDate = "";
 var sort = "name";
 const nameSortState = ["name", "-name", ""]
 const timeSortState = ["time", "-time", ""]
@@ -23,8 +23,19 @@ function genRightFormatDate(input) {
     if (input == "" || arguments.length == 0) {
         return new Date()
     } else {
-        // Mai hỏi cách convert Date do chưa biết cách convert nên hard code để cắt chuỗi ngày
-        return input.slice(0,16)
+        // Mai hỏi cách convert Date do chưa biết cách convert nên hard code để cắt chuỗi ngày (solved)
+        // Sử dùng parse để parse chuỗi ios và dùng new date để tạo đúng format date trong js
+        // Date.toISOString() => chuyển Date về chuỗi ISO => Sử dụng Date(Date.parse) để chuyển ngược lại
+        let date = new Date(Date.parse(input))
+        let fullYear = date.getFullYear().toString()
+        let fullMonth = addZeros(date.getMonth() + 1).toString()
+        // Đoạn này phải là dùng phương thức getDate chứ không phải getDay
+        let fullDay = addZeros(date.getDate()).toString()
+        let fullHours = addZeros(date.getHours()).toString()
+        let fullMinutes = addZeros(date.getMinutes()).toString()
+        let fullSecond = addZeros(date.getSeconds()).toString()
+    // 2017-06-01T08:30
+    return `${fullYear}-${fullMonth}-${fullDay}T${fullHours}:${fullMinutes}:${fullSecond}`
     }
 }
 
@@ -55,14 +66,16 @@ function alertEmptyInput(name, des) {
 /* ----Render---- */
 
 // currentTotalRecord để tính ra được currentPage khi thêm 1 task vào cuối
-var currentTotalRecord = 0
-// currentPage để khi xoá hay delete vẫn render được page hiện tại
-var currentPage = 1
-var take = 5
+var currentTotalRecord = 0;
+// currentPage để khi create hay delete có thể render được page hiện tại
+var currentPage = 1;
+var take = 10;
 
 /* Render Page Bar */
 function renderPaginationBar(totalRecord, choosenPage = 1) {
+    // Tính ra tổng số page hiện tại
     const totalPage = Math.ceil(totalRecord/take);
+
     let renderPageBarHTML = ""
     for (let i = 1; i <= totalPage; i++) {
         let div = `div id="${i}" class="page"`
@@ -82,7 +95,7 @@ function renderPaginationBar(totalRecord, choosenPage = 1) {
 // Nhận vào 1 tham số là số page, tương ứng với page được hiển thị
 async function renderTable(choosenPage=1) {
     let renderTableHTML = "";
-    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}&date=${searchByDate}&name=${searchByName}`);
+    const response = await axios.get(`${GET_LIST_TASK_URL}?page=${choosenPage}&sort=${sort}&date=${filterByDate}&name=${searchByName}&limit=${take}`);
     const listTask = response.data.items;
     currentTotalRecord = response.data.totalCount
     listTask.forEach(function(task) {
@@ -134,7 +147,7 @@ document.querySelector('.create-submit').onclick = async function(e) {
     // Validate if the input is empty, same action with edit
     if ( name == ""
         || description == "") {
-        alertEmptyInput(name, description)
+        alertEmptyInput(name, description);
     } else {
         let newTask = {
             name: name,
@@ -145,12 +158,21 @@ document.querySelector('.create-submit').onclick = async function(e) {
         try {
             let response = await axios.post(CREATE_TASK_URL, newTask);
             console.log('Successfull Create Task', response)
-            currentPage = Math.ceil((currentTotalRecord + 1)/take)
+            // Có 2 cách
+            //Cách 1:
+            /* if (document.querySelector('tbody').querySelectorAll('tr').length == take) {
+                currentPage += 1
+            }
+            */
+           //Cách 2:
+           currentPage = Math.ceil((currentTotalRecord+1)/take)        
+
             /* change sort to default */
             sort = ""
             document.querySelector("thead th[name='time']").innerText = 'Time';
             document.querySelector("thead th[name='name']").innerText = 'Name Task';
-            renderTable(currentPage);
+            
+            await renderTable(currentPage);
     
             // Đoạn render này gặp khó khăn
             // Do quên làm tròn currentTotalRecord + 1)/take
@@ -181,7 +203,7 @@ document.querySelector('tbody').onmouseenter = function(e) {
             editForm.id.value = editedTask.editedId;
             editForm.name.value = editedTask.editedName;
             editForm.description.value = editedTask.editedDescription;
-            console.log(genRightFormatDate(editedTask.editedTime))
+            console.log(new Date(Date.parse(editedTask.editedTime)))
             editForm.datetime.value = genRightFormatDate(editedTask.editedTime);
         }
     }
@@ -191,7 +213,7 @@ document.querySelector('tbody').onmouseenter = function(e) {
     for (let i = 0; i < deleteBtns.length; i++) {
         deleteBtns[i].onclick = async function(e) {
             e.stopPropagation();
-            let task = e.currentTarget.parentElement
+            let task = e.currentTarget.parentElement;
             let deletedTask = {
                 id: task.id,
                 name: task.querySelector("td[name='name']").innerText,
@@ -205,9 +227,17 @@ document.querySelector('tbody').onmouseenter = function(e) {
                 // Kiểm tra xem trang hiện tại còn bao nhiêu record
                 // Nếu bằng 1 thì sau khi xoá chuyển về trang trước
                 if (task.parentElement.querySelectorAll('tr').length < 2) {
-                    currentPage -= 1
+                    if (searchByName != "" || filterByDate != "") {
+                        searchByName = "";
+                        filterByDate = "";
+                        if(currentPage > 1) {
+                            currentPage -= 1
+                        }
+                    } else {
+                        currentPage -= 1;
+                    }
                 }
-                renderTable(currentPage)
+                await renderTable(currentPage);
 
             } catch (error) {
                 console.log(error);
@@ -225,12 +255,12 @@ document.onkeyup = function(e) {
 
 /* Submit the edit */
 document.querySelector('.edit-submit').onclick = async function(e) {
-    let time = document.forms[1].datetime.value ? document.forms[1].datetime.value : genRightFormatDate()
-    let name = document.forms[1].name.value.trim()
-    let description = document.forms[1].description.value.trim()
+    let time = document.forms[1].datetime.value ? document.forms[1].datetime.value : genRightFormatDate();
+    let name = document.forms[1].name.value.trim();
+    let description = document.forms[1].description.value.trim();
     if ( name == ""
         || description == "") {
-        alertEmptyInput(name, description)
+        alertEmptyInput(name, description);
     } else {
         let editedTask = {
             id: document.forms[1].id.value,
@@ -239,7 +269,7 @@ document.querySelector('.edit-submit').onclick = async function(e) {
             time: time
         }
         try {
-            let response = await axios.post(EDIT_TASK_URL, editedTask)
+            let response = await axios.post(EDIT_TASK_URL, editedTask);
             console.log('Edit Successful', response);
         } catch(error) {
             console.log(error);
@@ -254,7 +284,7 @@ document.querySelector('.edit-submit').onclick = async function(e) {
 function changeSortState(sortStateArr, currentSortState) {
     // Lỗi do không chú ý bị nhầm giữa sortStateArr và currentSortState
     if (!sortStateArr.includes(currentSortState)) {
-        return [sortStateArr[0], "asc"]
+        return [sortStateArr[0], "asc"];
     } else {
         switch (currentSortState) {
             case sortStateArr[0]:
@@ -269,19 +299,53 @@ function changeSortState(sortStateArr, currentSortState) {
     }
 }
 
-document.querySelector("thead th[name='time']").onclick = function(e) {
-    e.stopPropagation()
+document.querySelector("thead th[name='time']").onclick = async function(e) {
+    e.stopPropagation();
     document.querySelector("thead th[name='name']").innerText = 'Name Task';
-    [sort, type] = changeSortState(timeSortState, sort)
-    e.currentTarget.innerText = `Time ${type}`
-    renderTable()
+    [sort, type] = changeSortState(timeSortState, sort);
+    e.currentTarget.innerText = `Time ${type}`;
+    await renderTable();
 }
 
-document.querySelector("thead th[name='name']").onclick = function(e) {
-    e.stopPropagation()
+document.querySelector("thead th[name='name']").onclick = async function(e) {
+    e.stopPropagation();
     document.querySelector("thead th[name='time']").innerText = 'Time';
-    [sort, type] = changeSortState(nameSortState, sort)
-    e.currentTarget.innerText = `Name Task ${type}`
+    [sort, type] = changeSortState(nameSortState, sort);
+    e.currentTarget.innerText = `Name Task ${type}`;
+    await renderTable();
+}
+
+/* ----filter---- */
+
+/* filter by keyword */
+
+// Using Button
+// document.querySelector("button[name='search-submit']").onclick = function(e) {
+//     e.stopPropagation()
+//     searchByName = document.querySelector("input[name='search']").value
+//     renderTable()
+// }
+
+// Real Char
+document.querySelector("input[name='search']").oninput = function(e) {
+    e.stopPropagation();
+    searchByName = e.currentTarget.value;
+    renderTable();
+}
+
+/* filter by date */
+document.querySelector('.datetime-group').querySelector('input').onchange = function(e) {
+    filterByDate = e.currentTarget.value;
+    renderTable();
+}
+
+/* Clear filter */
+document.querySelector("button[name='clear-filter']").onclick = function(e) {
+    document.querySelector("input[name='search']").value = ""
+    // set value cho input không làm cho các sự kiện được kích hoạt => phải gán lại searchByName và filterByDate để render lại table
+    searchByName = ""
+    document.querySelector("input[name='datetime-filter']").value = ""
+    filterByDate = ""
     renderTable()
 }
 

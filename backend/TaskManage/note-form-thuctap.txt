@@ -1,0 +1,26 @@
+when the page in first load: first page
+
+add current page to easy to do the logic
+
+click to the page -> load page
+create -> load page
+edit -> load page
+delete -> load page
+
+add limit to request instead of hard code the limit record
+
+Chưa biết cách send items đã xoá lên response
+Chưa biết các throw lỗi lên response
+
+Vấn đề: chưa biết sử dụng variable trong regex
+
+Xử lý cho variable vào regex solve
+if (searchByName != "") {
+            let regEx = new RegExp(searchByName, "i")
+            filter.name = regEx
+        }
+		=> regEx = /${searchByName}/i
+	
+
+render table khi 
+Khi set value cho input: onchange không được thực hiện
