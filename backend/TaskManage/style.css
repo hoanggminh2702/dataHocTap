@@ -107,23 +107,53 @@ td[name='delete']:hover {
 /* filter bar */
 
 .filter-bar {
-    display: flex;max-width: 900px;
+    display: flex;max-width: 700px;
     /* flex-direction: column; */
-    height: 25px;
+    height: 55;
     margin: auto;
 }
 
 .search-group {
     display: flex;
+    flex-direction: column;
+}
+
+.search-group button {
+    height: 24px;
 }
 
 .search-group input {
+    height: 24px;
     width: 200px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .datetime-group {
     display: flex;
-    /* flex-direction: column; */
+    width: 400px;
+}
+
+.input-date {
+    width: 210px;
+}
+
+.datetime-group input {
+    width: 200px;
+}
+
+.datetime-group button {
+    height: 24px;
+}
+
+.filter-clearFilter {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+
+button[name='create-active'] {
+    width: 100px;
 }
 
 /* no record found */

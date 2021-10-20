@@ -407,7 +407,7 @@ document.querySelector("thead th[name='name']").onclick = async function (e) {
 // Real Char
 document.querySelector("input[name='search']").oninput = function (e) {
   e.stopPropagation()
-  searchByName = e.currentTarget.value
+  searchByName = e.currentTarget.value.trim()
   renderTable()
 }
 
@@ -449,6 +449,9 @@ document.querySelector("button[name='date-filter-submit']").onclick = function (
   // } else {
   //     alert('Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc')
   // }
+  sort = 'time'
+  document.querySelector("th[name='name']").innerHTML = 'Name Task'
+  document.querySelector("th[name='time']").innerHTML = 'Time asc'
 
   renderTable()
 }
@@ -462,5 +465,12 @@ document.querySelector("button[name='clear-filter']").onclick = function (e) {
   filterByDate = ''
   document.querySelector("input[name='datetime-filter-end']").value = null
   filterByDate2 = ''
+  renderTable()
+}
+
+document.querySelector("button[name='clear-search']").onclick = function () {
+  document.querySelector("input[name='search']").value = null
+  // set value cho input không làm cho các sự kiện được kích hoạt => phải gán lại searchByName và filterByDate để render lại table
+  searchByName = ''
   renderTable()
 }

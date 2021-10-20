@@ -12,22 +12,28 @@
     <section class="form-container">
         <div class="filter-bar">
             <div class="search-group">
-                <input type="text" name="search">
+                <input type="text" name="search" placeholder="Type to search">
+                <button type="button" name="clear-search">Clear Search</button>
             </div>
             <div class="datetime-group">
-                <input type="datetime-local" name="datetime-filter-start">
-                <input type="datetime-local" name="datetime-filter-end">
-                <button type="button" name="date-filter-submit">Filter</button>
+                <div class="input-date">
+                    <input type="datetime-local" name="datetime-filter-start">
+                    <input type="datetime-local" name="datetime-filter-end">
+                </div>
+                <div class="filter-clearFilter">
+                    <button type="button" name="date-filter-submit">Filter By Date</button>
+                    <button type="button" name="clear-filter">Clear Filter</button>
+                </div>
             </div>
-            <button type="button" name="clear-filter">Clear Filter</button>
+
             <button type="button" name="create-active">Create</button>
         </div>
         <table class="list-task">
             <thead>
                 <tr>
-                    <th name="time">Time</th>
-                    <th name="name">Name Task</th>
-                    <th>Description</th>
+                    <th style="width: 191px;" name="time">Time</th>
+                    <th style="width: 250px;" name="name">Name Task asc</th>
+                    <th style="width: 250px;">Description</th>
                     <th style="width: 65px;"></th>
                     <th style="width: 65px;"></th>
                 </tr>
