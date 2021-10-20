@@ -443,15 +443,24 @@ document.querySelector("button[name='date-filter-submit']").onclick = function (
   let date1 = Date.parse(filterByDate)
   let date2 = Date.parse(filterByDate2)
 
+  if (isNaN(date1) && !isNaN(date2)) {
+    sort = '-time'
+  } else {
+    sort = 'time'
+  }
+
   // Xem xét sử dụng lại chỗ này
   // if (date1 <= date2) {
   //     renderTable()
   // } else {
   //     alert('Vui lòng chọn ngày bắt đầu nhỏ hơn ngày kết thúc')
   // }
-  sort = 'time'
   document.querySelector("th[name='name']").innerHTML = 'Name Task'
-  document.querySelector("th[name='time']").innerHTML = 'Time asc'
+  if (sort == 'time') {
+    document.querySelector("th[name='time']").innerHTML = 'Time asc'
+  } else {
+    document.querySelector("th[name='time']").innerHTML = 'Time desc'
+  }
 
   renderTable()
 }
