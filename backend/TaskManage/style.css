@@ -1,7 +1,12 @@
 :root {
     --border-color : lightblue
 }
+
+body {
+    margin: 0;
+}
 /* container */
+/* Do modal-container position là absolute do đó section phải là relative để di chuyển vị trí của modal lên trên */
 section {
     position: relative;
 }
@@ -26,9 +31,13 @@ th,td {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border-color);
+    border-radius: 10px;
     row-gap: 5px;
     position: absolute;
-    left: 35%;
+    top: 15px;
+    left: 30%;
+    background-color: white;
+    display: none;
 }
 
 .row {
@@ -60,10 +69,6 @@ td[name='edit']:hover {
 }
 
 /* form edit task */
-section .edit-form {
-    display: none;
-}
-
 .id-row {
     display: none;
 }
@@ -102,9 +107,9 @@ td[name='delete']:hover {
 /* filter bar */
 
 .filter-bar {
-    display: flex;
-    flex-direction: column;
-    max-width: 200px;
+    display: flex;max-width: 900px;
+    /* flex-direction: column; */
+    height: 25px;
     margin: auto;
 }
 
@@ -114,13 +119,11 @@ td[name='delete']:hover {
 
 .search-group input {
     width: 200px;
-    margin: 5px 0;
-    
 }
 
 .datetime-group {
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
 }
 
 /* no record found */

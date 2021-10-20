@@ -1,0 +1,89 @@
+.box {
+    position: relative;
+}
+.box button:first-child {
+    margin: auto;
+}
+
+.modal-container {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    position: relative;
+    left: 30%;
+}
+
+@keyframes backgroundAppear {
+    from {
+        opacity: 0.5;
+    }
+}
+
+@keyframes modalAppear {
+    from {
+        top: 17px;
+    }
+}
+
+@keyframes modalDisappear {
+    from {
+        top: 20px
+    } to {
+        top: 17px
+    }
+}
+
+@keyframes backgroundDisappear {
+    from {
+        opacity: 0.4;
+    } to {
+        opacity: 0.1;
+    }
+}
+
+.modal-header {
+    height: 10%;
+    margin: 3px auto;
+}
+
+.modal-header h1 {
+    margin: 0;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    display: flex;
+}
+
+.input-group label {
+    flex-basis: 10%;
+}
+
+.input-group input {
+    flex-basis: 50%;
+}
+
+.modal-footer {
+    height: 10%;
+    margin: 3px auto;
+}

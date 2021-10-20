@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="formsEffect.css">
     <title>Document</title>
 </head>
 <body>
@@ -19,6 +20,7 @@
                 <button type="button" name="date-filter-submit">Filter</button>
             </div>
             <button type="button" name="clear-filter">Clear Filter</button>
+            <button type="button" name="create-active">Create</button>
         </div>
         <table class="list-task">
             <thead>
@@ -34,10 +36,22 @@
 
             </tbody>
         </table>
+
         <div class="no-record">No Record Found</div>
-        <div class="page-container">
-        </div>
-        <form class="form create-form">
+
+        <div class="page-container"></div>
+
+        <div class="modal-container">
+
+            <div class="background"></div>
+
+            <form class="form create-form">
+
+             <div class="modal-header">
+                 <h2>Create Form</h2>
+                 <p name="notificationMessage"></p>
+            </div>
+
             <div class="row">
                 <label class="label" for="name-task">Task</label>
                 <input class="input" type="text" name="name">
@@ -45,16 +59,23 @@
             <div class="row">
                 <label class="label" for="description">Description</label>
                 <textarea class="input" type="text" name="description" rows="3" required></textarea>
-            </div> 
+            </div>
             <div class="row">
                 <label class="label" for="datetime">Time</label>
                 <input class="input" type="datetime-local" name="datetime" step="1">
             </div>
-            <button type="button" class="btn create-submit">Create</button>
-            
+            <div class="modal-footer">
+                <button type="button" class="btn" name="submitBtn">Create</button>
+                <button type="button" class="btn" name="cancelBtn">Cancel</button>
+            </div>
+
         </form>
 
         <form class="form edit-form">
+             <div class="modal-header">
+                 <h2>Edit Form</h2>
+                 <p name="notificationMessage"></p>
+            </div>
             <input class="id-row" name="id" disabled></input>
             <div class="row">
                 <label class="label" for="name-task">Task</label>
@@ -63,13 +84,17 @@
             <div class="row">
                 <label class="label" for="description">Description</label>
                 <textarea class="input" type="text" name="description" rows="3" required></textarea>
-            </div> 
+            </div>
             <div class="row">
                 <label class="label" for="datetime">Time</label>
                 <input class="input" type="datetime-local" name="datetime" step="1">
             </div>
-            <button type="button" class="btn edit-submit">Edit</button>
+            <div class="modal-footer">
+                <button type="button" class="btn" name="submitBtn">Edit</button>
+                <button type="button" class="btn" name="cancelBtn">Cancel</button>
+            </div>
         </form>
+        </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <!-- <script src="test.js"></script> -->

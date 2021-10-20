@@ -1,0 +1,64 @@
+.modal-container {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0;
+    display: none;
+}
+
+.modal-container .background {
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+}
+
+.modal-container .create-form {
+    display: none;
+}
+
+.modal-header h2 {
+    margin: 5px auto;
+}
+
+.modal-footer button {
+    margin: 5px;
+    float: right;
+}
+
+.modal-container .edit-form {
+  display: none;
+}
+
+
+@keyframes backgroundAppear {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes modalAppear {
+  from {
+    top: -10px;
+  }
+}
+
+@keyframes modalDisappear {
+    from {
+        top: 15px;
+    } to {
+        top: -10px;
+    }
+
+}
+
+@keyframes backgroundDisappear {
+  from {
+    opacity: 0.1;
+  } to {
+      opacity: 0;
+  }
+}
+
+
+

@@ -4,12 +4,39 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <ul id="posts-block"></ul>
+    <div class="box">
+        <button id="show-modal">Show Modal</button>
+        <div class="modal-container">
+            <div class="cover"></div>
+            <form class="modal">
+                <div class="modal-header">
+                    <h1>This is my Modal Header</h1>
+                </div>
+                <div class="modal-content">
+                    <div class="input-group">
+                        <label for="">Label</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label for="">Label</label>
+                        <input type="text">
+                    </div>
+                    <div class="input-group">
+                        <label for="">Label</label>
+                        <input type="text">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" name="submit">Accept</button>
+                    <button type="button" name="done">Done</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="main.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </body>
 </html>
