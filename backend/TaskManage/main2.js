@@ -443,6 +443,7 @@ document.querySelector("button[name='date-filter-submit']").onclick = function (
   let date1 = Date.parse(filterByDate)
   let date2 = Date.parse(filterByDate2)
 
+  // Nếu only to thì sort desc không thì sort asc
   if (isNaN(date1) && !isNaN(date2)) {
     sort = '-time'
   } else {
