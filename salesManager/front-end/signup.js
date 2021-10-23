@@ -22,8 +22,6 @@ function renderValidateInput (...args) {
       return field != ''
     })
   ) {
-    document.querySelector('.alert').innerHTML = 'Đăng ký thành công'
-    document.querySelector('.alert').style.color = 'green'
     return true
   } else {
     document.querySelector('.alert').innerHTML = alertHTML
@@ -49,9 +47,13 @@ document.forms[0].signup.onclick = async function (e) {
 
     try {
       await axios.post(CREATE_USER_URL, newUser).then(function (res) {
+        document.querySelector('.alert').innerHTML = 'Đăng ký thành công'
+        document.querySelector('.alert').style.color = 'green'
         console.log(`Create Successfull`, res)
       })
     } catch (err) {
+      document.querySelector('.alert').innerHTML = 'Đăng ký thất bại'
+      document.querySelector('.alert').style.color = 'red'
       console.log(err)
     }
   }
