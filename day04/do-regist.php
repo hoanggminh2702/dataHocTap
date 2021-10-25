@@ -8,6 +8,9 @@
     <title>Document</title>
 </head>
 <body>
+<?php 
+                        echo $information['khoa'];
+            ?>
     <div class="container">
         <?php include 'store-data.php'?>
         <div class="form result-form">
@@ -29,7 +32,7 @@
 
                 </label>
             </div>
-
+            
             <div class="infor">
                 <label class="lable" for="khoa">Phân khoa</label>
                 <label class="input-value" for="khoa-value">

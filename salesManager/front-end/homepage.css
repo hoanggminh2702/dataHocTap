@@ -1,0 +1,73 @@
+:root {
+    --background-image: url("https://www.appmachine.com/wp-content/uploads/2016/02/No-Branding-Header-Background-1.jpg");
+}
+* {
+    margin: 0
+}
+
+/* Nav bar */
+.nav-bar {
+    background-image: var(--background-image);
+}
+
+.nav-bar-logo {
+    width: 300px;
+    float: left;
+}
+
+.nav-bar-collapse {
+    width: 450px;
+    float: right;
+}
+
+.action-bar .search-bar {
+    float: left;
+    margin: 10px;
+}
+
+.action-bar .items {
+    float: right;
+    padding: 0;
+}
+
+.nav-bar-collapse .items li {
+    float: left;
+    margin: 10px;
+    list-style-type: none;
+    font-weight: 700;
+}
+
+.nav-bar-collapse .items li:hover {
+    opacity: 0.5;
+}
+
+.clear-fix {
+    overflow: auto;
+    clear: both;
+}
+
+.container {
+    width: 1000px;
+    margin: auto;
+
+}
+
+/* Filter-bar */
+.filter-bar {
+    height: 70px;
+}
+
+/* Product Container */
+
+.product-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.product-group {
+    height: 200px;
+    width: 200px;
+    margin: 5px;
+    background-color: red;
+}
