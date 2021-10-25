@@ -129,3 +129,5 @@ document.querySelector('.product-container').onmouseenter = function (e) {
     }
   }
 }
+
+add the count quantity to render 
