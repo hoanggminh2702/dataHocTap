@@ -1,0 +1,131 @@
+price in the screen is localestring => remember to convert to double after call api
+
+
+click search to get the input text and render the product in the screen
+
+take and limit to limit the record
+
+take = số record sẽ lấy
+
+skip = số page-1 *take
+
+truyền số page vào để render ra đúng page
+
+render pagination bar : lấy page được chọn thì tô màu khác, lấy tổng record / số take để lấy được số page
+
+other filter implement later
+
+lý do không nghe sự kiện của các element được là do những element đó được tạo ra trong quá trình thực thi web do đó phải bắt sự kiện những element tĩnh
+
+Nhấp vào mua => nếu đã bấm mua thì tăng số lượng món hàng lên
+Nếu chưa thì thêm object gồm id món hàng và số lượng là 1 vào
+
+Nhấp vào cancal => Nếu đã bấm mua thì giảm số lượng
+Nếu số lượng = 1 thì xoá khỏi storage
+
+code check storage đọc lại sau
+document.querySelector('.product-container').onmouseenter = function (e) {
+  let allBuyBtns = e.currentTarget.querySelectorAll('.buy-btn')
+  let allCancelBtns = e.currentTarget.querySelectorAll('.cancel-btn')
+  for (let i = 0; i < allBuyBtns.length; i++) {
+    allBuyBtns[i].onclick = function (e) {
+      e.stopPropagation()
+      const currentItem = e.currentTarget.parentElement.id
+      let checkItemsBought = false
+      for (let key in currentCart) {
+        if (currentCart[key].id == currentItem) {
+          checkItemsBought = true
+          currentCart[key].quantity += 1
+          break
+        }
+      }
+      if (!checkItemsBought)
+        currentCart.push({
+          id: currentItem,
+          quantity: 1
+        })
+      localStorage.setItem('item', JSON.stringify(currentCart))
+      console.log(localStorage.getItem('item'))
+    }
+    allCancelBtns[i].onclick = function (e) {
+      e.stopPropagation()
+      const currentItem = e.currentTarget.parentElement.id
+      let checkItemsBought = false
+      if (localStorage.getItem('item') != undefined) {
+        for (let key in currentCart) {
+          if (currentCart[key].id == currentItem) {
+            checkItemsBought = true
+            if (currentCart[key].quantity < 2) {
+              currentCart.splice(currentCart.indexOf(currentCart[key]), 1)
+              localStorage.removeItem('item')
+              break
+            } else {
+              currentCart[key].quantity -= 1
+              break
+            }
+          }
+        }
+      } else {
+        alert('Bạn chưa mua hàng')
+      }
+
+      if (!checkItemsBought) alert('Bạn chưa mua món hàng này')
+
+      localStorage.setItem('item', JSON.stringify(currentCart))
+      console.log(localStorage.getItem('item'))
+    }
+  }
+}
+
+if (currentCart[`${allBuyBtns[i]}`]) {
+      currentCart[`${allBuyBtns[i]}`] += 1
+    } else {
+      currentCart[`${allBuyBtns[i]}`] = 1
+    }
+
+Xử lấy  trong localStorage và in số lượng hàng đã mua lên màn hình
+document.querySelector('.product-container').onmouseenter = function (e) {
+  let allBuyBtns = e.currentTarget.querySelectorAll('.buy-btn')
+  let allCancelBtns = e.currentTarget.querySelectorAll('.cancel-btn')
+  for (let i = 0; i < allBuyBtns.length; i++) {
+    allBuyBtns[i].onclick = function (e) {
+      const currentItem = e.currentTarget.parentElement.id
+      const currentProducts = allBuyBtns[i].parentElement.querySelector(
+        '.product'
+      )
+      if (currentCart[currentItem]) {
+        currentCart[currentItem] += 1
+      } else {
+        currentCart[currentItem] = 1
+      }
+      currentProducts.innerHTML =
+        currentCart[currentItem] != undefined ? currentCart[currentItem] : ''
+      console.log(currentProducts.innerHTML)
+
+      localStorage.setItem('item', JSON.stringify(currentCart))
+      console.log(localStorage.getItem('item'))
+    }
+
+    allCancelBtns[i].onclick = function (e) {
+      const currentItem = e.currentTarget.parentElement.id
+      const currentProducts = allBuyBtns[i].parentElement.querySelector(
+        '.product'
+      )
+      if (currentCart[currentItem]) {
+        if (currentCart[currentItem] < 2) {
+          delete currentCart[currentItem]
+        } else {
+          currentCart[currentItem] -= 1
+        }
+      } else {
+        alert('Bạn chưa mua món hàng này')
+      }
+
+      currentProducts.innerHTML =
+        currentCart[currentItem] != undefined ? currentCart[currentItem] : ''
+      console.log(currentProducts.innerHTML)
+      localStorage.setItem('item', JSON.stringify(currentCart))
+      console.log(localStorage.getItem('item'))
+    }
+  }
+}
