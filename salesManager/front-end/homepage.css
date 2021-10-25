@@ -1,5 +1,7 @@
 :root {
-    --background-image: url("https://www.appmachine.com/wp-content/uploads/2016/02/No-Branding-Header-Background-1.jpg");
+    --border : 1px solid lightblue;
+    --border-hover : 1px solid orange;
+    --nav-bar-background-image: url("https://www.appmachine.com/wp-content/uploads/2016/02/No-Branding-Header-Background-1.jpg");
 }
 * {
     margin: 0
@@ -7,12 +9,17 @@
 
 /* Nav bar */
 .nav-bar {
-    background-image: var(--background-image);
+    background-image: var(--nav-bar-background-image);
 }
 
 .nav-bar-logo {
     width: 300px;
     float: left;
+    margin-left: 15px;
+}
+
+.nav-bar-logo img {
+    width: 75px;
 }
 
 .nav-bar-collapse {
@@ -47,7 +54,8 @@
 }
 
 .container {
-    width: 1000px;
+    min-width: 400px;
+    width: 70%;
     margin: auto;
 
 }
@@ -62,14 +70,58 @@
 .product-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
 }
 
 .product-group {
     width: 175px;
     margin: 5px 5px 25px 5px;
+    border: var(--border);
+    display: flex;
+    flex-direction: column;
 }
 
-.product-group img {
-    width: 175px;
+.product-group:hover {
+    border: var(--border-hover);
+}
+
+.product {
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 175px;
+    padding: 5px;
+    background-position: center;
+    background-origin: content-box;
+}
+
+.product:hover {
+    opacity: 0.7;
+}
+
+.product-info p{
+    text-align: center;
+}
+
+.product-group button {
+    border: none;
+    background-color: white
+}
+
+.product-group button:hover {
+    background-color: lightblue
+}
+
+/* Pagination bar */
+.pagination-bar {
+    height: 25px;
+    width: fit-content;
+    margin: auto;
+    display: flex;
+}
+
+.page {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: var(--border);
 }

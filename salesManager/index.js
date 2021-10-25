@@ -14,7 +14,7 @@ async function main () {
   )
 
   /* ---------USER--------- */
-    /* Same with define a constructor */
+  /* Same with define a constructor */
   const userSchema = new mongoose.Schema(
     {
       username: String,
@@ -65,7 +65,6 @@ async function main () {
       res.status(500).send('Please check your username or password again')
     }
   })
-
 
   /* Get all user */
 
@@ -129,34 +128,38 @@ async function main () {
     }
   })
 
-
   /* ---------PRODUCT--------- */
 
-  const productSchema = mongoose.Schema({
-    _id: String,
-    name: String,
-    desc: String,
-    price: mongoose.Schema.Types.Double,
-    unit: String,
-    img: String,
-  }, {
-    collection: 'Product',
-  })
+  const productSchema = mongoose.Schema(
+    {
+      _id: String,
+      name: String,
+      desc: String,
+      price: mongoose.Schema.Types.Double,
+      unit: String,
+      img: String
+    },
+    {
+      collection: 'Product'
+    }
+  )
 
   const ProductModel = mongoose.model('Product', productSchema)
 
-  function checkNullReq(body) {
-    return Object.keys(body).every(function(key) {
-      return body[key] != null && body[key] != ''
-    }) && Object.keys(body).length == 6;
+  function checkNullReq (body) {
+    return (
+      Object.keys(body).every(function (key) {
+        return body[key] != null && body[key] != ''
+      }) && Object.keys(body).length == 6
+    )
   }
 
-  async function checkExistedProduct(model, id) {
+  async function checkExistedProduct (model, id) {
     return await model.findById(id).exec()
   }
 
   /* Create New Product */
-  app.post('/api/createProduct', async function(req, res) {
+  app.post('/api/createProduct', async function (req, res) {
     const body = req.body
     if (!checkNullReq(body)) {
       res.status(500).send('Missing property of product')
@@ -170,7 +173,7 @@ async function main () {
       desc: body.desc,
       price: body.price,
       unit: body.unit,
-      img: body.img,
+      img: body.img
     })
 
     /* Check if the Product is existed */
@@ -183,7 +186,6 @@ async function main () {
     try {
       const item = await newProduct.save()
       res.status(200).send(item)
-
     } catch (error) {
       console.log(error)
       res.status(500).send('Fail')
@@ -192,9 +194,9 @@ async function main () {
 
   /* Edit Product */
   /* Chú ý id với _id */
-  app.post('/api/editProduct', async function(req, res) {
+  app.post('/api/editProduct', async function (req, res) {
     const body = req.body
-    if(!(await checkExistedProduct(ProductModel, body.id))) {
+    if (!(await checkExistedProduct(ProductModel, body.id))) {
       res.status(404).send('The product is not existed')
       return
     }
@@ -214,7 +216,11 @@ async function main () {
 
     // Update by findByxxAndUpdate not using save()
     try {
-      const item = await ProductModel.findByIdAndUpdate(body.id, updateProduct, { returnDocument: "after" }).exec()
+      const item = await ProductModel.findByIdAndUpdate(
+        body.id,
+        updateProduct,
+        { returnDocument: 'after' }
+      ).exec()
       res.status(200).send(item)
     } catch (error) {
       console.log(error)
@@ -222,14 +228,29 @@ async function main () {
     }
   })
 
-  /* Get All Product */
-  app.get('/api/getProducts', async function(req, res) {
+  /* Get Product */
+  app.get('/api/getProducts', async function (req, res) {
     //TODO handle the request param
+    const limit = Number(req.query.take) ?? 15
+    let skip = req.query.page ?? 0
+
+    const search = req.query.search ?? ''
+
+    if (skip != '') skip = (skip - 1) * limit
+
+    const filter = {}
+
+    if (search != '') {
+      filter.name = new RegExp(search, 'i')
+    }
 
     // TODO: implement filter logic
     try {
-      const countDocuments = await ProductModel.countDocuments().exec()
-      const items = await ProductModel.find({}).exec()
+      const countDocuments = await ProductModel.countDocuments(filter).exec()
+      const items = await ProductModel.find(filter)
+        .skip(skip)
+        .limit(limit)
+        .exec()
       res.status(200).send({
         items: items,
         countDocuments: countDocuments
@@ -241,10 +262,9 @@ async function main () {
   })
 
   /* Delete Product */
-  app.post('/api/deleteProduct/:id', async function(req, res) {
+  app.post('/api/deleteProduct/:id', async function (req, res) {
     const id = req.params['id']
-    console.log(id)
-    if(!(await checkExistedProduct(ProductModel, id))) {
+    if (!(await checkExistedProduct(ProductModel, id))) {
       res.status(404).send('The product is not existed')
       return
     }
@@ -256,11 +276,10 @@ async function main () {
       res.status(500).send('Fail to delete the product')
       console.log(error)
     }
-
   })
 
   /* Find Product By Id */
-  app.get('/api/findById', async function(req, res) {
+  app.get('/api/findById', async function (req, res) {
     const id = req.query.id
     try {
       const item = await ProductModel.findById(id).exec()
