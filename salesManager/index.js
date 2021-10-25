@@ -225,12 +225,15 @@ async function main () {
   /* Get All Product */
   app.get('/api/getProducts', async function(req, res) {
     //TODO handle the request param
-    const countDocument = await ProductModel.countDocuments().exec()
 
     // TODO: implement filter logic
     try {
+      const countDocuments = await ProductModel.countDocuments().exec()
       const items = await ProductModel.find({}).exec()
-      res.status(200).send(items)
+      res.status(200).send({
+        items: items,
+        countDocuments: countDocuments
+      })
     } catch (error) {
       console.log(error)
       res.status(404).send('Fail')
