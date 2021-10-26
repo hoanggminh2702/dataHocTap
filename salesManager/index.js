@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt')
 const cors = require('cors')
 const jwt = require('jsonwebtoken')
 
-const exportFile = require('./manage-product')
+const manageProduct = require('./manage-product')
 
 main().catch(err => console.log(err))
 
@@ -91,7 +91,6 @@ async function main () {
   app.get('/api/getUser', async function (req, res) {
     try {
       let data = await UserModel.find({}).exec()
-      console.log(data)
       let returnData = {
         items: data
       }
@@ -179,74 +178,7 @@ async function main () {
   }
 
   /* Create New Product */
-  app.post('/api/createProduct', async function (req, res) {
-    const body = req.body
-    if (!checkNullReq(body)) {
-      res.status(500).send('Missing property of product')
-      return
-    }
-
-    /* Create Product Model */
-    const newProduct = new ProductModel({
-      _id: body.id,
-      name: body.name,
-      desc: body.desc,
-      price: body.price,
-      unit: body.unit,
-      img: body.img
-    })
-
-    /* Check if the Product is existed */
-
-    if (await checkExistedProduct(ProductModel, body.id)) {
-      res.status(500).send('Product is existed')
-      return
-    }
-
-    try {
-      const item = await newProduct.save()
-      res.status(200).send(item)
-    } catch (error) {
-      console.log(error)
-      res.status(500).send('Fail')
-    }
-  })
-
-  /* Edit Product */
-  /* Chú ý id với _id */
-  app.post('/api/editProduct', async function (req, res) {
-    const body = req.body
-    if (!(await checkExistedProduct(ProductModel, body.id))) {
-      res.status(404).send('The product is not existed')
-      return
-    }
-
-    if (!checkNullReq(body)) {
-      res.status(500).send('Missing property of product')
-      return
-    }
-
-    const updateProduct = new ProductModel({
-      name: body.name,
-      desc: body.desc,
-      price: body.price,
-      unit: body.unit,
-      img: body.img
-    })
-
-    // Update by findByxxAndUpdate not using save()
-    try {
-      const item = await ProductModel.findByIdAndUpdate(
-        body.id,
-        updateProduct,
-        { returnDocument: 'after' }
-      ).exec()
-      res.status(200).send(item)
-    } catch (error) {
-      console.log(error)
-      res.status(500).send('Fail to update product')
-    }
-  })
+  app.post('/api/createProduct', manageProduct(ProductModel).createProduct)
 
   /* Get Product */
   app.get('/api/getProducts', async function (req, res) {
