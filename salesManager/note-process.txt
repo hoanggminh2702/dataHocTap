@@ -131,3 +131,14 @@ document.querySelector('.product-container').onmouseenter = function (e) {
 }
 
 add the count quantity to render 
+
+
+
+sau khi đăng nhập thực hiện lưu token vào storage
+
+thực hiện các lệnh mua, purchase => kiểm tra header xem api có đúng là phiên đăng nhập đấy không, nếu đúng thì trả về thành công và chuyển hướng trang 
+
+Tạo 1 module mới, return về các function cần thiết, khi gọi api chỉ cần return các function ấy là được
+
+Xem lại bên manage-product.js + index.js phần Product
+Tạo ra 1 function nhận vào 1 tham số là model và trả về 1 function => khi gọi tới function đó thì mặc định được trả về 1 function
