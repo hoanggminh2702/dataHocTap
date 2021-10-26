@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 require('mongoose-double')(mongoose)
 const bcrypt = require('bcrypt')
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
+
+const exportFile = require('./manage-product')
 
 main().catch(err => console.log(err))
 
@@ -48,7 +51,7 @@ async function main () {
     return await bcrypt.compare(password, hash)
   }
 
-  /* Authen */
+  /* Login */
   app.post('/api/login', async function (req, res) {
     const account = req.body
     try {
@@ -56,7 +59,24 @@ async function main () {
         username: account.username
       }).exec()
       if (await comparePassword(account.password, findUser.pass)) {
-        res.status(200).send('Successful')
+        // Tạo token nhận vào 2 tham số
+        // 1. Object mà ta muốn chuyển đổi thành json
+        // 2. jwt secretkey
+        const token = jwt.sign(
+          {
+            _id: findUser._id
+          },
+          'hoangminh2702'
+        )
+
+        const headers = req.headers
+        console.log(headers.authorization)
+
+        // Send cho client 1 object chưa token của họ
+        res.status(200).json({
+          message: 'Successful',
+          token: token
+        })
       } else {
         res.status(500).send('Please check your username or password again')
       }
