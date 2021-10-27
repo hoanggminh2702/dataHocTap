@@ -283,7 +283,7 @@ async function main () {
 
       totalRevenue = totalRevenue.toLocaleString()
 
-      res.status(500).json({
+      res.status(200).json({
         revenue: `Tổng doanh thu trong tháng là: ${totalRevenue} vnđ`,
         bestSeller: bestSeller,
         top10Products: top10Products
