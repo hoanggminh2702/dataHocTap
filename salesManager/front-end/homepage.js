@@ -4,7 +4,27 @@ const GET_PRODUCT_URL = `${BASE_URL}/api/getProducts`
 
 var search = ''
 
-var take = 5
+function loadPreviousPageOnload () {
+  if (
+    localStorage.getItem('currentPage') == undefined ||
+    localStorage.getItem('currentPage') == 1
+  ) {
+    localStorage.setItem('currentPage', 1)
+  } else {
+    let loadPreviousPage = confirm('Bạn có muốn quay lại page gần nhất?')
+    if (!loadPreviousPage) {
+      localStorage.setItem('currentPage', 1)
+    }
+  }
+}
+
+loadPreviousPageOnload()
+
+var currentPage = JSON.parse(localStorage.getItem('currentPage'))
+
+currentPage = JSON.parse(localStorage.getItem('currentPage'))
+
+var take = 10
 
 var currentTotalProduct = ''
 
@@ -26,33 +46,53 @@ if (user == null || user.username == undefined) {
   localStorage.setItem('user', JSON.stringify(user))
 } else {
   axios
-    .post(`${BASE_URL}/api/verify`, {
-      token: user.token,
-      username: user.username
-    })
+    .post(
+      `${BASE_URL}/api/verify`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer 0 ${user.token}`
+        }
+      }
+    )
     .then(function (res) {
       console.log(res)
       isUser = true
       document.querySelector('li:nth-child(2)').innerText = user.username
     })
     .catch(function (error) {
-      confirmRedirectToLogin('Phiên đăng nhập hết hạn', LOGIN_PATH, () =>
-        localStorage.removeItem('user')
+      console.log(error.response.data)
+      confirmRedirectToLogin(
+        'Phiên đăng nhập hết hạn',
+        LOGIN_PATH,
+        null,
+        () => {
+          localStorage.removeItem('user')
+          window.location.reload
+        }
       )
     })
+}
+
+document.querySelector('.nav-bar-logo img').onclick = function (e) {
+  window.location.href = './homepage.html'
 }
 
 // currentCart = currentItems in localStorage
 var currentCart = user.items
 
 /* check if have not been login yet, show popup to confirm redirect to loginpage */
-function confirmRedirectToLogin (message, path, callBack) {
+function confirmRedirectToLogin (message, path, callBack, cancelCallback) {
   let isConfirmed = confirm(message)
   if (isConfirmed) {
     if (typeof callBack == 'function') {
       callBack()
     }
     window.location.href = path
+  } else {
+    if (typeof cancelCallback == 'function') {
+      cancelCallback()
+    }
   }
 }
 
@@ -114,12 +154,12 @@ document.querySelector('.pagination-bar').onmouseenter = function (e) {
 
 /* Render Products */
 async function renderProducts (page) {
+  localStorage.setItem('currentPage', page)
   let productHTML = ''
   try {
     const products = await axios.get(
       `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
     )
-    let index = 0
     currentTotalProduct = products.data.countDocuments
     products.data.items.forEach(function (product) {
       const style = `style = 'background-image: url(${product.img})'`
@@ -145,7 +185,7 @@ async function renderProducts (page) {
   }
 }
 
-renderProducts(1)
+renderProducts(currentPage)
 
 document.querySelector('.search-bar button').onclick = function (e) {
   e.stopPropagation()

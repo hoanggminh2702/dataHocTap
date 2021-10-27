@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken')
 
 const manageProduct = require('./manage-product')
 
+const manageOrders = require('./manage-orders')
+
 const SECRET_KEY = 'hoangminh2702'
 
 main().catch(err => console.log(err))
@@ -69,7 +71,10 @@ async function main () {
             _id: findUser._id,
             username: findUser.username
           },
-          SECRET_KEY
+          SECRET_KEY,
+          {
+            expiresIn: '24h'
+          }
         )
 
         // Send cho client 1 object chưa token của họ
@@ -87,17 +92,26 @@ async function main () {
     }
   })
 
-  /* Verify token */
-  app.post('/api/verify', async function (req, res, next) {
-    const token = req.body.token
-    const username = req.body.username
-    let result = jwt.verify(token, SECRET_KEY)
-    if (!token || username != result.username) {
-      res.status(500).json('Phiên đăng nhập hết hạn')
-    } else {
-      res.status(200).json('Đăng nhập hợp lệ')
+  /* Authen */ {
+    // Đọc headers phần tử thứ 3 để lấy token, phần tử thứ 2 để check xem có chuyển qua hàm tiếp theo không
+    function authen (req, res, next) {
+      const token = req.headers.authorization.split(' ')[2]
+      jwt.verify(token, SECRET_KEY, function (err, data) {
+        if (err) {
+          res.status(500).json('Phiên đăng nhập hết hạn')
+        } else {
+          if (req.headers.authorization.split(' ')[1] == '0') {
+            res.status(200).json('Phiên đăng nhập hợp lệ')
+          } else {
+            next()
+          }
+        }
+      })
     }
-  })
+  }
+
+  /* check expire or verify token */
+  app.post('/api/verify', authen)
   /* Get all user */
 
   app.get('/api/getUser', async function (req, res) {
@@ -202,47 +216,85 @@ async function main () {
   )
 
   const OrdersModel = mongoose.model('Orders', ordersSchema)
+  /* Lấy danh sách các hoá đơn */
+  app.get('/api/getOrders', manageOrders(OrdersModel).getOrders)
+  /* Tạo ra 1 hoá đơn */
+  app.post('/api/createBill', authen, manageOrders(OrdersModel).createBill)
 
-  app.get('/api/getOrders', async function (req, res) {
+  app.get('/api/totalRevenue', async function (req, res) {
+    let start = new Date()
+    start.setHours(0, 0, 0, 0)
+    let endTime = new Date()
+    endTime.setHours(23, 59, 59, 999)
+    let end = new Date(endTime.getTime() - 30 * 86400 * 1000)
+    const filter = {
+      $gte: start,
+      $lt: end
+    }
     try {
-      const orders = await OrdersModel.find({}).exec()
-      res.status(200).json({
-        message: 'Successful',
-        orders: orders
+      const ordersInMonth = await OrdersModel.find(filter).exec()
+      let productsInMonth = {}
+      let ordersInMonthArr = ordersInMonth.map(function (order) {
+        return order.items
       })
-    } catch (error) {
+      ordersInMonthArr.forEach(function (items) {
+        for (let item of Object.keys(items)) {
+          if (productsInMonth[item] == undefined) {
+            productsInMonth[item] = items[item]
+          } else {
+            productsInMonth[item] += items[item]
+          }
+        }
+      })
+
+      const productsInMonthArr = []
+
+      for (index of Object.keys(productsInMonth)) {
+        const product = await ProductModel.findById(index).exec()
+        price = product.price
+        productsInMonthArr.push({
+          product: index,
+          quantity: productsInMonth[index],
+          totalRevenueOfProduct: Number(productsInMonth[index]) * price
+        })
+      }
+
+      function sortProduct (item2, item1) {
+        if (item2.totalRevenueOfProduct > item1.totalRevenueOfProduct) return -1
+        else if (item2.totalRevenueOfProduct < item1.totalRevenueOfProduct)
+          return 1
+        else return 0
+      }
+
+      productsInMonthArr.sort(sortProduct)
+
+      let bestSeller = productsInMonthArr.find(function (product) {
+        return (
+          product.totalRevenueOfProduct ==
+          productsInMonthArr[0].totalRevenueOfProduct
+        )
+      })
+
+      let top10Products = productsInMonthArr.slice(0, 10)
+
+      let totalRevenue = ordersInMonth.reduce(function (total, currentIndex) {
+        return total + currentIndex.totalAmount
+      }, 0)
+
+      totalRevenue = totalRevenue.toLocaleString()
+
       res.status(500).json({
-        message: 'Fail'
-      })
-    }
-  })
-
-  app.post('/api/createBill', async function (req, res) {
-    const body = req.body
-    const item = {}
-    for (let key of Object.keys(body.items)) {
-      item.product = key
-      item.quantity = body.items[key].quantity
-    }
-    const newOrder = new OrdersModel({
-      username: body.username,
-      items: item,
-      date: Date.parse(body.date),
-      totalAmount: body.totalAmount
-    })
-    console.log(newOrder)
-    try {
-      const item = await newOrder.save()
-      res.status(200).json({
-        message: 'Buy successfuly',
-        item: item
+        revenue: `Tổng doanh thu trong tháng là: ${totalRevenue} vnđ`,
+        bestSeller: bestSeller,
+        top10Products: top10Products
       })
     } catch (error) {
-      res.status(500).json('Fail')
       console.log(error)
+      res.status(500).json(error)
     }
   })
 
+  /* Lắng nghe server trên port */
   app.listen(port, function () {
     console.log(`Now listening on port ${port}`)
   })

@@ -1,25 +1,11 @@
-/* Check the request */
-function checkNullReq (body) {
-  return (
-    Object.keys(body).every(function (key) {
-      return body[key] != null && body[key] != ''
-    }) && Object.keys(body).length == 6
-  )
-}
-
-/* check Existed Product */
-async function checkExistedProduct (model, id) {
-  return await model.findById(id).exec()
-}
-
-/* ------------------------ */
+const validateBody = require('./validateBody')
 
 /* Create New Product Function */
 
 const createProduct = function (ProductModel) {
   return async function (req, res) {
     const body = req.body
-    if (!checkNullReq(body)) {
+    if (!validateBody(ProductModel).checkNullReq(body, 6)) {
       res.status(500).send('Missing property of product')
       return
     }
@@ -35,7 +21,12 @@ const createProduct = function (ProductModel) {
 
     /* Check if the Product is existed */
 
-    if (await checkExistedProduct(ProductModel, body.id)) {
+    if (
+      await validateBody(ProductModel).checkExistedProduct(
+        ProductModel,
+        body.id
+      )
+    ) {
       res.status(500).send('Product is existed')
       return
     }
@@ -88,7 +79,9 @@ const getProducts = function (ProductModel) {
 const deleteProduct = function (ProductModel) {
   return async function (req, res) {
     const id = req.params['id']
-    if (!(await checkExistedProduct(ProductModel, id))) {
+    if (
+      !(await validateBody(ProductModel).checkExistedProduct(ProductModel, id))
+    ) {
       res.status(404).send('The product is not existed')
       return
     }
@@ -120,6 +113,7 @@ const getProductById = function (ProductModel) {
 /* ------------------------ */
 
 const manageProductModule = function (ProductModel) {
+  // xuất ra các function có truyền model vào trong để thực thi
   return {
     createProduct: createProduct(ProductModel),
     getProducts: getProducts(ProductModel),

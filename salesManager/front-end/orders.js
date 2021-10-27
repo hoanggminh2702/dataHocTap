@@ -1,6 +1,5 @@
 /* Check if user is not valid */
 var user = JSON.parse(localStorage.getItem('user'))
-console.log(user)
 const currentTime = new Date()
 var totalAmount = 0
 if (user == null || user.username == undefined) {
@@ -52,9 +51,14 @@ document.querySelector('.pay-btn').onclick = async function (e) {
     try {
       const myOrder = await axios.post(
         'http://localhost:8080/api/createBill',
-        order
+        order,
+        {
+          headers: {
+            Authorization: `Bearer 1 ${user.token}`
+          }
+        }
       )
-      alert(JSON.stringify(myOrder))
+      alert(JSON.stringify(myOrder.data.item))
       user.items = {}
       localStorage.setItem('user', JSON.stringify(user))
       window.location.href = './homepage.html'

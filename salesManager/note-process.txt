@@ -192,3 +192,37 @@ Kiểm tra xem nếu product id có trong item thì thực hiện thêm số lư
 Nếu token sai thì thực hiện đăng nhập lại
 
 verify token sẽ trả ra về 1 id chính là thứ ta đã mã hoá do đó khi mã hoá lại chỉ cần kiểm tra username có trùng không là sẽ biết đúng sai
+
+
+
+set quantity, price và tổng price cho cho sản phẩm trong localStorage
+
+
+
+
+
+Sửa lại function middleware và các phần liên quan
+
+Thiết lập 1 hàm, nếu truyền vào next thì 
+
+Tạo 1 function chứa các tham số cần thiết cho function khác và return về các function khác, 
+
+
+Bảng doanh thu:
+
+product:
+quantity:
+TotalPrice:
+
+Tổng doanh thu 1 tháng: 
+Tổng các hoá đơn trong 1 tháng
+
+Top xx doanh thu => Sắp xếp rồi lấy xx phần tử
+
+Doanh thu cao nhất => sắp xếp rồi lấy những phần tử trùng với phần tử đứng đầu
+
+
+khi thêm vào db chỉ thêm những thông tin cần thiết như số lượng, username, các thông tin liên kết được với các thông tin khác như tổng giá tiền tính toán = quantity x giá product, ...
+
+
+nếu muốn 1 đoạn mã nào đó chạy khi trang web được load lại thì chỉ cần gọi tới function chưa đoạn mã đó là được, onload chỉ được dùng khi toàn bộ trang web load xong

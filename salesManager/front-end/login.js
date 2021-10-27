@@ -6,6 +6,10 @@ if (localStorage.getItem('path') == undefined) {
   localStorage.setItem('path', './homepage.html')
 }
 
+if (localStorage.getItem('currentPage') == undefined) {
+  localStorage.setItem('currentPage', 1)
+}
+
 if (localStorage.getItem('user') != undefined) {
   localStorage.removeItem('user')
 }
