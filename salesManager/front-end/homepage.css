@@ -23,7 +23,8 @@
 }
 
 .nav-bar-collapse {
-    width: 450px;
+    min-width: 450px;
+    max-width: 600px;
     float: right;
 }
 
@@ -60,14 +61,24 @@
 
 }
 
-/* Filter-bar */
-.filter-bar {
-    height: 50px;
+/* option-bar */
+.option-bar {
+    margin-top: 40px;
+}
+
+.purchase-btn {
+    float: right;
+    margin: 0 10px
+}
+
+.option-bar select {
+    float: right;
 }
 
 /* Product Container */
 
 .product-container {
+    clear: both;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

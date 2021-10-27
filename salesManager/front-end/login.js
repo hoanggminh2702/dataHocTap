@@ -2,6 +2,14 @@ const BASE_URL = 'http://localhost:8080'
 
 const LOGIN_URL = `${BASE_URL}/api/login`
 
+if (localStorage.getItem('path') == undefined) {
+  localStorage.setItem('path', './homepage.html')
+}
+
+if (localStorage.getItem('user') != undefined) {
+  localStorage.removeItem('user')
+}
+
 function validateInput (...args) {
   document.querySelector('.alert').innerHTML = ''
   let alertHTML = ''
@@ -41,6 +49,14 @@ document.forms[0].login.onclick = async function (e) {
         document.querySelector('.alert').innerHTML = 'Đăng nhập thành công'
         document.querySelector('.alert').style.color = 'green'
         console.log('Login successful')
+        const result = {
+          username: res.data.username,
+          token: res.data.token,
+          items: {}
+        }
+        localStorage.setItem('user', JSON.stringify(result))
+        console.log(localStorage.getItem('user'))
+        window.location.href = localStorage.getItem('path')
       })
     } catch (err) {
       document.querySelector('.alert').innerHTML = 'Đăng nhập thất bại'

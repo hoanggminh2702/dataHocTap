@@ -9,6 +9,8 @@ const jwt = require('jsonwebtoken')
 
 const manageProduct = require('./manage-product')
 
+const SECRET_KEY = 'hoangminh2702'
+
 main().catch(err => console.log(err))
 
 async function main () {
@@ -64,16 +66,15 @@ async function main () {
         // 2. jwt secretkey
         const token = jwt.sign(
           {
-            _id: findUser._id
+            _id: findUser._id,
+            username: findUser.username
           },
-          'hoangminh2702'
+          SECRET_KEY
         )
-
-        const headers = req.headers
-        console.log(headers.authorization)
 
         // Send cho client 1 object chưa token của họ
         res.status(200).json({
+          username: account.username,
           message: 'Successful',
           token: token
         })
@@ -86,6 +87,17 @@ async function main () {
     }
   })
 
+  /* Verify token */
+  app.post('/api/verify', async function (req, res, next) {
+    const token = req.body.token
+    const username = req.body.username
+    let result = jwt.verify(token, SECRET_KEY)
+    if (!token || username != result.username) {
+      res.status(500).json('Phiên đăng nhập hết hạn')
+    } else {
+      res.status(200).json('Đăng nhập hợp lệ')
+    }
+  })
   /* Get all user */
 
   app.get('/api/getUser', async function (req, res) {
@@ -165,17 +177,71 @@ async function main () {
 
   const ProductModel = mongoose.model('Product', productSchema)
 
-  /* Create New Product */
-  app.post('/api/createProduct', manageProduct(ProductModel).createProduct)
-
   /* Get Product */
   app.get('/api/getProducts', manageProduct(ProductModel).getProducts)
+
+  /* Create New Product */
+  app.post('/api/createProduct', manageProduct(ProductModel).createProduct)
 
   /* Delete Product */
   app.post('/api/deleteProduct/:id', manageProduct(ProductModel).deleteProduct)
 
   /* Find Product By Id */
   app.get('/api/findById', manageProduct(ProductModel).getProductById)
+
+  const ordersSchema = mongoose.Schema(
+    {
+      username: String,
+      items: Object,
+      date: Date,
+      totalAmount: mongoose.Schema.Types.Double
+    },
+    {
+      collection: 'Orders'
+    }
+  )
+
+  const OrdersModel = mongoose.model('Orders', ordersSchema)
+
+  app.get('/api/getOrders', async function (req, res) {
+    try {
+      const orders = await OrdersModel.find({}).exec()
+      res.status(200).json({
+        message: 'Successful',
+        orders: orders
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: 'Fail'
+      })
+    }
+  })
+
+  app.post('/api/createBill', async function (req, res) {
+    const body = req.body
+    const item = {}
+    for (let key of Object.keys(body.items)) {
+      item.product = key
+      item.quantity = body.items[key].quantity
+    }
+    const newOrder = new OrdersModel({
+      username: body.username,
+      items: item,
+      date: Date.parse(body.date),
+      totalAmount: body.totalAmount
+    })
+    console.log(newOrder)
+    try {
+      const item = await newOrder.save()
+      res.status(200).json({
+        message: 'Buy successfuly',
+        item: item
+      })
+    } catch (error) {
+      res.status(500).json('Fail')
+      console.log(error)
+    }
+  })
 
   app.listen(port, function () {
     console.log(`Now listening on port ${port}`)

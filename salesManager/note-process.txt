@@ -142,3 +142,53 @@ Tạo 1 module mới, return về các function cần thiết, khi gọi api ch�
 
 Xem lại bên manage-product.js + index.js phần Product
 Tạo ra 1 function nhận vào 1 tham số là model và trả về 1 function => khi gọi tới function đó thì mặc định được trả về 1 function
+
+=> Sau này khi xây dựng chương trình, chia model ra cho dễ quản lý
+
+
+
+
+----------------
+
+localStorage nhận value là 1 file json
+
+vào trang đăng nhập => kiểm tra xem đến từ trang nào, kiểm tra trong storage
+
+vào trong homepage => nếu có user trong storage => lấy ra username thay thế vào login
+
+Nếu chọn mouse enter thì sẽ bị lệch chữ do đó handle luôn khi click vào nút
+move to another url => window.location.href = "url"
+
+
+
+
+--------------
+Tạo 1 object là items chứa các items được đặt vào giỏ hàng
+
+Buy: Kiểm tra xem có username và token không, nếu có thì cho phép bấm vào mua, nếu không thì hỏi xem có muốn đăng nhập không
+
+Buy: Kiểm tra xem items đã có trong giỏ hàng chưa, nếu chưa thì thêm vào, nếu rồi thì tăng số lượng lên
+Cancel: Nếu chưa có trong giỏ hàng thì alert thông báo chưa mua hàng, nếu rồi thì trừ quantity đi 1
+
+
+function check login
+
+param: 
+- token: Nếu undefined thì thực hiện confirm
+- callback: Nếu có token thì thực hiện callback
+=====> không thực hiện được
+
+function confirmRedirectToLogin
+Nhận 
+1. message
+2. path
+3. callBack
+
+phần check localstorage, nếu không có thì lắng nghe hành động nếu click vào login thì chuyển về html
+
+
+Kiểm tra xem nếu product id có trong item thì thực hiện thêm số lượng item vào phần hình product
+
+Nếu token sai thì thực hiện đăng nhập lại
+
+verify token sẽ trả ra về 1 id chính là thứ ta đã mã hoá do đó khi mã hoá lại chỉ cần kiểm tra username có trùng không là sẽ biết đúng sai
