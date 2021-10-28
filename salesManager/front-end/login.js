@@ -10,8 +10,12 @@ if (localStorage.getItem('currentPage') == undefined) {
   localStorage.setItem('currentPage', 1)
 }
 
-if (localStorage.getItem('user') != undefined) {
-  localStorage.removeItem('user')
+console.log(localStorage.getItem('path'))
+
+if (localStorage.getItem('path') != './orders.html') {
+  if (localStorage.getItem('user') != undefined) {
+    localStorage.removeItem('user')
+  }
 }
 
 function validateInput (...args) {
@@ -58,7 +62,16 @@ document.forms[0].login.onclick = async function (e) {
           token: res.data.token,
           items: {}
         }
-        localStorage.setItem('user', JSON.stringify(result))
+        if (localStorage.getItem('path') == './orders.html') {
+          try {
+            result.items = JSON.parse(localStorage.getItem('user')).items
+            localStorage.setItem('user', JSON.stringify(result))
+          } catch {
+            localStorage.setItem('user', JSON.stringify(result))
+          }
+        } else {
+          localStorage.setItem('user', JSON.stringify(result))
+        }
         console.log(localStorage.getItem('user'))
         window.location.href = localStorage.getItem('path')
       })

@@ -100,11 +100,17 @@ async function main () {
         if (err) {
           res.status(500).json('Phiên đăng nhập hết hạn')
         } else {
+          if (req.body.username != undefined) {
+            if (req.body.username != data.username) {
+              res.status(500).json('Phiên đăng nhập không hợp lệ')
+              return
+            }
+          }
           if (req.headers.authorization.split(' ')[1] == '0') {
             res.status(200).json('Phiên đăng nhập hợp lệ')
-          } else {
-            next()
+            return
           }
+          next()
         }
       })
     }

@@ -226,3 +226,20 @@ khi thêm vào db chỉ thêm những thông tin cần thiết như số lượn
 
 
 nếu muốn 1 đoạn mã nào đó chạy khi trang web được load lại thì chỉ cần gọi tới function chưa đoạn mã đó là được, onload chỉ được dùng khi toàn bộ trang web load xong
+
+
+Nhớ ghi lại luồng làm từng cái 1
+
+
+
+
+Có thể thêm nhiều middleware để có thể check validate tuỳ theo ý muốn
+
+Khi thực hiện mua hàng => gửi thông tin mua hàng lên req bao gồm username, item, total
+
+lúc nào cũng phải gửi lên username trong phiên đăng nhập hiện tại và token, nếu token username trùng với username và user vẫn còn trong db thì cho chạy hàm tiếp theo
+
+IIFE cần phải được gọi ngay để thực thi ngay
+
+
+những hàm có gửi username trong body request thì phải check xem nó có trùng với username trong token hay không

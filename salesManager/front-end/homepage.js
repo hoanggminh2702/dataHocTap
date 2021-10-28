@@ -4,7 +4,7 @@ const GET_PRODUCT_URL = `${BASE_URL}/api/getProducts`
 
 var search = ''
 
-function loadPreviousPageOnload () {
+;(function loadPreviousPageOnload () {
   if (
     localStorage.getItem('currentPage') == undefined ||
     localStorage.getItem('currentPage') == 1
@@ -16,9 +16,7 @@ function loadPreviousPageOnload () {
       localStorage.setItem('currentPage', 1)
     }
   }
-}
-
-loadPreviousPageOnload()
+})()
 
 var currentPage = JSON.parse(localStorage.getItem('currentPage'))
 
@@ -48,7 +46,9 @@ if (user == null || user.username == undefined) {
   axios
     .post(
       `${BASE_URL}/api/verify`,
-      {},
+      {
+        username: user.username
+      },
       {
         headers: {
           Authorization: `Bearer 0 ${user.token}`
@@ -61,16 +61,11 @@ if (user == null || user.username == undefined) {
       document.querySelector('li:nth-child(2)').innerText = user.username
     })
     .catch(function (error) {
-      console.log(error.response.data)
-      confirmRedirectToLogin(
-        'Phiên đăng nhập hết hạn',
-        LOGIN_PATH,
-        null,
-        () => {
-          localStorage.removeItem('user')
-          window.location.reload
-        }
-      )
+      const errMessage = error.response.data
+      confirmRedirectToLogin(errMessage, LOGIN_PATH, null, () => {
+        localStorage.removeItem('user')
+        window.location.reload
+      })
     })
 }
 

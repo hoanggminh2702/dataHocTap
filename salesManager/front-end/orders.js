@@ -6,6 +6,7 @@ if (user == null || user.username == undefined) {
   alert('Bạn chưa đăng nhập để dùng chức năng này')
   window.location.href = './login.html'
 } else {
+  console.log(user)
   if (Object.keys(user.items).length === 0) {
     alert('Bạn chưa mua món hàng nào!')
     window.location.href = './homepage.html'
@@ -63,7 +64,16 @@ document.querySelector('.pay-btn').onclick = async function (e) {
       localStorage.setItem('user', JSON.stringify(user))
       window.location.href = './homepage.html'
     } catch (error) {
-      console.log(error)
+      let confirmBackToLogin = confirm(`
+      ${error.response.data}
+      Bạn có muốn đăng nhập lại?`)
+      if (confirmBackToLogin) {
+        window.location.href = './login.html'
+        localStorage.setItem('path', './orders.html')
+      } else {
+        localStorage.removeItem('user')
+        window.location.href = './homepage.html'
+      }
     }
   }
 }
