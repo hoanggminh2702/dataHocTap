@@ -61,11 +61,17 @@ if (user == null || user.username == undefined) {
       document.querySelector('li:nth-child(2)').innerText = user.username
     })
     .catch(function (error) {
-      const errMessage = error.response.data
-      confirmRedirectToLogin(errMessage, LOGIN_PATH, null, () => {
-        localStorage.removeItem('user')
-        window.location.reload
-      })
+      const errMessage = error.response.data.message
+
+      confirmRedirectToLogin(
+        errMessage,
+        LOGIN_PATH,
+        () => localStorage.setItem('path', './homepage.html'),
+        () => {
+          localStorage.removeItem('user')
+          window.location.reload
+        }
+      )
     })
 }
 

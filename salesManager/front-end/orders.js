@@ -68,7 +68,10 @@ document.querySelector('.pay-btn').onclick = async function (e) {
       ${error.response.data}
       Bạn có muốn đăng nhập lại?`)
       if (confirmBackToLogin) {
+        user.username = error.response.data.username
         window.location.href = './login.html'
+        localStorage.setItem('user', JSON.stringify(user))
+
         localStorage.setItem('path', './orders.html')
       } else {
         localStorage.removeItem('user')

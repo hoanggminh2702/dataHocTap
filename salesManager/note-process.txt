@@ -243,3 +243,10 @@ IIFE cần phải được gọi ngay để thực thi ngay
 
 
 những hàm có gửi username trong body request thì phải check xem nó có trùng với username trong token hay không
+
+return dùng để dùng function lại, res.status.send chỉ có tác dụng gửi lỗi chứ không có tác dụng dừng function
+
+CẦN HỎI XEM DÙNG STORAGE ĐỂ LƯU GIỎ HÀNG CỦA USER CÓ HỢP LÝ KHÔNG
+
+
+mục đích check user trong body request do lưu username của người mua trong storage

@@ -12,6 +12,7 @@ if (localStorage.getItem('currentPage') == undefined) {
 
 console.log(localStorage.getItem('path'))
 
+/* Kiểm tra nếu được quay về từ trang order thì lưu lại những sản phẩm đã mua và redirect lại trang đó để tiếp tục mua hàng */
 if (localStorage.getItem('path') != './orders.html') {
   if (localStorage.getItem('user') != undefined) {
     localStorage.removeItem('user')
@@ -62,9 +63,13 @@ document.forms[0].login.onclick = async function (e) {
           token: res.data.token,
           items: {}
         }
-        if (localStorage.getItem('path') == './orders.html') {
+        if (
+          localStorage.getItem('path') == './orders.html' &&
+          result.username == JSON.parse(localStorage.getItem('user')).username
+        ) {
           try {
             result.items = JSON.parse(localStorage.getItem('user')).items
+            console.log(result)
             localStorage.setItem('user', JSON.stringify(result))
           } catch {
             localStorage.setItem('user', JSON.stringify(result))

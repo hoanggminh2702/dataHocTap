@@ -98,11 +98,17 @@ async function main () {
       const token = req.headers.authorization.split(' ')[2]
       jwt.verify(token, SECRET_KEY, function (err, data) {
         if (err) {
-          res.status(500).json('Phiên đăng nhập hết hạn')
+          res.status(500).json({
+            message: 'Phiên đăng nhập hết hạn',
+            username: data.username
+          })
         } else {
           if (req.body.username != undefined) {
             if (req.body.username != data.username) {
-              res.status(500).json('Phiên đăng nhập không hợp lệ')
+              res.status(500).json({
+                message: 'Phiên đăng nhập không hợp lệ',
+                username: data.username
+              })
               return
             }
           }
