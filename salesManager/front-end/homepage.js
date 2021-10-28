@@ -30,6 +30,8 @@ var user = JSON.parse(localStorage.getItem('user'))
 
 var isUser = false
 
+var isAdmin = false
+
 const LOGIN_PATH = './login.html'
 
 const ORDERS_PATH = './orders.html'
@@ -58,7 +60,7 @@ if (user == null || user.username == undefined) {
     .then(function (res) {
       console.log(res)
       isUser = true
-      document.querySelector('li:nth-child(2)').innerText = user.username
+      document.querySelector('li:nth-child(3)').innerText = user.username
     })
     .catch(function (error) {
       const errMessage = error.response.data.message
@@ -72,6 +74,26 @@ if (user == null || user.username == undefined) {
           window.location.reload
         }
       )
+    })
+
+  axios
+    .post(
+      `${BASE_URL}/api/verifyAdmin`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer 0 ${user.token}`
+        }
+      }
+    )
+    .then(function (res) {
+      isAdmin = res.data.isAdmin
+      console.log(isAdmin)
+      document.querySelector('li:nth-child(2)').style.display = 'block'
+    })
+    .catch(function (err) {
+      isAdmin = err.response.data.isAdmin
+      document.querySelector('li:nth-child(2)').style.display = 'none'
     })
 }
 
@@ -102,13 +124,26 @@ document.querySelector('.home-btn').onclick = function (e) {
 }
 
 /* Handle onclick to login logout */
-document.querySelector('li:nth-child(2)').onclick = function (e) {
+document.querySelector('li:nth-child(3)').onclick = function (e) {
   if (isUser) {
     confirmRedirectToLogin(`Do you want to log out?`, LOGIN_PATH, () =>
       localStorage.removeItem('user')
     )
   } else {
     window.location.href = LOGIN_PATH
+  }
+}
+
+/* Handle onclick to manage product */
+document.querySelector('li:nth-child(2)').onclick = function (e) {
+  if (isAdmin) {
+    window.location.href = './manageproduct.html'
+  } else {
+    confirmRedirectToLogin(
+      `Bạn không phải admin để sử dụng chức năng này`,
+      LOGIN_PATH,
+      () => localStorage.removeItem('user')
+    )
   }
 }
 

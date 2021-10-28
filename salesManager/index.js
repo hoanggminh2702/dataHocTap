@@ -27,7 +27,8 @@ async function main () {
       username: String,
       fullname: String,
       address: String,
-      pass: String
+      pass: String,
+      role: String
     },
     {
       collection: 'User'
@@ -69,7 +70,8 @@ async function main () {
         const token = jwt.sign(
           {
             _id: findUser._id,
-            username: findUser.username
+            username: findUser.username,
+            role: findUser.role
           },
           SECRET_KEY,
           {
@@ -92,39 +94,72 @@ async function main () {
     }
   })
 
-  /* Authen */ {
-    // Đọc headers phần tử thứ 3 để lấy token, phần tử thứ 2 để check xem có chuyển qua hàm tiếp theo không
-    function authen (req, res, next) {
-      const token = req.headers.authorization.split(' ')[2]
-      jwt.verify(token, SECRET_KEY, function (err, data) {
-        if (err) {
-          res.status(500).json({
-            message: 'Phiên đăng nhập hết hạn',
-            username: data.username
-          })
+  /* Authen */
+  // Đọc headers phần tử thứ 3 để lấy token, phần tử thứ 2 để check xem có chuyển qua hàm tiếp theo không
+  function authen (req, res, next) {
+    const token = req.headers.authorization.split(' ')[2]
+    jwt.verify(token, SECRET_KEY, async function (err, data) {
+      if (err) {
+        res.status(500).json({
+          message: 'Phiên đăng nhập hết hạn',
+          username: data.username
+        })
+      } else {
+        if (await UserModel.findById(data['_id'])) {
         } else {
-          if (req.body.username != undefined) {
-            if (req.body.username != data.username) {
-              res.status(500).json({
-                message: 'Phiên đăng nhập không hợp lệ',
-                username: data.username
-              })
-              return
-            }
-          }
-          if (req.headers.authorization.split(' ')[1] == '0') {
-            res.status(200).json('Phiên đăng nhập hợp lệ')
+          res.status(500).json({
+            message: 'Tài khoản này hiện không khả dụng'
+          })
+          return
+        }
+
+        if (req.body.username != undefined) {
+          if (req.body.username != data.username) {
+            res.status(500).json({
+              message: 'Phiên đăng nhập không hợp lệ',
+              username: data.username
+            })
             return
           }
-          next()
         }
-      })
-    }
+        if (req.headers.authorization.split(' ')[1] == '0') {
+          res.status(200).json('Phiên đăng nhập hợp lệ')
+          return
+        }
+        next()
+      }
+    })
+  }
+
+  function checkAdmin (req, res, next) {
+    const token = req.headers.authorization.split(' ')[2]
+    jwt.verify(token, SECRET_KEY, async function (err, data) {
+      if (err) {
+        res.status(500).json({
+          message: 'Phiên đăng nhập hết hạn',
+          username: data.username
+        })
+      } else {
+        if (data.role == ['admin']) {
+          res.status(200).json({
+            message: 'Đăng nhập với vai trò admin',
+            isAdmin: true
+          })
+        } else {
+          res.status(500).json({
+            message: 'Đăng nhập với vai trò user',
+            isAdmin: false
+          })
+        }
+      }
+    })
   }
 
   /* check expire or verify token */
   app.post('/api/verify', authen)
   /* Get all user */
+
+  app.post('/api/verifyAdmin', checkAdmin)
 
   app.get('/api/getUser', async function (req, res) {
     try {

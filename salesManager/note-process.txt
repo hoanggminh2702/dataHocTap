@@ -250,3 +250,6 @@ CẦN HỎI XEM DÙNG STORAGE ĐỂ LƯU GIỎ HÀNG CỦA USER CÓ HỢP LÝ KH
 
 
 mục đích check user trong body request do lưu username của người mua trong storage
+
+check user có còn khả dụng trong db không, nếu không thì trả về lỗi
+Dùng id check do đó có thể không conflict với các trường hợp khác
