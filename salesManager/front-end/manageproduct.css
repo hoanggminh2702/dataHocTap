@@ -58,6 +58,7 @@ body {
     clear: both;
 }
 
+
 .container {
     min-width: 400px;
     max-width: 70%;
@@ -131,6 +132,11 @@ body {
     width: fit-content;
     margin: auto;
     display: flex;
+    flex-direction: column;
+    padding-bottom: 15px;
+    position: fixed;
+    top: 100px;
+    left: 19%;
 }
 
 .page {
