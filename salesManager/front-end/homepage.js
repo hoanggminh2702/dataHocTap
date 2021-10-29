@@ -65,7 +65,7 @@ if (user == null || user.username == undefined) {
     .catch(function (error) {
       const errMessage = error.response.data.message
 
-      confirmRedirectToLogin(
+      confirmRedirect(
         errMessage,
         LOGIN_PATH,
         () => localStorage.setItem('path', './homepage.html'),
@@ -78,24 +78,24 @@ if (user == null || user.username == undefined) {
 }
 
 axios
-    .post(
-      `${BASE_URL}/api/verifyAdmin`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer 0 ${user.token}`
-        }
+  .post(
+    `${BASE_URL}/api/verifyAdmin`,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer 0 ${user.token}`
       }
-    )
-    .then(function (res) {
-      isAdmin = res.data.isAdmin
-      console.log(isAdmin)
-      document.querySelector('li:nth-child(2)').style.display = 'block'
-    })
-    .catch(function (err) {
-      isAdmin = err.response.data.isAdmin
-      document.querySelector('li:nth-child(2)').style.display = 'none'
-    })
+    }
+  )
+  .then(function (res) {
+    isAdmin = res.data.isAdmin
+    console.log(isAdmin)
+    document.querySelector('li:nth-child(2)').style.display = 'block'
+  })
+  .catch(function (err) {
+    isAdmin = err.response.data.isAdmin
+    document.querySelector('li:nth-child(2)').style.display = 'none'
+  })
 
 document.querySelector('.nav-bar-logo img').onclick = function (e) {
   window.location.href = './homepage.html'
@@ -105,7 +105,7 @@ document.querySelector('.nav-bar-logo img').onclick = function (e) {
 var currentCart = user.items
 
 /* check if have not been login yet, show popup to confirm redirect to loginpage */
-function confirmRedirectToLogin (message, path, callBack, cancelCallback) {
+function confirmRedirect (message, path, callBack, cancelCallback) {
   let isConfirmed = confirm(message)
   if (isConfirmed) {
     if (typeof callBack == 'function') {
@@ -119,6 +119,7 @@ function confirmRedirectToLogin (message, path, callBack, cancelCallback) {
   }
 }
 
+/* Back to home */
 document.querySelector('.home-btn').onclick = function (e) {
   window.location.href = './homepage.html'
 }
@@ -126,7 +127,7 @@ document.querySelector('.home-btn').onclick = function (e) {
 /* Handle onclick to login logout */
 document.querySelector('li:nth-child(3)').onclick = function (e) {
   if (isUser) {
-    confirmRedirectToLogin(`Do you want to log out?`, LOGIN_PATH, () =>
+    confirmRedirect(`Do you want to log out?`, LOGIN_PATH, () =>
       localStorage.removeItem('user')
     )
   } else {
@@ -139,7 +140,7 @@ document.querySelector('li:nth-child(2)').onclick = function (e) {
   if (isAdmin) {
     window.location.href = './manageproduct.html'
   } else {
-    confirmRedirectToLogin(
+    confirmRedirect(
       `Bạn không phải admin để sử dụng chức năng này`,
       LOGIN_PATH,
       () => localStorage.removeItem('user')
@@ -158,7 +159,7 @@ document.querySelector('.purchase-btn').onclick = function (e) {
     const message = `
     Bạn cần đăng nhập để có thể mua hàng!
     Bạn có muốn đăng nhập không?`
-    confirmRedirectToLogin(message, LOGIN_PATH)
+    confirmRedirect(message, LOGIN_PATH)
   }
 }
 /* Render pagination bar */
@@ -223,6 +224,7 @@ async function renderProducts (page) {
 
 renderProducts(currentPage)
 
+/* Search */
 document.querySelector('.search-bar button').onclick = function (e) {
   e.stopPropagation()
   search = document.querySelector('.search-bar input').value.trim()
@@ -272,7 +274,7 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
         localStorage.setItem('user', JSON.stringify(user))
         console.log(JSON.parse(localStorage.getItem('user')).items)
       } else {
-        confirmRedirectToLogin(
+        confirmRedirect(
           `
         Vui lòng đăng nhập trước khi mua hàng
         Bạn có muốn đăng nhập?`,

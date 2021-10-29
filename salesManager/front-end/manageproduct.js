@@ -1,7 +1,10 @@
 if (JSON.parse(localStorage.getItem('user')) == null) {
-  localStorage.setItem('user', JSON.stringify({
-    token: ''
-  }))
+  localStorage.setItem(
+    'user',
+    JSON.stringify({
+      token: ''
+    })
+  )
 }
 
 let search = ''
@@ -29,8 +32,9 @@ axios
   )
   .then(function (res) {
     console.log(res.data)
-    document.querySelector('.user-btn').innerHTML = res.data.username
-
+    /* Render Name Of User */ {
+      document.querySelector('.user-btn').innerHTML = res.data.username
+    }
   })
   .catch(function (err) {
     let backToLogin = confirm(`
@@ -44,8 +48,25 @@ axios
     }
   })
 
+/* check if have not been login yet, show popup to confirm redirect to loginpage */
+function confirmRedirect (message, path, callBack, cancelCallback) {
+  let isConfirmed = confirm(message)
+  if (isConfirmed) {
+    if (typeof callBack == 'function') {
+      callBack()
+    }
+    window.location.href = path
+  } else {
+    if (typeof cancelCallback == 'function') {
+      cancelCallback()
+    }
+  }
+}
 
-  /* Render pagination bar */
+document.querySelector('ul li:nth-child(2)').onclick = function (e) {
+  confirmRedirect('Do you want to log out?', './login.html')
+}
+/* Render pagination bar */
 function renderPaginationBar (page) {
   const currentTotalPage = Math.ceil(currentTotalProduct / take)
   let paginationHTML = ''
@@ -73,23 +94,23 @@ document.querySelector('.pagination-bar').onmouseenter = function (e) {
 }
 
 /* Render Product */
-  async function renderProducts (page) {
-    localStorage.setItem('currentPage', page)
-    let productHTML = ''
-    try {
-      const products = await axios.get(
-        `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
-      )
-      currentTotalProduct = products.data.countDocuments
-      products.data.items.forEach(function (product) {
-        const style = `style = 'background-image: url(${product.img})'`
-        const convertPrice = product.price.toLocaleString()
-  
-        // const quantity =
-        //   user.items[product['_id']] != undefined
-        //     ? user.items[product['_id']].quantity
-        //     : ''
-        productHTML += `
+async function renderProducts (page) {
+  localStorage.setItem('currentPage', page)
+  let productHTML = ''
+  try {
+    const products = await axios.get(
+      `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
+    )
+    currentTotalProduct = products.data.countDocuments
+    products.data.items.forEach(function (product) {
+      const style = `style = 'background-image: url(${product.img})'`
+      const convertPrice = product.price.toLocaleString()
+
+      // const quantity =
+      //   user.items[product['_id']] != undefined
+      //     ? user.items[product['_id']].quantity
+      //     : ''
+      productHTML += `
               <div id="${product['_id']}" class="product-group">
                   <div class="product" ${style}></div>
                   <div class="product-info"><p>${product.name}</p></div>
@@ -98,11 +119,32 @@ document.querySelector('.pagination-bar').onmouseenter = function (e) {
                   <button class="edit-btn">Edit</button>
                   <button class="delete-btn">Delete</button>
               </div>`
-      })
-      document.querySelector('.product-container').innerHTML = productHTML
-      renderPaginationBar(page)
-    } catch (error) {
-      console.log(error)
-    }
+    })
+    document.querySelector('.product-container').innerHTML = productHTML
+    renderPaginationBar(page)
+  } catch (error) {
+    console.log(error)
   }
+}
+renderProducts(1)
+
+/* Search */
+document.querySelector('.search-bar button').onclick = function (e) {
+  e.stopPropagation()
+  search = document.querySelector('.search-bar input').value.trim()
   renderProducts(1)
+}
+
+/* Clear search bar will clear filter with search */
+document.querySelector('.search-bar input').oninput = function (e) {
+  e.stopPropagation()
+  if (e.currentTarget.value == '') {
+    search = ''
+    renderProducts(1)
+  }
+}
+
+/* Back to home */
+document.querySelector('.home-btn').onclick = function (e) {
+  window.location.href = './homepage.html'
+}
