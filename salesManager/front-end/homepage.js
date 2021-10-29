@@ -256,6 +256,7 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
         const currentProducts = allBuyBtns[i].parentElement.querySelector(
           '.product'
         )
+        /* Nếu còn lại > 0 thì mới được quyền mua tiếp */
         if (Number(currentProducts.parentElement.querySelector('span.left').innerHTML) > 0) {
           if (currentCart[currentItem]) {
             currentCart[currentItem].quantity += 1

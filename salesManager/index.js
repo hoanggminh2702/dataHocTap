@@ -285,9 +285,9 @@ async function main () {
 
   const OrdersModel = mongoose.model('Orders', ordersSchema)
   /* Lấy danh sách các hoá đơn */
-  app.get('/api/getOrders', manageOrders(OrdersModel).getOrders)
+  app.get('/api/getOrders', manageOrders(OrdersModel, ProductModel).getOrders)
   /* Tạo ra 1 hoá đơn */
-  app.post('/api/createBill', authen, manageOrders(OrdersModel).createBill)
+  app.post('/api/createBill', authen, manageOrders(OrdersModel, ProductModel).createBill)
 
   app.get('/api/totalRevenue', async function (req, res) {
     let start = new Date()
