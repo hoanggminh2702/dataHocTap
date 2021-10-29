@@ -257,3 +257,9 @@ Dùng id check do đó có thể không conflict với các trường hợp khá
 cần hỏi nếu bấm lùi về trang khác thì làm sao lấy được địa chỉ trang đó
 
 phải check xem có storage không rồi mới check xem storage có hợp lệ không
+
+
+
+Kiểm tra req body có trường nào null không
+Tìm xem có product nào trùng hợp không findOneAndUpdate có rồi nên không cần dùng hàm checkExists
+Nếu không thì trả ra lỗi

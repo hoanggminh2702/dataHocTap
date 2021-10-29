@@ -49,6 +49,44 @@ const createProduct = function (ProductModel) {
   }
 }
 
+/* Update Product */
+const updateProduct = function (ProductModel) {
+  return async function (req, res) {
+    req.body.img = req.body.img
+      ? req.body.img
+      : 'https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png'
+    const body = req.body
+    if (!validateBody(ProductModel).checkNullReq(body, 7)) {
+      res.status(500).json('Missing property of product')
+      return
+    }
+    const filter = { _id: body.id }
+    const update = { 
+      name: body.name,
+      desc: body.desc,
+      price: body.price,
+      unit: body.unit,
+      quantity: body.quantity,
+      img: body.img
+    }
+
+    try {
+      let updateProduct = await ProductModel.findOneAndUpdate(filter, update, {
+        new: true
+      })
+      res.status(200).json({
+        message: "Update Successfully",
+        product: updateProduct
+      })
+    } catch (err) {
+      res.status(500).json({
+        message: "Update fail"
+      })
+    }
+  }
+}
+
+/* Get Products */
 const getProducts = function (ProductModel) {
   return async function (req, res) {
     //TODO handle the request param
@@ -126,7 +164,8 @@ const manageProductModule = function (ProductModel) {
     createProduct: createProduct(ProductModel),
     getProducts: getProducts(ProductModel),
     deleteProduct: deleteProduct(ProductModel),
-    getProductById: getProductById(ProductModel)
+    getProductById: getProductById(ProductModel),
+    updateProduct: updateProduct(ProductModel)
   }
 }
 

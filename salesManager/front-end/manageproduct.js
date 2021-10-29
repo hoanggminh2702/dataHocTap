@@ -242,6 +242,7 @@ for (let i = 0; i < document.forms.length; i++) {
   }
 }
 
+/* Handle the case img error */
 for (let i = 0; i < 2; i++) {
   document.forms[i].querySelector('.img-container button').onclick = function (
     e
@@ -253,6 +254,14 @@ for (let i = 0; i < 2; i++) {
           'src',
           document.forms[i].querySelectorAll('.input')[6].value.trim()
         )
+    }
+  }
+}
+
+{
+  for (let i = 0; i < 2; i++) {
+    document.forms[i].querySelector('.img-container img').onerror = function(e) {
+      e.currentTarget.parentElement.querySelector('img').setAttribute('src', 'https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png')
     }
   }
 }
@@ -289,7 +298,31 @@ document.querySelector('.product-container').onmouseenter = function (e) {
       allInputEdit[4].value = product.data.unit
       allInputEdit[5].value = product.data.quantity
       allInputEdit[6].value = product.data.img
-      if (checkSubmit(allInputEdit)) {
+      
+      document.forms[1].editBtn.onclick = async function (e) {
+        if (checkSubmit(allInputEdit)) {
+          let payloadProduct = {
+            id: product.data['_id'],
+              name: allInputEdit[1].value,
+              desc: allInputEdit[2].value,
+              price: allInputEdit[3].value,
+              unit: allInputEdit[4].value,
+              quantity: allInputEdit[5].value,
+              img: allInputEdit[6].value
+          }
+          try {
+            let updatedProduct = await axios.post(`${BASE_URL}/api/updateProduct`, payloadProduct, {
+              headers: {
+                Authorization: `Bearer 1 ${user.token}`
+              }
+            })
+            alert(`Bạn vừa Update thành công sản phẩm ${updatedProduct.data.product.name}`)
+            renderProducts(currentPage)
+
+          } catch (err) {
+            console.log(err)
+          }
+        }
       }
     }
 

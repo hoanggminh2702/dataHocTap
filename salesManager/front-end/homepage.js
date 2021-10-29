@@ -94,6 +94,7 @@ axios
   })
   .catch(function (err) {
     isAdmin = err.response.data.isAdmin
+    console.log(err.response.data.message)
     document.querySelector('li:nth-child(2)').style.display = 'none'
   })
 

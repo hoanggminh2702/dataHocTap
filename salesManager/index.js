@@ -214,8 +214,6 @@ async function main () {
       address: account.address
     })
 
-    console.log(newUser)
-
     try {
       await newUser.save()
       res.status(200).send({
@@ -260,6 +258,7 @@ async function main () {
   )
 
   /* Update Product */
+  app.post('/api/updateProduct', authen, checkAdmin, manageProduct(ProductModel).updateProduct)
 
   /* Delete Product */
   app.post(
