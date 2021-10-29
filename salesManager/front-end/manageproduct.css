@@ -230,4 +230,26 @@ form header h2 {
     display: none;
 }
 
+.report-table {
+    max-width: 600px;
+    position: absolute;
+    top: 15px;
+    padding: 15px;
+    background-color: white;
+    display: none;
+    border-radius: 10px;
+}
+
+.report-table header {
+    padding-bottom: 5px;
+    border-bottom: 1px solid lightblue;
+}
+
+.report-table .total-revenue {
+    margin-top: 5px;
+}
+
+.report-table button {
+    margin-top: 10px;
+}
 

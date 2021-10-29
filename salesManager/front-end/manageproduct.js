@@ -65,7 +65,42 @@ function confirmRedirect (message, path, callBack, cancelCallback) {
   }
 }
 
-document.querySelector('ul li:nth-child(2)').onclick = function (e) {
+document.querySelector('ul li:nth-child(2)').onclick = async function(e) {
+  document.querySelector('.background-form').style.display = `block`
+  document.querySelector(
+    `.background-form .create-form`
+  ).style.display = `none`
+  document.querySelector(
+    `.background-form .edit-form`
+  ).style.display = `none`
+  document.querySelector('.report-table').style.display = `block`
+
+  let revenue = await axios.get(`${BASE_URL}/api/totalRevenue`, {
+    headers: {
+      Authorization: `Bearer 1 ${user.token}`
+    }
+  })
+  console.log(revenue)
+  document.querySelector('.report-table .total-revenue h3').innerHTML = `${(revenue.data.revenue.toLocaleString())} </br></br>`
+  let bestSeller = revenue.data.bestSeller
+  document.querySelector('.report-table .best-seller').innerHTML = `<h3>Sản phẩm bán chạy nhất tháng là: ${bestSeller.product}, bán được tổng cộng ${bestSeller.quantity}, tổng doanh thu là ${(bestSeller.totalRevenueOfProduct.toLocaleString())} vnđ</h3></br>`
+  document.querySelector('.report-table .top10-product').innerHTML =`
+  <h3>Top 10 sản phẩm của tháng là:</h3>`
+  let top10 = revenue.data['top10Products']
+  let i = 1
+  top10.forEach(function(product) {
+    document.querySelector('.report-table .top10-product').innerHTML += `
+    <h4>${i}. ${product.product}: Bán được ${product.quantity} sản phẩm, tổng doanh thu là ${(product.totalRevenueOfProduct.toLocaleString())} vnđ</h4>`
+    i++
+  })
+}
+
+document.querySelector('.report-table button').onclick = function(e) {
+  document.querySelector('.background-form').style.display = `none`
+  document.querySelector('.report-table').style.display = `none`
+}
+
+document.querySelector('ul li:nth-child(3)').onclick = function (e) {
   confirmRedirect('Do you want to log out?', './login.html')
 }
 /* Render pagination bar */
