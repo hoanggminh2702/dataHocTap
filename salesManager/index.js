@@ -79,11 +79,12 @@ async function main () {
           }
         )
 
-        // Send cho client 1 object chưa token của họ
+        // Send cho client 1 object chứa token của họ
         res.status(200).json({
-          username: account.username,
+          username: findUser.username,
           message: 'Successful',
-          token: token
+          token: token,
+          role: findUser.role
         })
       } else {
         res.status(500).send('Please check your username or password again')
@@ -137,7 +138,6 @@ async function main () {
       if (err) {
         res.status(500).json({
           message: 'Phiên đăng nhập hết hạn',
-          username: data.username
         })
       } else {
         if (data.role == ['admin']) {

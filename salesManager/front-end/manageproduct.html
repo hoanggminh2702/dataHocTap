@@ -4,21 +4,61 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="manageproduct.css">
     <title>Document</title>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>Product Code</th>
-                <th>Product Name</th>
-                <th>Product Unit</th>
-                <th>Product Price</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+    <div class="container">
+        <h1 class="header">This is the manage products page</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Code</th>
+                    <th>Product Name</th>
+                    <th>Product Unit</th>
+                    <th>Product Price</th>
+                    <th colspan="2">Action</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <div class="crud-container">
+            <form class="create-form">
+                <h1>Create Product</h1>
+                <div class="form-group">
+                    <label for="product-code" name="code-label">Product Code</label>
+                    <input class="input" type="text" name="code-input">
+                </div>
+                <div class="form-group">
+                    <label for="product-name" name="name-label">Product Name</label>
+                    <input class="input" type="text" name="name-input">
+                </div>
+                <div class="form-group">
+                    <label for="product-desc" name="desc-label">Product Description</label>
+                    <textarea class="input" name="desc-input" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="product-unit" name="unit-label">Unit</label>
+                    <input class="input" type="text" name="unit-input">
+                </div>
+                <div class="form-group">
+                    <label for="product-price" name="price-label">Price</label>
+                    <input class="input" type="text" name="price-input">
+                </div>
+                <div class="form-group">
+                    <label for="product-img" name="img-label">Image Link</label>
+                    <input class="input" type="text" name="img-input">
+                </div>
+                <div class="button-group">
+                    <button type="button">Add Product</button>
+                    <button type="button">Back</button>
+                </div>
+            </form>
+            <form class="edit-form"></form>
+        </div>
+    </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="manageproduct.js"></script>
 </body>

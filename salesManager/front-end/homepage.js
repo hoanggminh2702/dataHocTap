@@ -75,8 +75,9 @@ if (user == null || user.username == undefined) {
         }
       )
     })
+}
 
-  axios
+axios
     .post(
       `${BASE_URL}/api/verifyAdmin`,
       {},
@@ -95,7 +96,6 @@ if (user == null || user.username == undefined) {
       isAdmin = err.response.data.isAdmin
       document.querySelector('li:nth-child(2)').style.display = 'none'
     })
-}
 
 document.querySelector('.nav-bar-logo img').onclick = function (e) {
   window.location.href = './homepage.html'

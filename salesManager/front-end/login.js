@@ -58,11 +58,16 @@ document.forms[0].login.onclick = async function (e) {
         document.querySelector('.alert').innerHTML = 'Đăng nhập thành công'
         document.querySelector('.alert').style.color = 'green'
         console.log('Login successful')
+        alert(res.data.role)
         const result = {
           username: res.data.username,
           token: res.data.token,
           items: {}
         }
+        /** Nếu đang ở trang orders mà bị hết hạn token khi đăng nhập
+         * Nếu tài khoản đăng nhập bị sửa đổi trong storage
+         * Thì sẽ cho phép đăng nhập lại, nếu đăng nhập đúng tài khoản hết hạn lần trước thì chuyển lại sang trang order
+         */
         if (
           localStorage.getItem('path') == './orders.html' &&
           result.username == JSON.parse(localStorage.getItem('user')).username
@@ -77,8 +82,17 @@ document.forms[0].login.onclick = async function (e) {
         } else {
           localStorage.setItem('user', JSON.stringify(result))
         }
-        console.log(localStorage.getItem('user'))
-        window.location.href = localStorage.getItem('path')
+
+        /** Nếu từ trang login sang nhưng đăng nhập bằng tài khoản user bình thường thì sẽ  
+         * tự động được chuyển sang homepage
+         */
+        if (localStorage.getItem('path') == './manageproduct.html' && res.data.role != 'admin') {
+          localStorage.setItem('path', './homepage.html')
+          window.location.href =  './homepage.html'
+        } else {
+          window.location.href = localStorage.getItem('path')
+        }
+
       })
     } catch (err) {
       document.querySelector('.alert').innerHTML = 'Đăng nhập thất bại'

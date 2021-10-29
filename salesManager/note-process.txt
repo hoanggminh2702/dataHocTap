@@ -253,3 +253,7 @@ mục đích check user trong body request do lưu username của người mua t
 
 check user có còn khả dụng trong db không, nếu không thì trả về lỗi
 Dùng id check do đó có thể không conflict với các trường hợp khác
+
+cần hỏi nếu bấm lùi về trang khác thì làm sao lấy được địa chỉ trang đó
+
+phải check xem có storage không rồi mới check xem storage có hợp lệ không
