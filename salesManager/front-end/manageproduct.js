@@ -4,8 +4,19 @@ if (JSON.parse(localStorage.getItem('user')) == null) {
   }))
 }
 
+let search = ''
+
+const BASE_URL = 'http://localhost:8080'
+
+const GET_PRODUCT_URL = `${BASE_URL}/api/getProducts`
+
 const user = JSON.parse(localStorage.getItem('user'))
 
+var currentTotalProduct = ''
+
+var take = 10
+
+/* Kiểm tra xem có phải là admin không */
 axios
   .post(
     'http://localhost:8080/api/verifyAdmin',
@@ -18,6 +29,8 @@ axios
   )
   .then(function (res) {
     console.log(res.data)
+    document.querySelector('.user-btn').innerHTML = res.data.username
+
   })
   .catch(function (err) {
     let backToLogin = confirm(`
@@ -31,20 +44,65 @@ axios
     }
   })
 
-async function renderProduct(page) {
-  let products = await axios.get('http://localhost:8080/api/getProducts?search=&take=&page=')
-  let showProductHTML = ''
-  products.data.items.forEach(function(product) {
-    showProductHTML += `<tr class="row" id=${product['_id']}>
-    <td class="item" name="code">${product['_id']}</td>
-    <td class="item" name="name">${product.name}</td>
-    <td class="item" name="unit">${product.unit}</td>
-    <td class="item" name="price">${product.price}</td>
-    <td class="item" name="edit-btn">Edit</td>
-    <td class="item" name="delete-btn">Delete</td>
-    </tr>`
-  })
-  document.querySelector('tbody').innerHTML = showProductHTML
+
+  /* Render pagination bar */
+function renderPaginationBar (page) {
+  const currentTotalPage = Math.ceil(currentTotalProduct / take)
+  let paginationHTML = ''
+  for (let i = 1; i <= currentTotalPage; i++) {
+    let style = ''
+    if (i == page) {
+      style = 'style="background-color: red"'
+    }
+    paginationHTML += `
+    <div id="page-${i}" class="page" ${style}>
+        ${i}
+    </div>`
+  }
+  document.querySelector('.pagination-bar').innerHTML = paginationHTML
 }
 
-renderProduct(1)
+/* Choose page by clicking to the page btn */
+document.querySelector('.pagination-bar').onmouseenter = function (e) {
+  let allPageBtn = e.currentTarget.children
+  for (let i = 0; i < allPageBtn.length; i++) {
+    allPageBtn[i].onclick = function (e) {
+      renderProducts(e.currentTarget.innerText)
+    }
+  }
+}
+
+/* Render Product */
+  async function renderProducts (page) {
+    localStorage.setItem('currentPage', page)
+    let productHTML = ''
+    try {
+      const products = await axios.get(
+        `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
+      )
+      currentTotalProduct = products.data.countDocuments
+      products.data.items.forEach(function (product) {
+        const style = `style = 'background-image: url(${product.img})'`
+        const convertPrice = product.price.toLocaleString()
+  
+        // const quantity =
+        //   user.items[product['_id']] != undefined
+        //     ? user.items[product['_id']].quantity
+        //     : ''
+        productHTML += `
+              <div id="${product['_id']}" class="product-group">
+                  <div class="product" ${style}></div>
+                  <div class="product-info"><p>${product.name}</p></div>
+                  <div class="product-info"><p>${product.desc}</p></div>
+                  <div class="product-info"><p>Price: ${convertPrice} vnđ</p></div>
+                  <button class="edit-btn">Edit</button>
+                  <button class="delete-btn">Delete</button>
+              </div>`
+      })
+      document.querySelector('.product-container').innerHTML = productHTML
+      renderPaginationBar(page)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  renderProducts(1)

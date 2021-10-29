@@ -142,11 +142,13 @@ async function main () {
       } else {
         if (data.role == ['admin']) {
           res.status(200).json({
+            username: data.username,
             message: 'Đăng nhập với vai trò admin',
             isAdmin: true
           })
         } else {
           res.status(500).json({
+            username: data.username,
             message: 'Đăng nhập với vai trò user',
             isAdmin: false
           })

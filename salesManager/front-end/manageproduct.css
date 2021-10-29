@@ -1,56 +1,138 @@
-h1 {
+:root {
+    --border : 1px solid lightblue;
+    --border-hover : 1px solid orange;
+    --nav-bar-background-image: url("https://www.appmachine.com/wp-content/uploads/2016/02/No-Branding-Header-Background-1.jpg");
+}
+* {
+    margin: 0
+}
+
+/* Nav bar */
+.nav-bar {
+    background-image: var(--nav-bar-background-image);
+}
+
+.nav-bar-logo {
+    width: 300px;
+    float: left;
+    margin-left: 15px;
+}
+
+.nav-bar-logo img {
+    width: 75px;
+}
+
+.nav-bar-collapse {
+    min-width: 450px;
+    max-width: 700px;
+    float: right;
+}
+
+.action-bar .search-bar {
+    float: left;
+    margin: 10px;
+}
+
+.action-bar .items {
+    float: right;
+    padding: 0;
+}
+
+.nav-bar-collapse .items li {
+    float: left;
+    margin: 10px;
+    list-style-type: none;
+    font-weight: 700;
+}
+
+.nav-bar-collapse .items li:hover {
+    opacity: 0.5;
+}
+
+.clear-fix {
+    overflow: auto;
+    clear: both;
+}
+
+.container {
+    min-width: 400px;
+    width: 70%;
+    margin: auto;
+
+}
+
+/* option-bar */
+.option-bar {
+    margin-top: 40px;
+}
+
+.purchase-btn {
+    float: right;
+    margin: 0 10px
+}
+
+.option-bar select {
+    float: right;
+}
+
+/* Product Container */
+
+.product-container {
+    clear: both;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product-group {
+    width: 175px;
+    margin: 5px 5px 25px 5px;
+    border: var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.product-group:hover {
+    border: var(--border-hover);
+}
+
+.product {
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 175px;
+    padding: 5px;
+    background-position: center;
+    background-origin: content-box;
+}
+
+.product:hover {
+    opacity: 0.7;
+}
+
+.product-info p{
     text-align: center;
 }
 
-table {
-    max-width: 1000px;
+.product-group button {
+    border: none;
+    background-color: white
+}
+
+.product-group button:hover {
+    background-color: lightblue
+}
+
+/* Pagination bar */
+.pagination-bar {
+    height: 25px;
+    width: fit-content;
     margin: auto;
-}
-
-thead tr th {
-    padding-right: 15px;
-    text-align: left;
-    font-size: 1.2rem;
-    border: 1px solid lightblue;
-}
-tbody .row .item {
-    padding-right: 15px;
-    text-align: left;
-    border: 1px solid lightblue;
-
-}
-
-td[name='edit-btn']:hover, td[name='delete-btn']:hover {
-    background-color: lightblue;
-}
-
-form {
-    width: 400px;
     display: flex;
-    flex-direction: column;
-    padding: 25px;
-    border: 1px solid lightblue;
 }
 
-form h1 {
-    margin-top: 0;
-}
-
-.form-group {
-    display: flex;
-    margin: 5px 0;
-}
-
-.form-group label {
-    flex-basis: 25%;
-}
-
-.form-group .input {
-    flex-basis: 75%;
-    padding-right: 0;
-    box-sizing: border-box;
-}
-
-.button-group button{
-    float: right;
+.page {
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    border: var(--border);
 }
