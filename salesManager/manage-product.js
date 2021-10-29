@@ -4,11 +4,17 @@ const validateBody = require('./validateBody')
 
 const createProduct = function (ProductModel) {
   return async function (req, res) {
+    req.body.img = req.body.img
+      ? req.body.img
+      : 'https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png'
     const body = req.body
     if (!validateBody(ProductModel).checkNullReq(body, 7)) {
-      res.status(500).send('Missing property of product')
+      res.status(500).json('Missing property of product')
       return
     }
+
+    console.log(body)
+
     /* Create Product Model */
     const newProduct = new ProductModel({
       _id: body.id,
@@ -29,7 +35,7 @@ const createProduct = function (ProductModel) {
         body.id
       )
     ) {
-      res.status(500).send('Product is existed')
+      res.status(500).json('Product is existed')
       return
     }
 
@@ -90,9 +96,9 @@ const deleteProduct = function (ProductModel) {
 
     try {
       const deletedItems = await ProductModel.findByIdAndDelete(id)
-      res.status(200).send(deletedItems)
+      res.status(200).json(deletedItems)
     } catch (error) {
-      res.status(500).send('Fail to delete the product')
+      res.status(500).json('Fail to delete the product')
       console.log(error)
     }
   }
@@ -104,9 +110,9 @@ const getProductById = function (ProductModel) {
     const id = req.query.id
     try {
       const item = await ProductModel.findById(id).exec()
-      res.status(200).send(item)
+      res.status(200).json(item)
     } catch (error) {
-      res.status(404).send('Not found the product')
+      res.status(404).json('Not found the product')
       console.log(error)
     }
   }

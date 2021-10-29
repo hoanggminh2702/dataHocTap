@@ -169,7 +169,8 @@ body {
 
 form {
     display: flex;
-    width: 600px;
+    min-width: 600px;
+    max-width: fit-content;
     flex-direction: column;
     border: solid 1px lightblue;
     padding: 20px;
@@ -210,11 +211,14 @@ form header h2 {
 }
 
 .img-container label {
+    text-align: center;
     font-weight: 700;
 }
 
 
 .img-container img {
+    margin:auto;
+    width: fit-content;
     height: 250px;
 }
 

@@ -50,33 +50,39 @@
                         <div class="text-container">
                             <div class="form-group">
                                 <label class="code-label" for="product-code" name="code">Code</label>
-                                <input class="code-input" type="text" name="input-code" >
+                                <input class="input code-input" type="text" name="input-code" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="name-label" for="product-name" name="name">Name</label>
-                                <input class="name-input" type="text" name="input-name" >
+                                <input class="input name-input" type="text" name="input-name" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="desc-label" for="product-desc" name="desc">Description</label>
-                                <textarea class="desc-input" name="input-desc" rows="3"></textarea>
+                                <textarea class="input desc-input" name="input-desc" rows="3"></textarea>
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="price-label" for="product-price" name="price">Price</label>
-                                <input class="price-input" type="text" name="input-price" >
+                                <input class="input price-input" type="text" name="input-price" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="unit-label" for="product-unit" name="unit">Unit</label>
-                                <input class="unit-input" type="text" name="input-unit" >
+                                <input class="input unit-input" type="text" name="input-unit" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="quantity-label" for="product-quantity" name="quantity">Quantity</label>
-                                <input class="quantity-input" type="text" name="input-quantity" >
+                                <input class="input quantity-input" type="text" name="input-quantity" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                         </div>
                         <div class="img-container">
                             <label for="image">Choose Product Image</label>
                             <img src="https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png" alt="">
-                            <input type="text" name="img-link" placeholder="image source">
+                            <input class="input" type="text" name="img-link" placeholder="image source">
                             <button type="button">Preview Image</button>
                         </div>
                     </section>
@@ -94,39 +100,45 @@
                         <div class="text-container">
                             <div class="form-group">
                                 <label class="code-label" for="product-code" name="code">Code</label>
-                                <input class="code-input" type="text" name="code" >
+                                <input class="input code-input" type="text" name="code" disabled>
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="name-label" for="product-name" name="name">Name</label>
-                                <input class="name-input" type="text" name="name" >
+                                <input class="input name-input" type="text" name="name" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="desc-label" for="product-desc" name="desc">Description</label>
-                                <textarea class="desc-input" name="desc" rows="3"></textarea>
+                                <textarea class="input desc-input" name="desc" rows="3"></textarea>
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="price-label" for="product-price" name="price">Price</label>
-                                <input class="price-input" type="text" name="price" >
+                                <input class="input price-input" type="text" name="price" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="unit-label" for="product-unit" name="unit">Unit</label>
-                                <input class="unit-input" type="text" name="unit" >
+                                <input class="input unit-input" type="text" name="unit" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                             <div class="form-group">
                                 <label class="quantity-label" for="product-quantity" name="quantity">Quantity</label>
-                                <input class="quantity-input" type="text" name="quantity" >
+                                <input class="input quantity-input" type="text" name="quantity" >
+                                <div class="validate" style="color: red; display: none;">Không để trống trường này</div>
                             </div>
                         </div>
                         <div class="img-container">
                             <label for="image">Choose Product Image</label>
                             <img src="https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png" alt="">
-                            <input type="text" name="img-link" placeholder="image source">
+                            <input class="input" type="text" name="img-link" placeholder="image source">
                             <button type="button">Preview Image</button>
                         </div>
                     </section>
                     <footer>
                         <div class="button-group">
-                            <button type="button" name="createBtn">Create</button>
+                            <button type="button" name="editBtn">Update</button>
                             <button type="button" name="cancelBtn">Cancel</button>
                         </div>
                     </footer>

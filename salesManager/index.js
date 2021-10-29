@@ -140,12 +140,18 @@ async function main () {
           message: 'Phiên đăng nhập hết hạn'
         })
       } else {
+        /* Tại sao copy ra ngoài thì lại bị lỗi */
         if (data.role == ['admin']) {
-          res.status(200).json({
-            username: data.username,
-            message: 'Đăng nhập với vai trò admin',
-            isAdmin: true
-          })
+          if (req.headers.authorization.split(' ')[1] == '0') {
+            res.status(200).json({
+              username: data.username,
+              message: 'Đăng nhập với vai trò admin',
+              isAdmin: true
+            })
+            return
+          } else if (req.headers.authorization.split(' ')[1] == '1') {
+            next()
+          }
         } else {
           res.status(500).json({
             username: data.username,
@@ -232,6 +238,7 @@ async function main () {
       price: mongoose.Schema.Types.Double,
       unit: String,
       quantity: Number,
+      bought: Number,
       img: String
     },
     {
@@ -245,10 +252,22 @@ async function main () {
   app.get('/api/getProducts', manageProduct(ProductModel).getProducts)
 
   /* Create New Product */
-  app.post('/api/createProduct', manageProduct(ProductModel).createProduct)
+  app.post(
+    '/api/createProduct',
+    authen,
+    checkAdmin,
+    manageProduct(ProductModel).createProduct
+  )
+
+  /* Update Product */
 
   /* Delete Product */
-  app.post('/api/deleteProduct/:id', manageProduct(ProductModel).deleteProduct)
+  app.post(
+    '/api/deleteProduct/:id',
+    authen,
+    checkAdmin,
+    manageProduct(ProductModel).deleteProduct
+  )
 
   /* Find Product By Id */
   app.get('/api/findById', manageProduct(ProductModel).getProductById)

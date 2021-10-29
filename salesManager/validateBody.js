@@ -10,6 +10,7 @@ function validateBody (model) {
       }
       return (
         Object.keys(body).every(function (key) {
+          /* Tại sao số 0 lại tương đương với chuỗi rỗng */
           return body[key] != null && body[key] != ''
         }) && countProperty
       )

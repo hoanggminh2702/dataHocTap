@@ -17,6 +17,8 @@ const user = JSON.parse(localStorage.getItem('user'))
 
 var currentTotalProduct = ''
 
+var currentPage = 1
+
 var take = 10
 
 /* Kiểm tra xem có phải là admin không */
@@ -69,6 +71,7 @@ document.querySelector('ul li:nth-child(2)').onclick = function (e) {
 /* Render pagination bar */
 function renderPaginationBar (page) {
   const currentTotalPage = Math.ceil(currentTotalProduct / take)
+  currentPage = page
   let paginationHTML = ''
   for (let i = 1; i <= currentTotalPage; i++) {
     let style = ''
@@ -151,6 +154,7 @@ document.querySelector('.home-btn').onclick = function (e) {
   window.location.href = './homepage.html'
 }
 
+/* switch display */
 function switchDisplay (form, displayType) {
   document.querySelector('.background-form').style.display = `${displayType}`
   document.querySelector(
@@ -163,6 +167,72 @@ document.querySelector('button.create-btn').onclick = function (e) {
   switchDisplay('create-form', 'block')
 }
 
+/* Validate and create product */
+{
+  function displayAlert (btn) {
+    if (btn.value.trim() == '') {
+      btn.parentElement.querySelector('div').style.display = 'block'
+    } else {
+      btn.parentElement.querySelector('div').style.display = 'none'
+    }
+  }
+
+  function checkSubmit (btnArr) {
+    let canCreate = true
+    for (let i = 0; i < btnArr.length - 1; i++) {
+      if (btnArr[i].value.trim() == '') {
+        canCreate = false
+        break
+      }
+    }
+
+    for (let i = 0; i < btnArr.length - 1; i++) {
+      displayAlert(btnArr[i])
+    }
+
+    return canCreate
+  }
+
+  var allInputCreate = document.forms[0].querySelectorAll('.input')
+
+  /* If let the input empty and click to another place will display the validate message  */
+  for (let i = 0; i < allInputCreate.length - 1; i++) {
+    allInputCreate[i].oninput = () => displayAlert(allInputCreate[i])
+    allInputCreate[i].onblur = () => displayAlert(allInputCreate[i])
+  }
+
+  document.forms[0].createBtn.onclick = async function (e) {
+    if (checkSubmit(allInputCreate)) {
+      try {
+        let addProduct = await axios.post(
+          `${BASE_URL}/api/createProduct`,
+          {
+            id: allInputCreate[0].value.trim(),
+            name: allInputCreate[1].value.trim(),
+            desc: allInputCreate[2].value.trim(),
+            price: Number(allInputCreate[3].value.trim()),
+            unit: allInputCreate[4].value.trim(),
+            quantity: allInputCreate[5].value.trim(),
+            img: allInputCreate[6].value.trim()
+          },
+          {
+            headers: {
+              Authorization: `Bearer 1 ${user.token}`
+            }
+          }
+        )
+        alert('Create Product Successfully', addProduct)
+        renderProducts(Math.ceil((currentTotalProduct + 1) / take))
+      } catch (err) {
+        console.log(err)
+        alert(err)
+      }
+    } else {
+      console.log('Nhập thiếu')
+    }
+  }
+}
+
 /* undisplay form edit and create */
 for (let i = 0; i < document.forms.length; i++) {
   document.forms[i].cancelBtn.onclick = function (e) {
@@ -172,13 +242,85 @@ for (let i = 0; i < document.forms.length; i++) {
   }
 }
 
+for (let i = 0; i < 2; i++) {
+  document.forms[i].querySelector('.img-container button').onclick = function (
+    e
+  ) {
+    if (document.forms[i].querySelectorAll('.input')[6].value.trim()) {
+      document.forms[i]
+        .querySelector('.img-container img')
+        .setAttribute(
+          'src',
+          document.forms[i].querySelectorAll('.input')[6].value.trim()
+        )
+    }
+  }
+}
+
 /* Display edit form and delete product */
 document.querySelector('.product-container').onmouseenter = function (e) {
   let allProduct = document.querySelectorAll('.product-group')
   for (let i = 0; i < allProduct.length; i++) {
-    allProduct[i].querySelector('button.edit-btn').onclick = function (e) {
+    /* Edit Button event */
+    // Open the edit form
+    allProduct[i].querySelector('button.edit-btn').onclick = async function (
+      e
+    ) {
       switchDisplay('edit-form', 'block')
+      // Fill edit form
+      var allInputEdit = document.forms[1].querySelectorAll('.input')
+      for (let i = 0; i < allInputEdit.length - 1; i++) {
+        allInputEdit[i].oninput = () => displayAlert(allInputEdit[i])
+        allInputEdit[i].onblur = () => displayAlert(allInputEdit[i])
+      }
+
+      const product = await axios.get(
+        `${BASE_URL}/api/findById?id=${allProduct[i].id}`
+      )
+
+      document.forms[1]
+        .querySelector('.img-container img')
+        .setAttribute('src', product.data.img)
+
+      allInputEdit[0].value = product.data['_id']
+      allInputEdit[1].value = product.data.name
+      allInputEdit[2].value = product.data.desc
+      allInputEdit[3].value = product.data.price
+      allInputEdit[4].value = product.data.unit
+      allInputEdit[5].value = product.data.quantity
+      allInputEdit[6].value = product.data.img
+      if (checkSubmit(allInputEdit)) {
+      }
     }
-    allProduct[i].querySelector('button.delete-btn').onclick = function (e) {}
+
+    /* Delete Button event*/
+    allProduct[i].querySelector('button.delete-btn').onclick = async function (
+      e
+    ) {
+      const productId = e.currentTarget.parentElement.id
+      let confirmDelete = confirm(`Bạn có chắc chắn xoá product ${productId}`)
+      if (confirmDelete) {
+        try {
+          const deleteItem = await axios.post(
+            `${BASE_URL}/api/deleteProduct/${productId}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer 1 ${user.token}`
+              }
+            }
+          )
+          if (document.querySelectorAll('.product-container > div').length == 1)
+            renderProducts(currentPage - 1)
+          else renderProducts(currentPage)
+
+          console.log('Bạn vừa xoá thành công', deleteItem.data)
+        } catch (err) {
+          console.log(err.response.data)
+        }
+      } else {
+        console.log('Chưa xoá')
+      }
+    }
   }
 }
