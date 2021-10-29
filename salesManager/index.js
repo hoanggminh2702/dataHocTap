@@ -319,7 +319,8 @@ async function main () {
 
       for (index of Object.keys(productsInMonth)) {
         const product = await ProductModel.findById(index).exec()
-        price = product.price
+        let price = product.price
+
         productsInMonthArr.push({
           product: index,
           quantity: productsInMonth[index],
