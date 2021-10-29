@@ -28,19 +28,113 @@
             </div>
             <div class="clear-fix"></div>
         </div>
-        <section>
-            <div class="container">
-                <div class="option-bar">
-                    <select name="option filter-price">
-                        <option value=""></option>
-                        <option value="500000">Nhỏ hơn 500.000</option>
-                    </select>
-                </div>
-                <div class="product-container"></div>
-                <div class="pagination-bar"></div>
-            </div>
-        </section>
     </header>
+    <section>
+        <div class="container">
+            <div class="option-bar">
+                <button class="option create-btn">Create</button>
+                <select name="option filter-price">
+                    <option value=""></option>
+                    <option value="500000">Nhỏ hơn 500.000</option>
+                </select>
+            </div>
+            <div class="product-container"></div>
+            <div class="pagination-bar"></div>
+        </div>
+        <div class="background-form">
+            <div class="background"></div>
+            <div class="form-container">
+                <form class="create-form">
+                    <header><h2>Create Product</h2></header>
+                    <section>
+                        <div class="text-container">
+                            <div class="form-group">
+                                <label class="code-label" for="product-code" name="code">Code</label>
+                                <input class="code-input" type="text" name="input-code" >
+                            </div>
+                            <div class="form-group">
+                                <label class="name-label" for="product-name" name="name">Name</label>
+                                <input class="name-input" type="text" name="input-name" >
+                            </div>
+                            <div class="form-group">
+                                <label class="desc-label" for="product-desc" name="desc">Description</label>
+                                <textarea class="desc-input" name="input-desc" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="price-label" for="product-price" name="price">Price</label>
+                                <input class="price-input" type="text" name="input-price" >
+                            </div>
+                            <div class="form-group">
+                                <label class="unit-label" for="product-unit" name="unit">Unit</label>
+                                <input class="unit-input" type="text" name="input-unit" >
+                            </div>
+                            <div class="form-group">
+                                <label class="quantity-label" for="product-quantity" name="quantity">Quantity</label>
+                                <input class="quantity-input" type="text" name="input-quantity" >
+                            </div>
+                        </div>
+                        <div class="img-container">
+                            <label for="image">Choose Product Image</label>
+                            <img src="https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png" alt="">
+                            <input type="text" name="img-link" placeholder="image source">
+                            <button type="button">Preview Image</button>
+                        </div>
+                    </section>
+                    <footer>
+                        <div class="button-group">
+                            <button type="button" name="createBtn">Create</button>
+                            <button type="button" name="cancelBtn">Cancel</button>
+                        </div>
+                    </footer>
+                </form>
+
+                <form class="edit-form">
+                    <header><h2>Edit Product</h2></header>
+                    <section>
+                        <div class="text-container">
+                            <div class="form-group">
+                                <label class="code-label" for="product-code" name="code">Code</label>
+                                <input class="code-input" type="text" name="code" >
+                            </div>
+                            <div class="form-group">
+                                <label class="name-label" for="product-name" name="name">Name</label>
+                                <input class="name-input" type="text" name="name" >
+                            </div>
+                            <div class="form-group">
+                                <label class="desc-label" for="product-desc" name="desc">Description</label>
+                                <textarea class="desc-input" name="desc" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="price-label" for="product-price" name="price">Price</label>
+                                <input class="price-input" type="text" name="price" >
+                            </div>
+                            <div class="form-group">
+                                <label class="unit-label" for="product-unit" name="unit">Unit</label>
+                                <input class="unit-input" type="text" name="unit" >
+                            </div>
+                            <div class="form-group">
+                                <label class="quantity-label" for="product-quantity" name="quantity">Quantity</label>
+                                <input class="quantity-input" type="text" name="quantity" >
+                            </div>
+                        </div>
+                        <div class="img-container">
+                            <label for="image">Choose Product Image</label>
+                            <img src="https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png" alt="">
+                            <input type="text" name="img-link" placeholder="image source">
+                            <button type="button">Preview Image</button>
+                        </div>
+                    </section>
+                    <footer>
+                        <div class="button-group">
+                            <button type="button" name="createBtn">Create</button>
+                            <button type="button" name="cancelBtn">Cancel</button>
+                        </div>
+                    </footer>
+                </form>
+        </div>
+        </div>
+
+    </section>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="manageproduct.js"></script>
 </body>

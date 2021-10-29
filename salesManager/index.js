@@ -137,7 +137,7 @@ async function main () {
     jwt.verify(token, SECRET_KEY, async function (err, data) {
       if (err) {
         res.status(500).json({
-          message: 'Phiên đăng nhập hết hạn',
+          message: 'Phiên đăng nhập hết hạn'
         })
       } else {
         if (data.role == ['admin']) {
@@ -231,6 +231,7 @@ async function main () {
       desc: String,
       price: mongoose.Schema.Types.Double,
       unit: String,
+      quantity: Number,
       img: String
     },
     {

@@ -112,6 +112,8 @@ async function renderProducts (page) {
       //     : ''
       productHTML += `
               <div id="${product['_id']}" class="product-group">
+              <div class="product-info" style="text-align: center">Số lượng: ${product.quantity}</div>
+              <div class="product-info" style="text-align: center">Đã bán: ${product.bought}</div>
                   <div class="product" ${style}></div>
                   <div class="product-info"><p>${product.name}</p></div>
                   <div class="product-info"><p>${product.desc}</p></div>
@@ -147,4 +149,36 @@ document.querySelector('.search-bar input').oninput = function (e) {
 /* Back to home */
 document.querySelector('.home-btn').onclick = function (e) {
   window.location.href = './homepage.html'
+}
+
+function switchDisplay (form, displayType) {
+  document.querySelector('.background-form').style.display = `${displayType}`
+  document.querySelector(
+    `.background-form .${form}`
+  ).style.display = `${displayType}`
+}
+
+/* Display Create Form */
+document.querySelector('button.create-btn').onclick = function (e) {
+  switchDisplay('create-form', 'block')
+}
+
+/* undisplay form edit and create */
+for (let i = 0; i < document.forms.length; i++) {
+  document.forms[i].cancelBtn.onclick = function (e) {
+    e.stopPropagation()
+    switchDisplay('create-form', 'none')
+    switchDisplay('edit-form', 'none')
+  }
+}
+
+/* Display edit form and delete product */
+document.querySelector('.product-container').onmouseenter = function (e) {
+  let allProduct = document.querySelectorAll('.product-group')
+  for (let i = 0; i < allProduct.length; i++) {
+    allProduct[i].querySelector('button.edit-btn').onclick = function (e) {
+      switchDisplay('edit-form', 'block')
+    }
+    allProduct[i].querySelector('button.delete-btn').onclick = function (e) {}
+  }
 }

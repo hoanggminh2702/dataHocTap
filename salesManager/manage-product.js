@@ -5,7 +5,7 @@ const validateBody = require('./validateBody')
 const createProduct = function (ProductModel) {
   return async function (req, res) {
     const body = req.body
-    if (!validateBody(ProductModel).checkNullReq(body, 6)) {
+    if (!validateBody(ProductModel).checkNullReq(body, 7)) {
       res.status(500).send('Missing property of product')
       return
     }
@@ -16,6 +16,8 @@ const createProduct = function (ProductModel) {
       desc: body.desc,
       price: body.price,
       unit: body.unit,
+      quantity: body.quantity,
+      bought: 0,
       img: body.img
     })
 

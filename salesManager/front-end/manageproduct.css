@@ -7,6 +7,10 @@
     margin: 0
 }
 
+body {
+    position: relative;
+}
+
 /* Nav bar */
 .nav-bar {
     background-image: var(--nav-bar-background-image);
@@ -58,7 +62,6 @@
     min-width: 400px;
     max-width: 70%;
     margin: auto;
-
 }
 
 /* option-bar */
@@ -66,7 +69,7 @@
     margin-top: 40px;
 }
 
-.purchase-btn {
+.create-btn {
     float: right;
     margin: 0 10px
 }
@@ -136,3 +139,91 @@
     text-align: center;
     border: var(--border);
 }
+
+/* Form */
+.background-form {
+    display: none;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+
+}
+
+.background-form .background {
+    background-color: black;
+    opacity: 0.2;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+}
+
+.form-container {
+    position: relative;
+    display: flex;
+    min-width: 600px;
+    max-width: 700px;
+    margin: auto;
+}
+
+form {
+    display: flex;
+    width: 600px;
+    flex-direction: column;
+    border: solid 1px lightblue;
+    padding: 20px;
+    background-color: white;
+    position: fixed;
+    top: 10%
+}
+
+form section {
+    display: flex;
+}
+
+form header h2 {
+    width: 300px;
+    margin: 5px auto
+}
+
+.text-container {
+    flex-basis: 70%;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.form-group label {
+    font-weight: 700;
+}
+
+
+.img-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.img-container label {
+    font-weight: 700;
+}
+
+
+.img-container img {
+    height: 250px;
+}
+
+.img-container input {
+    margin: 5px 0
+}
+
+.edit-form {
+    display: none;
+}
+
+
