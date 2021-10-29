@@ -13,10 +13,11 @@ const manageOrders = function (OrdersModel, ProductModel) {
       const item = {}
 
       for (let key of Object.keys(body.items)) {
+        /* Tìm để lấy thông tin quantity và bought của sản phẩm */
         let product = await ProductModel.findById(key).exec()
-        
-        if (product.quantity == 0) {
-          res.status.json({
+        /* Nếu sản phẩm vẫn còn hàng thì mới được phép mua hàng */
+        if (product.quantity < body.items[key].quantity) {
+          res.status(500).json({
             message: 'Mặt hàng này đã hết'
           })
           return

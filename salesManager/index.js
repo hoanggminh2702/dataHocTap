@@ -288,7 +288,7 @@ async function main () {
   app.get('/api/getOrders', manageOrders(OrdersModel, ProductModel).getOrders)
   /* Tạo ra 1 hoá đơn */
   app.post('/api/createBill', authen, manageOrders(OrdersModel, ProductModel).createBill)
-
+  /* Tính tổng doanh thu */
   app.get('/api/totalRevenue', async function (req, res) {
     let start = new Date()
     start.setHours(0, 0, 0, 0)
