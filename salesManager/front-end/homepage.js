@@ -206,10 +206,13 @@ async function renderProducts (page) {
       const quantity =
         user.items[product['_id']] != undefined
           ? user.items[product['_id']].quantity
-          : ''
+          : 0
+      let left = product.quantity - quantity 
       productHTML += `
             <div id="${product['_id']}" class="product-group">
-                <div class="product" ${style}>${quantity}</div>
+            <div class="product-info" style="text-align: center">Còn lại: <span class="left">${left}</span></div>
+            <div class="product-info" style="text-align: center">Đã mua: <span class="bought">${quantity}</span></div>
+                <div class="product" ${style}></div>
                 <div class="product-info"><p>${product.name}</p></div>
                 <div class="product-info"><p>${product.desc}</p></div>
                 <button class="buy-btn">Buy ${convertPrice}vnd</button>
@@ -253,27 +256,38 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
         const currentProducts = allBuyBtns[i].parentElement.querySelector(
           '.product'
         )
-        if (currentCart[currentItem]) {
-          currentCart[currentItem].quantity += 1
-          currentCart[currentItem].totalPrice += Number(currentItemPrice)
-        } else {
-          currentCart[currentItem] = {
-            name: itemInfo.data.name,
-            price: currentItemPrice,
-            quantity: 1,
-            totalPrice: Number(currentItemPrice)
+        if (Number(currentProducts.parentElement.querySelector('span.left').innerHTML) > 0) {
+          if (currentCart[currentItem]) {
+            currentCart[currentItem].quantity += 1
+            currentCart[currentItem].totalPrice += Number(currentItemPrice)
+          } else {
+            currentCart[currentItem] = {
+              name: itemInfo.data.name,
+              price: currentItemPrice,
+              quantity: 1,
+              totalPrice: Number(currentItemPrice)
+            }
+            console.log(currentCart)
           }
-          console.log(currentCart)
+          // currentProducts.innerHTML =
+          //   currentCart[currentItem] != undefined
+          //     ? currentCart[currentItem].quantity
+          //     : ''
+          let left = currentProducts.parentElement.querySelector('span.left').innerHTML
+          currentProducts.parentElement.querySelector('span.left').innerHTML = currentCart[currentItem] != undefined
+          ? left - 1
+          : (currentProducts.parentElement.querySelector('span.bought').innerHTML == '0' ? Number(left) : Number(left) - 1)
+
+          currentProducts.parentElement.querySelector('span.bought').innerHTML = currentCart[currentItem] != undefined
+          ? currentCart[currentItem].quantity
+          : 0
+          user.items = currentCart
+  
+          localStorage.setItem('user', JSON.stringify(user))
+          console.log(JSON.parse(localStorage.getItem('user')).items)
+        } else {
+          alert('Hiện đã hết hàng')
         }
-        currentProducts.innerHTML =
-          currentCart[currentItem] != undefined
-            ? currentCart[currentItem].quantity
-            : ''
-
-        user.items = currentCart
-
-        localStorage.setItem('user', JSON.stringify(user))
-        console.log(JSON.parse(localStorage.getItem('user')).items)
       } else {
         confirmRedirect(
           `
@@ -298,11 +312,15 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
       } else {
         alert('Bạn chưa mua món hàng này')
       }
-
-      currentProducts.innerHTML =
+      let left = currentProducts.parentElement.querySelector('span.left').innerHTML
+      currentProducts.parentElement.querySelector('span.left').innerHTML =
         currentCart[currentItem] != undefined
-          ? currentCart[currentItem].quantity
-          : ''
+          ? Number(left) + 1
+          : (currentProducts.parentElement.querySelector('span.bought').innerHTML == '0' ? Number(left) : Number(left) + 1)
+          currentProducts.parentElement.querySelector('span.bought').innerHTML =
+          currentCart[currentItem] != undefined
+            ? currentCart[currentItem].quantity
+            : 0
       console.log(currentProducts.innerHTML)
 
       user.items = currentCart
