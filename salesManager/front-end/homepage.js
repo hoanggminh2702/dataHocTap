@@ -24,6 +24,8 @@ currentPage = JSON.parse(localStorage.getItem('currentPage'))
 
 var take = 10
 
+var price = ''
+
 var currentTotalProduct = ''
 
 var user = JSON.parse(localStorage.getItem('user'))
@@ -77,6 +79,7 @@ if (user == null || user.username == undefined) {
     })
 }
 
+/* Check is user admin or not */
 axios
   .post(
     `${BASE_URL}/api/verifyAdmin`,
@@ -149,6 +152,12 @@ document.querySelector('li:nth-child(2)').onclick = function (e) {
   }
 }
 
+/* Handle price filter product */
+document.querySelector('select').onchange = function (e) {
+  price = e.currentTarget.value
+  renderProducts(1)
+}
+
 /* Handle onclick purchase button */
 document.querySelector('.purchase-btn').onclick = function (e) {
   /* Kiểm tra user hợp lệ và giỏ hàng không trống thì mới chuyển sang phần orders */
@@ -196,7 +205,7 @@ async function renderProducts (page) {
   let productHTML = ''
   try {
     const products = await axios.get(
-      `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
+      `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}&price=${price}`
     )
     currentTotalProduct = products.data.countDocuments
     products.data.items.forEach(function (product) {
@@ -207,7 +216,7 @@ async function renderProducts (page) {
         user.items[product['_id']] != undefined
           ? user.items[product['_id']].quantity
           : 0
-      let left = product.quantity - quantity 
+      let left = product.quantity - quantity
       productHTML += `
             <div id="${product['_id']}" class="product-group">
             <div class="product-info" style="text-align: center">Còn lại: <span class="left">${left}</span></div>
@@ -257,7 +266,11 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
           '.product'
         )
         /* Nếu còn lại > 0 thì mới được quyền mua tiếp */
-        if (Number(currentProducts.parentElement.querySelector('span.left').innerHTML) > 0) {
+        if (
+          Number(
+            currentProducts.parentElement.querySelector('span.left').innerHTML
+          ) > 0
+        ) {
           if (currentCart[currentItem]) {
             currentCart[currentItem].quantity += 1
             currentCart[currentItem].totalPrice += Number(currentItemPrice)
@@ -274,16 +287,22 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
           //   currentCart[currentItem] != undefined
           //     ? currentCart[currentItem].quantity
           //     : ''
-          let left = currentProducts.parentElement.querySelector('span.left').innerHTML
-          currentProducts.parentElement.querySelector('span.left').innerHTML = currentCart[currentItem] != undefined
-          ? left - 1
-          : (currentProducts.parentElement.querySelector('span.bought').innerHTML == '0' ? Number(left) : Number(left) - 1)
+          let left = currentProducts.parentElement.querySelector('span.left')
+            .innerHTML
+          currentProducts.parentElement.querySelector('span.left').innerHTML =
+            currentCart[currentItem] != undefined
+              ? left - 1
+              : currentProducts.parentElement.querySelector('span.bought')
+                  .innerHTML == '0'
+              ? Number(left)
+              : Number(left) - 1
 
-          currentProducts.parentElement.querySelector('span.bought').innerHTML = currentCart[currentItem] != undefined
-          ? currentCart[currentItem].quantity
-          : 0
+          currentProducts.parentElement.querySelector('span.bought').innerHTML =
+            currentCart[currentItem] != undefined
+              ? currentCart[currentItem].quantity
+              : 0
           user.items = currentCart
-  
+
           localStorage.setItem('user', JSON.stringify(user))
           console.log(JSON.parse(localStorage.getItem('user')).items)
         } else {
@@ -313,15 +332,19 @@ document.querySelector('.product-container').onmouseenter = async function (e) {
       } else {
         alert('Bạn chưa mua món hàng này')
       }
-      let left = currentProducts.parentElement.querySelector('span.left').innerHTML
+      let left = currentProducts.parentElement.querySelector('span.left')
+        .innerHTML
       currentProducts.parentElement.querySelector('span.left').innerHTML =
         currentCart[currentItem] != undefined
           ? Number(left) + 1
-          : (currentProducts.parentElement.querySelector('span.bought').innerHTML == '0' ? Number(left) : Number(left) + 1)
-          currentProducts.parentElement.querySelector('span.bought').innerHTML =
-          currentCart[currentItem] != undefined
-            ? currentCart[currentItem].quantity
-            : 0
+          : currentProducts.parentElement.querySelector('span.bought')
+              .innerHTML == '0'
+          ? Number(left)
+          : Number(left) + 1
+      currentProducts.parentElement.querySelector('span.bought').innerHTML =
+        currentCart[currentItem] != undefined
+          ? currentCart[currentItem].quantity
+          : 0
       console.log(currentProducts.innerHTML)
 
       user.items = currentCart

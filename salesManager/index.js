@@ -258,7 +258,12 @@ async function main () {
   )
 
   /* Update Product */
-  app.post('/api/updateProduct', authen, checkAdmin, manageProduct(ProductModel).updateProduct)
+  app.post(
+    '/api/updateProduct',
+    authen,
+    checkAdmin,
+    manageProduct(ProductModel).updateProduct
+  )
 
   /* Delete Product */
   app.post(
@@ -287,9 +292,13 @@ async function main () {
   /* Lấy danh sách các hoá đơn */
   app.get('/api/getOrders', manageOrders(OrdersModel, ProductModel).getOrders)
   /* Tạo ra 1 hoá đơn */
-  app.post('/api/createBill', authen, manageOrders(OrdersModel, ProductModel).createBill)
+  app.post(
+    '/api/createBill',
+    authen,
+    manageOrders(OrdersModel, ProductModel).createBill
+  )
   /* Tính tổng doanh thu */
-  app.get('/api/totalRevenue',authen, checkAdmin, async function (req, res) {
+  app.get('/api/totalRevenue', authen, checkAdmin, async function (req, res) {
     let start = new Date()
     start.setHours(0, 0, 0, 0)
     let endTime = new Date()

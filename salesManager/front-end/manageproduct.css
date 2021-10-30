@@ -67,7 +67,7 @@ body {
 
 /* option-bar */
 .option-bar {
-    margin-top: 40px;
+    margin-top: 25px;
 }
 
 .create-btn {
@@ -132,11 +132,10 @@ body {
     width: fit-content;
     margin: auto;
     display: flex;
-    flex-direction: column;
     padding-bottom: 15px;
     position: fixed;
-    top: 100px;
-    left: 19%;
+    bottom: 5%;
+    left: 40%;
 }
 
 .page {
@@ -144,6 +143,7 @@ body {
     height: 25px;
     text-align: center;
     border: var(--border);
+    background-color: blanchedalmond;
 }
 
 /* Form */
@@ -238,7 +238,7 @@ form header h2 {
 
 .report-table {
     max-width: 600px;
-    position: absolute;
+    position: fixed;
     top: 15px;
     padding: 15px;
     background-color: white;

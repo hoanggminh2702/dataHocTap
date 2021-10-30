@@ -21,6 +21,8 @@ var currentPage = 1
 
 var take = 10
 
+var price
+
 /* Kiểm tra xem có phải là admin không */
 axios
   .post(
@@ -65,14 +67,10 @@ function confirmRedirect (message, path, callBack, cancelCallback) {
   }
 }
 
-document.querySelector('ul li:nth-child(2)').onclick = async function(e) {
+document.querySelector('ul li:nth-child(2)').onclick = async function (e) {
   document.querySelector('.background-form').style.display = `block`
-  document.querySelector(
-    `.background-form .create-form`
-  ).style.display = `none`
-  document.querySelector(
-    `.background-form .edit-form`
-  ).style.display = `none`
+  document.querySelector(`.background-form .create-form`).style.display = `none`
+  document.querySelector(`.background-form .edit-form`).style.display = `none`
   document.querySelector('.report-table').style.display = `block`
 
   let revenue = await axios.get(`${BASE_URL}/api/totalRevenue`, {
@@ -81,21 +79,31 @@ document.querySelector('ul li:nth-child(2)').onclick = async function(e) {
     }
   })
   console.log(revenue)
-  document.querySelector('.report-table .total-revenue h3').innerHTML = `${(revenue.data.revenue.toLocaleString())} </br></br>`
+  document.querySelector(
+    '.report-table .total-revenue h3'
+  ).innerHTML = `${revenue.data.revenue.toLocaleString()} </br></br>`
   let bestSeller = revenue.data.bestSeller
-  document.querySelector('.report-table .best-seller').innerHTML = `<h3>Sản phẩm bán chạy nhất tháng là: ${bestSeller.product}, bán được tổng cộng ${bestSeller.quantity}, tổng doanh thu là ${(bestSeller.totalRevenueOfProduct.toLocaleString())} vnđ</h3></br>`
-  document.querySelector('.report-table .top10-product').innerHTML =`
+  document.querySelector(
+    '.report-table .best-seller'
+  ).innerHTML = `<h3>Sản phẩm bán chạy nhất tháng là: ${
+    bestSeller.product
+  }, bán được tổng cộng ${
+    bestSeller.quantity
+  }, tổng doanh thu là ${bestSeller.totalRevenueOfProduct.toLocaleString()} vnđ</h3></br>`
+  document.querySelector('.report-table .top10-product').innerHTML = `
   <h3>Top 10 sản phẩm của tháng là:</h3>`
   let top10 = revenue.data['top10Products']
   let i = 1
-  top10.forEach(function(product) {
+  top10.forEach(function (product) {
     document.querySelector('.report-table .top10-product').innerHTML += `
-    <h4>${i}. ${product.product}: Bán được ${product.quantity} sản phẩm, tổng doanh thu là ${(product.totalRevenueOfProduct.toLocaleString())} vnđ</h4>`
+    <h4>${i}. ${product.product}: Bán được ${
+      product.quantity
+    } sản phẩm, tổng doanh thu là ${product.totalRevenueOfProduct.toLocaleString()} vnđ</h4>`
     i++
   })
 }
 
-document.querySelector('.report-table button').onclick = function(e) {
+document.querySelector('.report-table button').onclick = function (e) {
   document.querySelector('.background-form').style.display = `none`
   document.querySelector('.report-table').style.display = `none`
 }
@@ -137,7 +145,7 @@ async function renderProducts (page) {
   let productHTML = ''
   try {
     const products = await axios.get(
-      `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}`
+      `${GET_PRODUCT_URL}?search=${search}&take=${take}&page=${page}&price=${price}`
     )
     currentTotalProduct = products.data.countDocuments
     products.data.items.forEach(function (product) {
@@ -168,6 +176,10 @@ async function renderProducts (page) {
 }
 renderProducts(1)
 
+document.querySelector('.nav-bar-logo img').onclick = function (e) {
+  window.location.href = './homepage.html'
+}
+
 /* Search */
 document.querySelector('.search-bar button').onclick = function (e) {
   e.stopPropagation()
@@ -197,9 +209,15 @@ function switchDisplay (form, displayType) {
   ).style.display = `${displayType}`
 }
 
-/* Display Create Form */
+/* Display Create Form When click to create button */
 document.querySelector('button.create-btn').onclick = function (e) {
   switchDisplay('create-form', 'block')
+}
+
+/* Handle price filter product */
+document.querySelector('select').onchange = function (e) {
+  price = e.currentTarget.value
+  renderProducts(1)
 }
 
 /* Validate and create product */
@@ -257,6 +275,12 @@ document.querySelector('button.create-btn').onclick = function (e) {
           }
         )
         alert('Create Product Successfully', addProduct)
+        for (let i = 0; i < allInputCreate.length; i++) {
+          allInputCreate[i].value = null
+        }
+        document.forms[0]
+          .querySelector('.img-container img')
+          .setAttribute('src', 'abc')
         renderProducts(Math.ceil((currentTotalProduct + 1) / take))
       } catch (err) {
         console.log(err)
@@ -295,8 +319,15 @@ for (let i = 0; i < 2; i++) {
 
 {
   for (let i = 0; i < 2; i++) {
-    document.forms[i].querySelector('.img-container img').onerror = function(e) {
-      e.currentTarget.parentElement.querySelector('img').setAttribute('src', 'https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png')
+    document.forms[i].querySelector('.img-container img').onerror = function (
+      e
+    ) {
+      e.currentTarget.parentElement
+        .querySelector('img')
+        .setAttribute(
+          'src',
+          'https://keiclubmiennam.com/wp-content/uploads/2021/06/noimageavailable.png'
+        )
     }
   }
 }
@@ -333,27 +364,32 @@ document.querySelector('.product-container').onmouseenter = function (e) {
       allInputEdit[4].value = product.data.unit
       allInputEdit[5].value = product.data.quantity
       allInputEdit[6].value = product.data.img
-      
+
       document.forms[1].editBtn.onclick = async function (e) {
         if (checkSubmit(allInputEdit)) {
           let payloadProduct = {
             id: product.data['_id'],
-              name: allInputEdit[1].value,
-              desc: allInputEdit[2].value,
-              price: allInputEdit[3].value,
-              unit: allInputEdit[4].value,
-              quantity: allInputEdit[5].value,
-              img: allInputEdit[6].value
+            name: allInputEdit[1].value,
+            desc: allInputEdit[2].value,
+            price: allInputEdit[3].value,
+            unit: allInputEdit[4].value,
+            quantity: allInputEdit[5].value,
+            img: allInputEdit[6].value
           }
           try {
-            let updatedProduct = await axios.post(`${BASE_URL}/api/updateProduct`, payloadProduct, {
-              headers: {
-                Authorization: `Bearer 1 ${user.token}`
+            let updatedProduct = await axios.post(
+              `${BASE_URL}/api/updateProduct`,
+              payloadProduct,
+              {
+                headers: {
+                  Authorization: `Bearer 1 ${user.token}`
+                }
               }
-            })
-            alert(`Bạn vừa Update thành công sản phẩm ${updatedProduct.data.product.name}`)
+            )
+            alert(
+              `Bạn vừa Update thành công sản phẩm ${updatedProduct.data.product.name}`
+            )
             renderProducts(currentPage)
-
           } catch (err) {
             console.log(err)
           }

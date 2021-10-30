@@ -63,7 +63,7 @@
 
 /* option-bar */
 .option-bar {
-    margin-top: 40px;
+    margin-top: 25px;
 }
 
 .purchase-btn {
@@ -128,11 +128,10 @@
     width: fit-content;
     margin: auto;
     display: flex;
-    flex-direction: column;
     padding-bottom: 15px;
     position: fixed;
-    top: 100px;
-    left: 19%;
+    bottom: 5%;
+    left: 40%;
 }
 
 .page {
@@ -140,4 +139,5 @@
     height: 25px;
     text-align: center;
     border: var(--border);
+    background-color: blanchedalmond;
 }

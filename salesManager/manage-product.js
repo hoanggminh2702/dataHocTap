@@ -61,7 +61,7 @@ const updateProduct = function (ProductModel) {
       return
     }
     const filter = { _id: body.id }
-    const update = { 
+    const update = {
       name: body.name,
       desc: body.desc,
       price: body.price,
@@ -75,12 +75,12 @@ const updateProduct = function (ProductModel) {
         new: true
       })
       res.status(200).json({
-        message: "Update Successfully",
+        message: 'Update Successfully',
         product: updateProduct
       })
     } catch (err) {
       res.status(500).json({
-        message: "Update fail"
+        message: 'Update fail'
       })
     }
   }
@@ -93,11 +93,39 @@ const getProducts = function (ProductModel) {
     const limit = Number(req.query.take) ?? 15
     let skip = req.query.page ?? 0
 
+    let price = req.query.price ?? ''
+
     const search = req.query.search ?? ''
 
     if (skip != '') skip = (skip - 1) * limit
 
     const filter = {}
+
+    if (price != null || price != '')
+      switch (price) {
+        case '1':
+          filter.price = {
+            $lt: 50000
+          }
+          break
+        case '2':
+          filter.price = {
+            $lt: 500000
+          }
+          break
+        case '3':
+          filter.price = {
+            $lt: 5000000
+          }
+          break
+        case '4':
+          filter.price = {
+            $gt: 5000000
+          }
+          break
+        default:
+          break
+      }
 
     if (search != '') {
       filter.name = new RegExp(search, 'i')
