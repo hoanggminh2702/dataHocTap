@@ -103,7 +103,7 @@ async function main () {
       if (err) {
         res.status(500).json({
           message: 'Phiên đăng nhập hết hạn',
-          username: data.username
+          username: data?.username
         })
       } else {
         if (await UserModel.findById(data['_id'])) {
