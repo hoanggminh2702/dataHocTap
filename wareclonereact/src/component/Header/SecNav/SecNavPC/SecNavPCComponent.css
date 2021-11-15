@@ -1,0 +1,37 @@
+/* PC sec nav */
+.pc-sec-nav__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pc-sec-nav__menu-container {
+}
+.pc-sec-nav__menu-list {
+  display: flex;
+  justify-content: left;
+  margin: 0 auto;
+}
+.pc-sec-nav__menu-btn {
+  padding: 16px 0;
+  width: 180px;
+  cursor: pointer;
+}
+
+.menu__btn--hover:hover span {
+  opacity: 0.7;
+}
+
+.pc-sec-nav__menu-btn-title {
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  transition: all ease 0.4s;
+}
+
+.pc-sec-nav__cart {
+  display: none;
+}
+.pc-sec-nav__cart-link {
+}
+.pc-sec-nav__cart-icon {
+  color: rgb(236, 59, 28);
+}

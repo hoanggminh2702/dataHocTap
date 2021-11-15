@@ -1,0 +1,17 @@
+.box {
+  height: 200px;
+  width: 500px;
+  background-color: rosybrown;
+  animation: fadeIn ease-in 0.2s;
+}
+
+@keyframes fadeIn {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(100%);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,21 @@
+footer {
+  margin: 48px 0;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 765px) {
+  .info {
+    flex-direction: column;
+  }
+  .info__contact {
+    margin-bottom: 16px;
+  }
+
+  .info__follow {
+    width: 100%;
+  }
+}

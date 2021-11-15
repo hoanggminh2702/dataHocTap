@@ -1,0 +1,81 @@
+/* Info Follow */
+.info__follow {
+  width: 245px;
+}
+
+.info__follow-title {
+}
+
+.info__follow-social {
+}
+
+.info__follow-social-list {
+  list-style-type: none;
+}
+
+.info__follow-social-item {
+  display: inline-block;
+}
+
+.info__follow-social-item + .info__follow-social-item {
+  margin-left: 8px;
+}
+
+.info__follow-social-link {
+  font-size: 1.8rem;
+  text-decoration: none;
+  color: var(--black-color);
+  transition: color ease-in 0.1s;
+}
+
+.info__follow-social-link-facebook-icon:hover {
+  color: #3399cc;
+}
+.info__follow-social-link-instagram-icon:hover {
+  color: #ff6633;
+}
+.info__follow-social-link-google-icon:hover {
+  color: #ff33cc;
+}
+.info__follow-social-link-youtube-icon:hover {
+  color: #cc0000;
+}
+
+.info__follow-newsletter {
+}
+
+.info__follow-newsletter-title {
+}
+
+.info__follow-newsletter-input-group {
+  display: flex;
+  border: 1px solid gray;
+}
+
+.info__follow-newsletter-input {
+  font-size: 1.4rem;
+  border: none;
+  margin: 0;
+  height: 36px;
+  flex: 1;
+}
+
+.info__follow-newsletter-btn {
+  display: flex;
+  width: 36px;
+  border: 1px 1px 1px 0 solid var(--text-color);
+  align-items: center;
+  justify-content: center;
+}
+
+.info__follow-newsletter-btn i {
+  font-size: 1.8rem;
+}
+
+.info__follow-end {
+  margin-top: 16px;
+}
+
+.info__follow-end-paragragh {
+  font-size: 1.4rem;
+}

@@ -1,0 +1,34 @@
+.info__contact {
+  flex: 1;
+}
+
+.info__contact-title {
+}
+
+.info__contact-desc {
+}
+
+.info__contact-desc-list {
+  list-style-type: none;
+}
+
+.info__contact-desc-item {
+  display: flex;
+  align-items: center;
+  line-height: 2.6rem;
+  font-size: 1.6rem;
+  margin-top: 12px;
+  font-weight: 400;
+}
+
+.info__contact-desc-item-title {
+  font-size: 1.65rem;
+  font-weight: 600;
+}
+
+.info__contact-desc-icon,
+.info__contact-desc-detail {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 2rem;
+}

@@ -1,0 +1,22 @@
+/* Sec-nav */
+
+@media (min-width: 1024px) {
+  .mobile-sec-nav__menu-container {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .pc-sec-nav__container {
+    display: none;
+  }
+  .menu__btn--hover:hover {
+    background-color: black;
+  }
+  .menu__btn--hover:hover span {
+    color: var(--white-color);
+  }
+  .menu__btn--hover:hover i {
+    color: var(--white-color);
+  }
+}
