@@ -127,7 +127,7 @@ const RegisterComponent = () => {
         </button>
       </form>
       <div className={clsx(styles["create-link-container"])}>
-        <a href="#" className={clsx(styles["create-link"])}>
+        <a href="./login" className={clsx(styles["create-link"])}>
           Already have an account? Log in instead!
         </a>
       </div>

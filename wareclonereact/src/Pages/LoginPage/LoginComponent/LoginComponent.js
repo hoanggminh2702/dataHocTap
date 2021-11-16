@@ -86,7 +86,7 @@ const LoginComponent = () => {
         </button>
       </form>
       <div className={clsx(styles["create-link-container"])}>
-        <a href="#" className={clsx(styles["create-link"])}>
+        <a href="./register" className={clsx(styles["create-link"])}>
           No account? Create one here
         </a>
       </div>
