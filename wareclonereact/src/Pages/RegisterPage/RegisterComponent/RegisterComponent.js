@@ -1,26 +1,32 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from "clsx";
+import React from "react";
+import { useState } from "react";
 import {
+  fullnameCheck,
   passwordCheck,
-  usernameCheck,
   showValidateMessage,
+  usernameCheck,
 } from "../../../utils/validate";
-import React, { useState } from "react";
-import styles from "./LoginComponent.module.css";
 
-const LoginComponent = () => {
+import styles from "../../LoginPage/LoginComponent/LoginComponent.module.css";
+
+const RegisterComponent = () => {
   const [user, setUser] = useState({
     username: "",
+    fullname: "",
     password: "",
+    address: "",
   });
 
   const [message, setMessage] = useState({
     username: "",
+    fullname: "",
     password: "",
   });
 
   const handleOnchange = (e) => {
-    if (message[e.target.name] !== "") {
+    if (message[e.target.name] !== "" && e.target.name !== "fullname") {
       console.log(e);
       setMessage({ ...message, [e.target.name]: "" });
     }
@@ -36,18 +42,21 @@ const LoginComponent = () => {
     showValidateMessage(e.target, setMessage);
   };
 
-  // Đoạn này target là btn do đó không trỏ vào các ô input nên phải làm thêm 1 bước nữa
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (usernameCheck(user.username) && passwordCheck(user.password)) {
-      alert("Login Thành Công");
+    console.log(e);
+    if (
+      usernameCheck(user.username) &&
+      passwordCheck(user.password) &&
+      fullnameCheck(user.fullname)
+    ) {
+      alert("Đăng ký Thành Công");
     } else {
       Array.from(e.target.querySelectorAll("input")).forEach((input) => {
         showValidateMessage(input, setMessage);
       });
     }
   };
-
   return (
     <div className={clsx(styles["form-container"])}>
       <form
@@ -55,6 +64,7 @@ const LoginComponent = () => {
         onSubmit={handleSubmit}
         onBlur={handleOnBlur}
       >
+        {/* username  */}
         <div className={clsx(styles["form-group"])}>
           <label htmlFor="username" className={clsx(styles.label)}>
             Username
@@ -68,6 +78,22 @@ const LoginComponent = () => {
           />
         </div>
         <p className={clsx(styles.message)}>{message.username}</p>
+        {/* fullname */}
+        <div className={clsx(styles["form-group"])}>
+          <label htmlFor="fullname" className={clsx(styles.label)}>
+            Full Name
+          </label>
+          <input
+            className={clsx(styles.input, styles["input-focus"])}
+            value={user.fullname}
+            type="text"
+            name="fullname"
+            onChange={handleOnchange}
+          />
+        </div>
+        <p className={clsx(styles.message)}>{message.fullname}</p>
+
+        {/* password  */}
         <div className={clsx(styles["form-group"])}>
           <label htmlFor="password" className={clsx(styles.label)}>
             Password
@@ -81,17 +107,32 @@ const LoginComponent = () => {
           />
         </div>
         <p className={clsx(styles.message)}>{message.password}</p>
+
+        {/* address  */}
+        <div className={clsx(styles["form-group"])}>
+          <label htmlFor="address" className={clsx(styles.label)}>
+            Address
+          </label>
+          <input
+            className={clsx(styles.input, styles["input-focus"])}
+            value={user.address}
+            type="text"
+            name="address"
+            onChange={handleOnchange}
+          />
+        </div>
+        <p className={clsx(styles.message)}></p>
         <button className={clsx(styles.btn)}>
           <span>Sign in</span>
         </button>
       </form>
       <div className={clsx(styles["create-link-container"])}>
         <a href="#" className={clsx(styles["create-link"])}>
-          No account? Create one here
+          Already have an account? Log in instead!
         </a>
       </div>
     </div>
   );
 };
 
-export default LoginComponent;
+export default RegisterComponent;

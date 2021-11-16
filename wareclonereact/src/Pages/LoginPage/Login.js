@@ -6,8 +6,8 @@ const Login = () => {
     <div className="container-width">
       <header>
         <h1 className={styles.title}>Login to your account</h1>
-        <LoginComponent />
       </header>
+      <LoginComponent />
     </div>
   );
 };

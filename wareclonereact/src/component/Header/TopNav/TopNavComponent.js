@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "./topnav.css";
 import Search from "../../Search/Search.js";
+
 const TopNavComponent = () => {
   const [isSearch, setIsSearch] = useState(false);
   return (
@@ -10,7 +11,7 @@ const TopNavComponent = () => {
         <div className="top-nav__logo-container">
           <img
             src="https://d293e64rvqt2z5.cloudfront.net/ps17/demo14/img/demo14-logo-160206929121.jpg"
-            alt=""
+            alt="Homepage"
             className="top-nav__logo-img"
           />
         </div>

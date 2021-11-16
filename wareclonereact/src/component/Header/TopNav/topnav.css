@@ -15,6 +15,7 @@
 /* Logo */
 
 .top-nav__logo-container {
+  cursor: pointer;
 }
 
 .top-nav__logo-img {

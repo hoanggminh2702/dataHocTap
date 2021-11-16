@@ -45,18 +45,18 @@ const InfoFollowComponent = () => {
           <li className="info__follow-social-item">
             <a
               href=""
-              className="info__follow-social-link-google-icon info__follow-social-link"
+              className="info__follow-social-link-youtube-icon info__follow-social-link"
             >
-              <i className="fab fa-google-plus-g"></i>
+              <i className="fab fa-youtube"></i>
             </a>
           </li>
 
           <li className="info__follow-social-item">
             <a
               href=""
-              className="info__follow-social-link-youtube-iconinfo__follow-social-link"
+              className="info__follow-social-link-google-icon info__follow-social-link"
             >
-              <i className="fab fa-youtube"></i>
+              <i className="fab fa-google-plus-g"></i>
             </a>
           </li>
         </ul>
