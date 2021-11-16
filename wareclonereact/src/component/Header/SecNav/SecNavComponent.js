@@ -4,7 +4,7 @@ import "./secnav.css";
 
 const SecNavComponent = () => {
   return (
-    <section className="sec-nav">
+    <section className="sec-nav sec-nav--shadow">
       <SecNavPCComponent />
       <SecNavMobileComponent />
     </section>

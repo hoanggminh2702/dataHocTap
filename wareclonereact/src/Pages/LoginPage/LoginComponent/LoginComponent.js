@@ -1,51 +1,125 @@
 /* eslint-disable jsx-a11y/anchor-has-content */
 import clsx from "clsx";
+import { passwordCheck, usernameCheck } from "../../../utils/validate";
 import React, { useState } from "react";
-import Input from "../../../component/Input/Input";
 import styles from "./LoginComponent.module.css";
 
 const LoginComponent = () => {
-  const [inputValue, setInputValue] = useState("");
-  const handleOnChange = (e) => {
-    setInputValue(e.target.value);
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+
+  const [message, setMessage] = useState({
+    username: "",
+    password: "",
+  });
+
+  const showValidateMessage = (e) => {
+    switch (e.target.name) {
+      case "username":
+        if (!usernameCheck(e.target.value)) {
+          setMessage((prev) => {
+            return {
+              ...prev,
+              [e.target.name]: `${e.target.name} không hợp lệ`,
+            };
+          });
+        } else {
+          setMessage((prev) => {
+            return {
+              ...prev,
+              [e.target.name]: "",
+            };
+          });
+        }
+        break;
+      case "password":
+        if (!passwordCheck(e.target.value)) {
+          setMessage((prev) => {
+            return {
+              ...prev,
+              [e.target.name]: `${e.target.name} không hợp lệ`,
+            };
+          });
+        } else {
+          setMessage((prev) => {
+            return {
+              ...prev,
+              [e.target.name]: "",
+            };
+          });
+        }
+        break;
+      default:
+    }
   };
+
+  const handleOnchange = (e) => {
+    if (message[e.target.name] !== "") {
+      console.log(e);
+      setMessage({ ...message, [e.target.name]: "" });
+    }
+    setUser((prev) => {
+      return {
+        ...prev,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
+
+  const handleOnBlur = (e) => {
+    showValidateMessage(e);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (usernameCheck(user.username) && passwordCheck(user.password)) {
+      alert("Login Thành Công");
+    } else {
+      showValidateMessage(e);
+    }
+  };
+
   return (
-    <div className="form-container">
-      <form action="">
-        <div className="form-group">
-          <label htmlFor="Email" className="email-label">
-            Email
+    <div className={clsx(styles["form-container"])}>
+      <form
+        className={clsx(styles.form)}
+        onSubmit={handleSubmit}
+        onBlur={handleOnBlur}
+      >
+        <div className={clsx(styles["form-group"])}>
+          <label htmlFor="username" className={clsx(styles.label)}>
+            Username
           </label>
-          <Input
+          <input
+            className={clsx(styles.input, styles["input-focus"])}
+            value={user.username}
             type="text"
-            rule="email"
-            name="input"
-            onChange={handleOnChange}
-            required
-            className={{
-              input: clsx(styles["email-input"]),
-            }}
+            name="username"
+            onChange={handleOnchange}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="Password" className="password-label">
+        <p className={clsx(styles.message)}>{message.username}</p>
+        <div className={clsx(styles["form-group"])}>
+          <label htmlFor="password" className={clsx(styles.label)}>
             Password
           </label>
-          <Input
+          <input
+            className={clsx(styles.input, styles["input-focus"])}
+            value={user.password}
             type="password"
-            rule="password"
             name="password"
-            onChange={handleOnChange}
-            required
-            className={{
-              input: clsx(styles["email-input"]),
-            }}
+            onChange={handleOnchange}
           />
         </div>
-        <button className="login-btn">Sign in</button>
+        <p className={clsx(styles.message)}>{message.password}</p>
+        <button className={clsx(styles.btn)}>
+          <span>Sign in</span>
+        </button>
       </form>
-      <div className="create-link-container">
-        <a href="#" className="create-link">
+      <div className={clsx(styles["create-link-container"])}>
+        <a href="#" className={clsx(styles["create-link"])}>
           No account? Create one here
         </a>
       </div>

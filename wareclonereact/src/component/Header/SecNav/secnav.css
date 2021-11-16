@@ -1,5 +1,9 @@
 /* Sec-nav */
 
+.sec-nav--shadow {
+  box-shadow: 0 10px 8px -8px rgb(226, 225, 225);
+}
+
 @media (min-width: 1024px) {
   .mobile-sec-nav__menu-container {
     display: none;

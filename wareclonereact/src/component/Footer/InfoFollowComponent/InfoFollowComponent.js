@@ -27,8 +27,7 @@ const InfoFollowComponent = () => {
           <li className="info__follow-social-item">
             <a
               href="#"
-              className="info__follow-social-link-facebook-icon
-                                            info__follow-social-link"
+              className="info__follow-social-link-facebook-icon info__follow-social-link"
             >
               <i className="fab fa-facebook-f"></i>
             </a>
@@ -37,8 +36,7 @@ const InfoFollowComponent = () => {
           <li className="info__follow-social-item">
             <a
               href=""
-              className="info__follow-social-link-instagram-icon
-                                            info__follow-social-link"
+              className="info__follow-social-link-instagram-icon info__follow-social-link"
             >
               <i className="fab fa-instagram"></i>
             </a>
@@ -47,8 +45,7 @@ const InfoFollowComponent = () => {
           <li className="info__follow-social-item">
             <a
               href=""
-              className="info__follow-social-link-google-icon
-                                            info__follow-social-link"
+              className="info__follow-social-link-google-icon info__follow-social-link"
             >
               <i className="fab fa-google-plus-g"></i>
             </a>
@@ -57,8 +54,7 @@ const InfoFollowComponent = () => {
           <li className="info__follow-social-item">
             <a
               href=""
-              className="info__follow-social-link-youtube-icon
-                                            info__follow-social-link"
+              className="info__follow-social-link-youtube-iconinfo__follow-social-link"
             >
               <i className="fab fa-youtube"></i>
             </a>
@@ -66,10 +62,7 @@ const InfoFollowComponent = () => {
         </ul>
       </div>
       <div className="info__follow-newsletter">
-        <h1
-          className="info__follow-newsletter-title
-                                    line-height-s"
-        >
+        <h1 className="info__follow-newsletter-title line-height-s">
           Newsletter
         </h1>
         <div className="info__follow-newsletter-input-group">
