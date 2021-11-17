@@ -19,7 +19,7 @@
 }
 
 .label {
-  font-size: 1.55rem;
+  font-size: 1.6rem;
   flex-basis: 20%;
 }
 
@@ -93,15 +93,12 @@
 
 @media (max-width: 767px) {
   .label {
-    margin-bottom: 8px;
+    margin-bottom: 5px;
   }
   .create-link-container {
     padding: 18px;
   }
   .create-link {
     font-size: 1.6rem;
-  }
-  .message {
-    margin-bottom: 24px;
   }
 }
