@@ -7,6 +7,7 @@ import {
   BrowserRouter as Router,
   Routes as Switch,
   Route,
+  Navigate,
 } from "react-router-dom";
 import Login from "./Pages/LoginPage/Login";
 import Regiser from "./Pages/RegisterPage/Regiser";
@@ -21,7 +22,7 @@ const App = () => {
           <Route index element={<Homepage />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/register" exact element={<Regiser />} />
-          <Route path="*" element={<Homepage />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Switch>
         <Footer />
       </Router>

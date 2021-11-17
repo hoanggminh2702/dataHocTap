@@ -8,8 +8,11 @@ import {
 import React, { useState } from "react";
 import styles from "./LoginComponent.module.css";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser as setUserr } from "../../../slice/accountSlice.js";
 const LoginComponent = () => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -22,7 +25,6 @@ const LoginComponent = () => {
 
   const handleOnchange = (e) => {
     if (message[e.target.name] !== "") {
-      console.log(e);
       setMessage({ ...message, [e.target.name]: "" });
     }
     setUser((prev) => {
@@ -41,7 +43,22 @@ const LoginComponent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (usernameCheck(user.username) && passwordCheck(user.password)) {
-      alert("Login Thành Công");
+      axios
+        .post(`http://localhost:8080/api/login`, {
+          username: user.username.toLowerCase(),
+          password: user.password,
+        })
+        .then((res) => {
+          const action = setUserr({
+            username: user.username.toLowerCase(),
+            password: user.password,
+          });
+          dispatch(action);
+          alert("Login Thành công");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       Array.from(e.target.querySelectorAll("input")).forEach((input) => {
         showValidateMessage(input, setMessage);
