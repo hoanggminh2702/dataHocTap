@@ -9,6 +9,8 @@ import {
   usernameCheck,
 } from "../../../utils/validate";
 
+import { Link } from "react-router-dom";
+
 import styles from "../../LoginPage/LoginComponent/LoginComponent.module.css";
 
 const RegisterComponent = () => {
@@ -127,9 +129,9 @@ const RegisterComponent = () => {
         </button>
       </form>
       <div className={clsx(styles["create-link-container"])}>
-        <a href="./login" className={clsx(styles["create-link"])}>
+        <Link to="/login" className={clsx(styles["create-link"])}>
           Already have an account? Log in instead!
-        </a>
+        </Link>
       </div>
     </div>
   );

@@ -15,16 +15,16 @@ const App = () => {
   console.log("re-render");
   return (
     <GlobalStyle>
-      <Header />
       <Router>
+        <Header />
         <Switch>
-          <Route path="/homepage" exact element={<Homepage />} />
+          <Route index element={<Homepage />} />
           <Route path="/login" exact element={<Login />} />
           <Route path="/register" exact element={<Regiser />} />
           <Route path="*" element={<Homepage />} />
         </Switch>
+        <Footer />
       </Router>
-      <Footer />
     </GlobalStyle>
   );
 };

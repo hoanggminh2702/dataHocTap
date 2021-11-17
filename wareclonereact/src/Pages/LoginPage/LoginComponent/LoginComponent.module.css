@@ -30,6 +30,7 @@
   background-color: rgb(250, 250, 250);
   border: none;
   border-bottom: 1px solid var(--border-form-color);
+  transition: all linear 0.1s;
 }
 
 .input-focus:focus {

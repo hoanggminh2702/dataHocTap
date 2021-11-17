@@ -7,6 +7,7 @@ import {
 } from "../../../utils/validate";
 import React, { useState } from "react";
 import styles from "./LoginComponent.module.css";
+import { Link } from "react-router-dom";
 
 const LoginComponent = () => {
   const [user, setUser] = useState({
@@ -86,9 +87,9 @@ const LoginComponent = () => {
         </button>
       </form>
       <div className={clsx(styles["create-link-container"])}>
-        <a href="./register" className={clsx(styles["create-link"])}>
+        <Link to="/register" className={clsx(styles["create-link"])}>
           No account? Create one here
-        </a>
+        </Link>
       </div>
     </div>
   );
