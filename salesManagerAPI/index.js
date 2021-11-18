@@ -165,7 +165,7 @@ async function main() {
         delete newUser["_doc"].password;
         res.status(200).json({
           message: "Tạo tài khoản thành công",
-          payload: {
+          user: {
             ...newUser["_doc"],
           },
         });
@@ -214,9 +214,9 @@ async function main() {
         .limit(limit)
         .exec();
       res.status(200).json({
-        products: products,
-        totalProducts: countDocuments,
         message: "Lấy dữ liệu product thành công",
+        totalProducts: countDocuments,
+        products: products,
       });
     } catch (err) {
       res.status(500).json({
@@ -226,6 +226,7 @@ async function main() {
     }
   });
 
+  //create Product
   app.post("/api/createProduct", async function (req, res) {
     if (
       !Object.keys(req.body).every((key) => {

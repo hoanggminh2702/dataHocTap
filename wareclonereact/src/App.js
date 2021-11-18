@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Footer from "./component/Footer/Footer";
 import GlobalStyle from "./component/GlobalStyle";
 import Header from "./component/Header/Header";
@@ -10,9 +10,22 @@ import {
 } from "react-router-dom";
 import Login from "./Pages/LoginPage/Login";
 import Regiser from "./Pages/RegisterPage/Regiser";
+import productApi from "./api/productApi";
 
 const App = () => {
-  console.log("re-render");
+  const [productList, setProductList] = useState([]);
+  useEffect(() => {
+    const fetchProductList = async () => {
+      try {
+        const response = await productApi.getAll();
+        console.log(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchProductList();
+  }, []);
+
   return (
     <GlobalStyle>
       <Router>

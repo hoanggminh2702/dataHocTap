@@ -4,8 +4,6 @@ import styles from "./Product.module.css";
 import clsx from "clsx";
 
 const Product = (props) => {
-  console.log(styles);
-
   return (
     <div className={clsx(styles["product-container"])} style={{ zIndex: "1" }}>
       <ProductComponent {...props} />
