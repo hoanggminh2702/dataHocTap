@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  padding: 6px;
 }
 
 .product-hover:hover .product-img {
@@ -23,7 +24,14 @@
 
 .product-details {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-details-left {
+  display: flex;
   flex-direction: column;
+  flex-basis: 60%;
 }
 
 .product-details-info {
@@ -37,7 +45,14 @@
   font-size: 1.4rem;
 }
 
+.product-details-right {
+  display: flex;
+  min-width: 10%;
+}
+
 .product-price {
+  font-size: 1.8rem;
+  font-weight: 500;
 }
 
 .btn-container {
@@ -62,10 +77,4 @@
 .btn-hover:hover {
   background-color: gray;
   color: white;
-}
-
-.btn-buy {
-}
-
-.btn-details {
 }

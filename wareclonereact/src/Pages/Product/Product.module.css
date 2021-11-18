@@ -1,5 +1,5 @@
 .product-container {
-  width: fit-content;
+  width: 100%;
   transition: all linear 0.1s;
   background-color: rgba(218, 214, 214, 0.1);
   cursor: pointer;
