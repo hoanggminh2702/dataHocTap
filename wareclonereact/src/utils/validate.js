@@ -18,7 +18,7 @@ export const blankInputCheck = (value) => {
 };
 
 export const usernameCheck = (value) => {
-  const re = /^(?=.{8,25}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
+  const re = /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$/;
   return re.test(value);
 };
 

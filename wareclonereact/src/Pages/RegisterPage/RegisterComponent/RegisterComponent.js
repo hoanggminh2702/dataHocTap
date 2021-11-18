@@ -11,8 +11,6 @@ import {
 
 import { Link } from "react-router-dom";
 
-import axios from "axios";
-
 import styles from "../../LoginPage/LoginComponent/LoginComponent.module.css";
 
 const RegisterComponent = () => {
@@ -30,7 +28,7 @@ const RegisterComponent = () => {
   });
 
   const handleOnchange = (e) => {
-    if (message[e.target.name] !== "" && e.target.name !== "address") {
+    if (message[e.target.name] !== "" && e.target.name !== "fullname") {
       console.log(e);
       setMessage({ ...message, [e.target.name]: "" });
     }
@@ -54,20 +52,7 @@ const RegisterComponent = () => {
       passwordCheck(user.password) &&
       fullnameCheck(user.fullname)
     ) {
-      axios
-        .post("http://localhost:8080/api/createUser", {
-          username: user.username.toLowerCase(),
-          password: user.password,
-          fullname: user.fullname,
-          address: user.address,
-          role: "staff",
-        })
-        .then((res) => {
-          alert("Tạo tài khoản thành công");
-        })
-        .catch((err) => {
-          alert("Tạo tài khoản thất bại");
-        });
+      alert("Đăng ký Thành Công");
     } else {
       Array.from(e.target.querySelectorAll("input")).forEach((input) => {
         showValidateMessage(input, setMessage);
