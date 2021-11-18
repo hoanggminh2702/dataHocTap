@@ -20,7 +20,7 @@ const ProductComponent = (props) => {
               styles["product-name"]
             )}
           >
-            Tên
+            {props.productInfo.type}
           </span>
           <span
             className={clsx(
@@ -28,7 +28,7 @@ const ProductComponent = (props) => {
               styles["product-desc"]
             )}
           >
-            Mô tả
+            {props.productInfo.name}
           </span>
         </div>
         <div className={clsx(styles["product-details-right"])}>

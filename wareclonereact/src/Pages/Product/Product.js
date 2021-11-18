@@ -7,7 +7,7 @@ const Product = (props) => {
   console.log(styles);
 
   return (
-    <div className={clsx(styles["product-container"])}>
+    <div className={clsx(styles["product-container"])} style={{ zIndex: "1" }}>
       <ProductComponent {...props} />
     </div>
   );
