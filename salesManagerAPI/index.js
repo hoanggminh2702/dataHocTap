@@ -49,7 +49,6 @@ async function main() {
       const findUser = await UserModel.findOne({
         username: account.username.trim(),
       });
-
       if (await utils.comparePassword(account.password, findUser.password)) {
         const token = jwt.sign(
           {
@@ -133,47 +132,42 @@ async function main() {
   }
 
   // Create User
-  app.post(
-    "/api/createUser",
-    authorization,
-    authenAdmin,
-    async function (req, res) {
-      const account = req.body;
+  app.post("/api/createUser", async function (req, res) {
+    const account = req.body;
 
-      if (!(account.username && account.password && account.fullname)) {
-        res.status(400).json({ message: "Không để trống" });
+    if (!(account.username && account.password && account.fullname)) {
+      res.status(400).json({ message: "Không để trống" });
+      return;
+    }
+
+    try {
+      const users = await UserModel.find({
+        username: account.username,
+      });
+      if (users.length) {
+        res.status(400).json({ message: "Đã tồn tại user này" });
         return;
       }
 
-      try {
-        const users = await UserModel.find({
-          username: account.username,
-        });
-        if (users.length) {
-          res.status(400).json({ message: "Đã tồn tại user này" });
-          return;
-        }
-
-        const newUser = new UserModel({
-          username: account.username,
-          fullname: account.fullname,
-          password: await utils.genEncodePassword(account.password),
-          address: account.address,
-          role: "staff",
-        });
-        await newUser.save();
-        delete newUser["_doc"].password;
-        res.status(200).json({
-          message: "Tạo tài khoản thành công",
-          user: {
-            ...newUser["_doc"],
-          },
-        });
-      } catch (err) {
-        res.status(500).json({ message: "Có lỗi không xác định", err });
-      }
+      const newUser = new UserModel({
+        username: account.username,
+        fullname: account.fullname,
+        password: await utils.genEncodePassword(account.password),
+        address: account.address,
+        role: "staff",
+      });
+      await newUser.save();
+      delete newUser["_doc"].password;
+      res.status(200).json({
+        message: "Tạo tài khoản thành công",
+        user: {
+          ...newUser["_doc"],
+        },
+      });
+    } catch (err) {
+      res.status(500).json({ message: "Có lỗi không xác định", err });
     }
-  );
+  });
 
   //-------------------------------PRODUCT--------------------------------
 
@@ -196,10 +190,9 @@ async function main() {
 
   // Get Products
   app.get("/api/getproducts", async function (req, res) {
-    const limit = req.query.limit ?? 5;
-    const skip = req.query.page ?? 0;
-
-    const name = req.query.name ?? "";
+    let limit = req.query.limit ?? 5;
+    let skip = req.query.page ?? 0;
+    let name = req.query.name ?? "";
 
     let filter;
 
@@ -211,7 +204,7 @@ async function main() {
       const countDocuments = await ProductModel.countDocuments(filter).exec();
       const products = await ProductModel.find({})
         .skip(skip)
-        .limit(limit)
+        .limit(+limit)
         .exec();
       res.status(200).json({
         message: "Lấy dữ liệu product thành công",

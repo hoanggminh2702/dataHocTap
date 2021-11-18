@@ -4,10 +4,15 @@ import ButtonComponent from "./ButtonComponent/ButtonComponent";
 import styles from "./ProductComponent.module.css";
 
 const ProductComponent = (props) => {
+  console.log(props.productInfo.productImg);
   return (
     <div className={clsx(styles.product, styles["product-hover"])}>
       <img
-        src={props.productInfo.productImg}
+        src={
+          !props.productInfo.productImg
+            ? "https://st3.depositphotos.com/16262510/33733/v/1600/depositphotos_337332964-stock-illustration-photo-not-available-vector-icon.jpg"
+            : props.productInfo.productImg
+        }
         alt=""
         className={styles["product-img"]}
       />

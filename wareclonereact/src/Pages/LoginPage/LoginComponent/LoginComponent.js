@@ -8,8 +8,13 @@ import {
 import React, { useState } from "react";
 import styles from "./LoginComponent.module.css";
 import { Link } from "react-router-dom";
+import userApi from "../../../api/userApi";
+import { setUser as setUserr } from "../../../features/userSlice";
+import { useDispatch } from "react-redux";
 
 const LoginComponent = () => {
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState({
     username: "",
     password: "",
@@ -38,10 +43,21 @@ const LoginComponent = () => {
   };
 
   // Đoạn này target là btn do đó không trỏ vào các ô input nên phải làm thêm 1 bước nữa
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (usernameCheck(user.username) && passwordCheck(user.password)) {
-      alert("Login Thành Công");
+      try {
+        const resUser = await userApi.login({
+          username: user.username.toLowerCase(),
+          password: user.password,
+        });
+        const action = setUserr(resUser);
+        dispatch(action);
+
+        alert("Đăng nhập thành công");
+      } catch (err) {
+        alert("Đăng nhập thất bại");
+      }
     } else {
       Array.from(e.target.querySelectorAll("input")).forEach((input) => {
         showValidateMessage(input, setMessage);
