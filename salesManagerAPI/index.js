@@ -280,7 +280,49 @@ async function main() {
   });
 
   // Update product
-  app.post("/api/updateProduct", async function (req, res) {});
+  app.post("/api/updateProduct", async function (req, res) {
+    if (
+      !Object.keys(req.body).every((key) => {
+        console.log(key != "img" || req.body[key] !== "");
+        if (key != "img" && req.body[key] == "") {
+          return false;
+        } else return true;
+      })
+    ) {
+      res.status(400).json({
+        message: "Không có trường nào được trống",
+      });
+      return;
+    }
+
+    try {
+      if (!(await ProductModel.findById(req.body.id))) {
+        res.status(400).json({
+          message: "Không tồn tại sản phẩm này",
+        });
+        return;
+      }
+
+      const payload = req.body;
+      delete payload.id;
+      console.log(payload);
+      const updateProduct = await ProductModel.findByIdAndUpdate(
+        req.body.id,
+        payload,
+        {
+          new: true,
+        }
+      );
+      res.status(200).json({
+        message: "Update sản phẩm thành công",
+        product: updateProduct,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Lỗi không xác định",
+      });
+    }
+  });
 
   //Listen on port
   app.listen(port, function () {
