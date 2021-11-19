@@ -1,40 +1,37 @@
 import clsx from "clsx";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
+import TitleComponent from "../../../component/TitleComponent/TitleComponent";
 import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
 import Product from "../../Product/Product";
 
-const AllProductComponent = () => {
-  const navigate = useNavigate();
+const ManageProductComponent = () => {
+  console.log("abc");
   const btns = [
     {
-      title: "Buy",
+      title: "Edit",
       onClick: (e) => {
         console.log(e.target);
       },
     },
     {
-      title: "Details",
+      title: "Delete",
       onClick: (e) => {
-        navigate(`/product/${e.target.id}`);
+        console.log(e.target);
       },
     },
   ];
   const dispatch = useDispatch();
   const products = useSelector((state) => {
     return state.products.data.map((product) => ({
-      id: product["_id"],
       name: product.name,
       type: product.type,
       price: product.price,
       productImg: product.img,
     }));
   });
-
   const isLoading = useSelector((state) => !state.products.loaded);
   useEffect(() => {
     setTimeout(() => {
@@ -58,22 +55,26 @@ const AllProductComponent = () => {
       {isLoading ? (
         <LoadingComponent />
       ) : (
-        <div className={clsx("grid wide")}>
-          <div className="row">
-            {products.map((product, index) => (
-              <div key={index} className="col l-3 m-4 h-m-6 c-12">
-                <Product
-                  productInfo={product}
-                  btns={btns}
-                  style={{ zIndex: "1" }}
-                />
-              </div>
-            ))}
+        <>
+          <TitleComponent title={"Trang quản lý sản phẩm"} />
+
+          <div className={clsx("grid wide")}>
+            <div className="row">
+              {products.map((product, index) => (
+                <div key={index} className="col l-3 m-4 h-m-6 c-12">
+                  <Product
+                    productInfo={product}
+                    btns={btns}
+                    style={{ zIndex: "1" }}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
 };
 
-export default AllProductComponent;
+export default ManageProductComponent;

@@ -6,11 +6,12 @@ import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
-import { fetchAllProduct } from "../../../features/productSlice";
-import { setLoading, setNotLoading } from "../../../features/loadingSlice";
-import { SpinnerCircularSplit } from "spinners-react";
+import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
 import clsx from "clsx";
+import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
+import { useNavigate } from "react-router";
 const TopProductComponent = () => {
+  const navigate = useNavigate();
   const btns = [
     {
       title: "Buy",
@@ -21,14 +22,15 @@ const TopProductComponent = () => {
     {
       title: "Details",
       onClick: (e) => {
-        console.log(e.target);
+        navigate(`/product/${e.target.id}`);
       },
     },
   ];
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => state.loading);
+  const isLoading = useSelector((state) => !state.products.loaded);
   const productsInfo = useSelector((state) => {
-    return state.products.map((product) => ({
+    return state.products.data.map((product) => ({
+      id: product["_id"],
       name: product.name,
       type: product.type,
       productImg: product.img,
@@ -40,11 +42,11 @@ const TopProductComponent = () => {
       productApi.getAll().then((res) => {
         const action = fetchAllProduct(res.products);
         dispatch(action);
-        dispatch(setNotLoading());
+        dispatch(setLoaded(true));
       });
     }, 1000);
     return () => {
-      dispatch(setLoading());
+      dispatch(setLoaded(false));
     };
   }, []);
 
@@ -92,9 +94,9 @@ const TopProductComponent = () => {
     ],
   };
   return (
-    <div className={clsx("container-width")}>
+    <div className={clsx("grid wide")}>
       {isLoading ? (
-        <SpinnerCircularSplit size={100} still={false} />
+        <LoadingComponent />
       ) : (
         <Slider {...settings}>
           {productsInfo.map((productInfo, index) => (

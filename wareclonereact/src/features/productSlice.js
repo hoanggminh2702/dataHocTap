@@ -2,15 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const product = createSlice({
   name: "product",
-  initialState: [],
+  initialState: {
+    loaded: false,
+    data: [],
+  },
   reducers: {
     fetchAllProduct(state, action) {
       const products = [...action.payload];
-      return products;
+      return {
+        ...state,
+        data: products,
+      };
+    },
+    setLoaded(state, action) {
+      return {
+        ...state,
+        loaded: action.payload,
+      };
     },
   },
 });
 
 const { reducer, actions } = product;
-export const { fetchAllProduct } = actions;
+export const { fetchAllProduct, setLoaded } = actions;
 export default reducer;

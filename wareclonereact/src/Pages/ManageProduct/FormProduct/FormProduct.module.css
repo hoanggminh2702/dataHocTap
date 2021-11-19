@@ -1,0 +1,141 @@
+.container {
+  margin-top: 8px;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    height: 350px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+
+  .container form {
+    margin-bottom: 24px;
+  }
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.form-group {
+  display: flex;
+  padding: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-group label {
+  font-size: 1.8rem;
+  flex-basis: 25%;
+}
+
+.form-group input {
+  flex: 1;
+  padding: 8px;
+  font-size: 1.8rem;
+  border: transparent 1px solid;
+  background-color: rgb(247, 247, 247);
+  transition: all linear 0.1s;
+}
+
+@media (max-width: 767px) {
+  .form-group {
+    flex-direction: column;
+    align-items: unset;
+  }
+
+  .form-group label {
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    margin-bottom: 8px;
+  }
+}
+
+.form-group input:focus {
+  outline: none;
+  border-bottom: black 1px solid;
+}
+
+.container form button {
+  font-size: 1.8rem;
+  padding: 5px;
+  width: 50%;
+  background-color: black;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: all linear 0.1s;
+  margin: auto;
+}
+
+.img-preview {
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+}
+
+.img-preview img {
+  object-fit: contain;
+  height: 100%;
+}
+
+.choose-img-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.choose-img-container input {
+  font-size: 1.6rem;
+  width: 50%;
+  border: transparent 1px solid;
+  background-color: rgb(247, 247, 247);
+  transition: all linear 0.1s;
+  margin-bottom: 4px;
+}
+
+.choose-img-container input:focus {
+  outline: none;
+  border-bottom: black 1px solid;
+}
+
+.choose-img-container button {
+  font-size: 1.8rem;
+  padding: 5px;
+  width: 50%;
+  background-color: black;
+  border: none;
+  cursor: pointer;
+  color: white;
+  transition: all linear 0.1s;
+}
+
+.container button:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 1023px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+
+  .img-preview {
+    margin-bottom: 24px;
+    flex-direction: column-reverse;
+  }
+
+  .img-preview img {
+    align-self: center;
+    margin-bottom: 15px;
+    width: 50%;
+  }
+}

@@ -9,11 +9,16 @@ import {
   usernameCheck,
 } from "../../../utils/validate";
 
+import userApi from "../../../api/userApi";
+
 import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router";
 
 import styles from "../../LoginPage/LoginComponent/LoginComponent.module.css";
 
 const RegisterComponent = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     username: "",
     fullname: "",
@@ -52,7 +57,22 @@ const RegisterComponent = () => {
       passwordCheck(user.password) &&
       fullnameCheck(user.fullname)
     ) {
-      alert("Đăng ký Thành Công");
+      const newUser = userApi
+        .create({
+          username: user.username.toLowerCase(),
+          password: user.password.trim(),
+          fullname: user.fullname.trim(),
+          address: user.address,
+        })
+        .then((res) => {
+          console.log(newUser);
+          alert("Đăng ký thành công");
+          navigate("/login");
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Đăng ký thất bại");
+        });
     } else {
       Array.from(e.target.querySelectorAll("input")).forEach((input) => {
         showValidateMessage(input, setMessage);

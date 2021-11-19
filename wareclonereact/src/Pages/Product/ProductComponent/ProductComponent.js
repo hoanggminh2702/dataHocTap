@@ -4,7 +4,6 @@ import ButtonComponent from "./ButtonComponent/ButtonComponent";
 import styles from "./ProductComponent.module.css";
 
 const ProductComponent = (props) => {
-  console.log(props.productInfo.productImg);
   return (
     <div className={clsx(styles.product, styles["product-hover"])}>
       <img
@@ -42,7 +41,11 @@ const ProductComponent = (props) => {
       </div>
       <div className={clsx(styles["btn-container"])}>
         {props.btns.map((btn, index) => (
-          <ButtonComponent key={index} btnOnClick={btn.onClick}>
+          <ButtonComponent
+            key={index}
+            id={props.productInfo.id}
+            btnOnClick={btn.onClick}
+          >
             {btn.title}
           </ButtonComponent>
         ))}

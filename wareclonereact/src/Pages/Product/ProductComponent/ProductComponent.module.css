@@ -18,19 +18,23 @@
 }
 
 .product-img {
+  display: block;
   transition: all linear 0.1s;
+  object-fit: cover;
+  padding: 10px;
 }
 
 .product-details {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0 10px;
 }
 
 .product-details-left {
   display: flex;
   flex-direction: column;
-  flex-basis: 60%;
+  flex-basis: 75%;
 }
 
 .product-details-info {

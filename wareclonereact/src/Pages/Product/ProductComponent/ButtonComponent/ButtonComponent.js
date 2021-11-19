@@ -4,6 +4,7 @@ import styles from "../ProductComponent.module.css";
 const ButtonComponent = ({ children, btnOnClick, ...props }) => {
   return (
     <button
+      id={props.id}
       className={clsx(styles.btn, styles["btn-hover"])}
       {...props}
       onClick={btnOnClick}

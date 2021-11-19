@@ -1,14 +1,13 @@
 import TopProductComponent from "./TopProductComponent/TopProductComponent";
-import styles from "./Homepage.module.css";
 import AllProductComponent from "./AllProductComponent/AllProductComponent";
+import TitleComponent from "../../component/TitleComponent/TitleComponent";
 const Homepage = () => {
-  console.log(styles);
   return (
     <>
       <>
-        <h1 className={styles.header}>Top sản phẩm bán chạy nhất tháng</h1>
+        <TitleComponent title={"Top sản phẩm bán chạy nhất tháng"} />
         <TopProductComponent />
-        <h1 className={styles.header}>Tất cả sản phẩm</h1>
+        <TitleComponent title={"Tất cả sản phẩm"} />
         <AllProductComponent />
       </>
     </>

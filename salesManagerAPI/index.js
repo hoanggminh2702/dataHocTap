@@ -219,11 +219,34 @@ async function main() {
     }
   });
 
+  // Find Product By id
+  app.get("/api/product/:id", async function (req, res) {
+    if (!req.params.id) {
+      res.status(404).json({
+        message: "Không tìm thấy",
+      });
+      return;
+    }
+    const id = req.params.id;
+    try {
+      const product = await ProductModel.findById(id).exec();
+      res.status(200).json({
+        message: "Gọi thành công",
+        product: product,
+      });
+    } catch (err) {
+      res.status(404).json({
+        message: "Không tìm thấy",
+        err,
+      });
+    }
+  });
+
   //create Product
   app.post("/api/createProduct", async function (req, res) {
     if (
       !Object.keys(req.body).every((key) => {
-        return req.body[key] !== "";
+        return req.body[key] !== "" && key != "img";
       })
     ) {
       res.status(400).json("Không có trường nào được trống");
@@ -231,13 +254,13 @@ async function main() {
     }
 
     try {
-      const checkExist = await ProductModel.find({
+      const checkExistType = await ProductModel.find({
         type: req.body.type,
       }).exec();
 
       const newProduct = new ProductModel({
         ...req.body,
-        _id: `${req.body.type}${checkExist.length + 1}`,
+        _id: `${req.body.type}${checkExistType.length + 1}`,
         price: Number(req.body.price),
         quantity: Number(req.body.quantity) > 0 ? Number(req.body.quantity) : 0,
       });
@@ -255,6 +278,9 @@ async function main() {
       });
     }
   });
+
+  // Update product
+  app.post("/api/updateProduct", async function (req, res) {});
 
   //Listen on port
   app.listen(port, function () {
