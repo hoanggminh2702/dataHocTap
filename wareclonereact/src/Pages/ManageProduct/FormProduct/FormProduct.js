@@ -15,31 +15,28 @@ const FormProduct = ({ product }) => {
     quantity: "",
   });
 
-  const onChangeValidate = (e) => {
-    if (e.target.value === "" && e.target.name !== "img") {
+  const validateInput = (element) => {
+    if (element.value === "" && element.name !== "img") {
       setMessage((prev) => {
-        return { ...prev, [e.target.name]: `Không để trống trường này` };
+        return { ...prev, [element.name]: `Không để trống trường này` };
       });
     } else {
-      if (
-        e.target.name === "price" &&
-        !Number.isFinite(Number(e.target.value))
-      ) {
+      if (element.name === "price" && !Number.isFinite(Number(element.value))) {
         return setMessage((prev) => {
-          return { ...prev, [e.target.name]: `Trường này phải là số` };
+          return { ...prev, [element.name]: `Trường này phải là số` };
         });
       } else if (
-        e.target.name === "quantity" &&
-        !Number.isInteger(Number(e.target.value))
+        element.name === "quantity" &&
+        !Number.isInteger(Number(element.value))
       ) {
         return setMessage((prev) => {
-          return { ...prev, [e.target.name]: `Trường này phải là số nguyên` };
+          return { ...prev, [element.name]: `Trường này phải là số nguyên` };
         });
       } else {
         setMessage((prev) => {
           return {
             ...prev,
-            [e.target.name]: "",
+            [element.name]: "",
           };
         });
       }
@@ -60,7 +57,7 @@ const FormProduct = ({ product }) => {
   const errorImg =
     "https://st3.depositphotos.com/16262510/33733/v/1600/depositphotos_337332964-stock-illustration-photo-not-available-vector-icon.jpg";
   const handleProductValue = (e) => {
-    onChangeValidate(e);
+    !product && validateInput(e.target);
     setPayload((prev) => {
       return {
         ...prev,
@@ -68,15 +65,18 @@ const FormProduct = ({ product }) => {
       };
     });
   };
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
 
+  const handleOnBlur = (e) => {
+    validateInput(e.target);
+  };
+
+  const submitToDb = () => {
     productApi[flag.action.toLowerCase()](
       {
         ...payload,
         type: product ? product.type : payload.type,
       },
-      product._id
+      product ? product._id : undefined
     )
       .then((res) => {
         console.log(`${flag.action} Successful`, res);
@@ -87,6 +87,20 @@ const FormProduct = ({ product }) => {
         alert(`${flag.action} thất bại`);
       });
   };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const inputsArr = Array.from(e.target.querySelectorAll("input"));
+    !product &&
+      inputsArr.forEach((input) => {
+        validateInput(input);
+      });
+    !product
+      ? inputsArr.every((input) => {
+          return message[input.name !== ""];
+        }) && submitToDb()
+      : submitToDb();
+  };
   return (
     <div className={clsx("container-width")}>
       <div className={clsx("row", styles.container)}>
@@ -94,6 +108,7 @@ const FormProduct = ({ product }) => {
           className={clsx("col h-l-12 m-7 h-m-12 c-12")}
           onChange={handleProductValue}
           onSubmit={handleOnSubmit}
+          onBlur={handleOnBlur}
         >
           <div className={styles["form-group"]}>
             <label htmlFor="name">Product Name</label>

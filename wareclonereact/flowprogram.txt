@@ -29,3 +29,10 @@ Không thực hiện validate bằng file validate có sẵn mà validate luôn 
 
 Cách validate: nếu các trường bằng rỗng thì hiện thông báo, nếu không thì kiểm tra nếu trường quantity thì là số nguyên, price thì là số thực, còn lại thì để message bằng rỗng
 
+Nếu là create ( không có product trong props ) thì thực hiện validate rồi mới gọi tới submit, nếu có rồi thì gọi tới submit luôn
+
+Set firstWidth bằng window.innerWidth rồi mới lắng nghe sự thay đổi vì reload lại thì chưa lắng nghe event resize
+Bắt sự kiện resize của màn hình để set name cho phần user trong sec nav
+
+Sử dụng queryselect all để lấy tất cả input trong form và thực hiện 1 lần validate cho tất cả các trường
+

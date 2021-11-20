@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Menu from "../Menu/Menu";
 import MenuList from "./MenuList";
 import "./SecNavMobileComponent.css";
@@ -8,6 +8,38 @@ import { useNavigate } from "react-router";
 
 const SecNavMobileComponent = () => {
   const username = useSelector((state) => state?.user.username);
+  const [maxLength, setMaxlength] = useState(10);
+
+  useEffect(() => {
+    let firstWidth = window.innerWidth;
+    if (firstWidth < 375) {
+      setMaxlength(10);
+    } else if (firstWidth >= 375 && firstWidth < 600) {
+      setMaxlength(10);
+    } else if (firstWidth >= 600 && firstWidth < 768) {
+      setMaxlength(15);
+    } else {
+      setMaxlength(25);
+    }
+
+    const checkWidth = () => {
+      let width = window.innerWidth;
+      if (width < 375) {
+        setMaxlength(10);
+      } else if (width >= 375 && width < 600) {
+        setMaxlength(10);
+      } else if (width >= 600 && width < 768) {
+        setMaxlength(15);
+      } else {
+        setMaxlength(25);
+      }
+    };
+    window.addEventListener("resize", checkWidth);
+    return () => {
+      window.removeEventListener("resize", checkWidth);
+    };
+  }, []);
+
   const navigate = useNavigate();
   const [isDisplay, setIsDisplay] = useState(false);
 
@@ -28,7 +60,10 @@ const SecNavMobileComponent = () => {
       icon: "fa fa-search",
     },
     {
-      title: username || "User",
+      title:
+        (username?.length < maxLength
+          ? username
+          : `${username.slice(0, maxLength)}...`) || "User",
       icon: "fas fa-user",
       onClick: () => navigate("/login"),
     },
