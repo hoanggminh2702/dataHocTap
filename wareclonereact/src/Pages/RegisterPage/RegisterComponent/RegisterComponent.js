@@ -57,7 +57,7 @@ const RegisterComponent = () => {
       passwordCheck(user.password) &&
       fullnameCheck(user.fullname)
     ) {
-      const newUser = userApi
+      userApi
         .create({
           username: user.username.toLowerCase(),
           password: user.password.trim(),
@@ -65,7 +65,7 @@ const RegisterComponent = () => {
           address: user.address,
         })
         .then((res) => {
-          console.log(newUser);
+          console.log(res.user);
           alert("Đăng ký thành công");
           navigate("/login");
         })

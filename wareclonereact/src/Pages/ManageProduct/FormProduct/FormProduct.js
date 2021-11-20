@@ -1,9 +1,15 @@
 import clsx from "clsx";
 import React, { useState } from "react";
+
 import productApi from "../../../api/productApi";
 import styles from "./FormProduct.module.css";
 
-const FormProduct = ({ product, action }) => {
+const FormProduct = ({ product }) => {
+  const onChangeValidate = () => {};
+  const flag = {
+    typeField: !product ? false : true,
+    action: product ? "Edit" : "Create",
+  };
   const [payload, setPayload] = useState({
     name: product?.name || "",
     desc: product?.desc || "",
@@ -12,6 +18,7 @@ const FormProduct = ({ product, action }) => {
     quantity: product?.quantity || "",
     img: product?.img || "",
   });
+  console.log(product);
   const errorImg =
     "https://st3.depositphotos.com/16262510/33733/v/1600/depositphotos_337332964-stock-illustration-photo-not-available-vector-icon.jpg";
   const handleProductValue = (e) => {
@@ -22,17 +29,22 @@ const FormProduct = ({ product, action }) => {
       };
     });
   };
-  console.log(payload);
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    productApi
-      .create(payload)
+    productApi[flag.action.toLowerCase()](
+      {
+        ...payload,
+        type: product ? product.type : payload.type,
+      },
+      product._id
+    )
       .then((res) => {
-        console.log("Create Successful", res);
-        alert("Create thành công");
+        console.log(`${flag.action} Successful`, res);
+        alert(`${flag.action} thành công`, res.product);
       })
       .catch((err) => {
-        console.log("Create thất bại");
+        console.log(err);
+        alert(`${flag.action} thất bại`);
       });
   };
   return (
@@ -77,6 +89,7 @@ const FormProduct = ({ product, action }) => {
               type="text"
               name="type"
               placeholder="Vui lòng nhập loại sản phẩm"
+              disabled={flag.typeField}
             />
           </div>
           <div className={styles["form-group"]}>

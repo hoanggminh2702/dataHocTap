@@ -1,3 +1,4 @@
+import React, { Suspense, lazy } from "react";
 import Footer from "./component/Footer/Footer";
 import GlobalStyle from "./component/GlobalStyle";
 import Header from "./component/Header/Header";
@@ -8,44 +9,64 @@ import {
   Route,
 } from "react-router-dom";
 import { Navigate } from "react-router";
-import Login from "./Pages/LoginPage/Login";
+
 import Regiser from "./Pages/RegisterPage/Regiser";
 import ManageProduct from "./Pages/ManageProduct/ManageProduct";
 import { useSelector } from "react-redux";
 import ProductInfo from "./Pages/ProductInfo/ProductInfo";
 import RequiredAuth from "./utils/RequiredAuth";
 import FormProduct from "./Pages/ManageProduct/FormProduct/FormProduct";
+import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
+import EditProduct from "./Pages/ManageProduct/EditProduct/EditProduct";
+import CreateProduct from "./Pages/ManageProduct/CreateProduct/CreateProduct";
 
 const App = () => {
-  const user = useSelector((state) => state.user.role);
+  const Login = React.lazy(() => import("./Pages/LoginPage/Login"));
+
   return (
-    <GlobalStyle>
-      <Router>
-        <Header />
-        <Switch>
-          <Route index element={<Homepage />} />
-          <Route exact path="/product/:id" element={<ProductInfo />} />
-          {/* <Route
+    <Suspense fallback={<LoadingComponent />}>
+      <GlobalStyle>
+        <Router>
+          <Header />
+          <Switch>
+            <Route index element={<Homepage />} />
+            <Route exact path="/product/:id" element={<ProductInfo />} />
+            {/* <Route
             path="/manageproduct/*"
             element={user === "admin" ? <ManageProduct /> : <Navigate to="/" />}
           /> */}
-          <Route
-            path="/manageproduct"
-            element={
-              <RequiredAuth>
-                <ManageProduct />
-              </RequiredAuth>
-            }
-          />
-          <Route path="/edit" element={<FormProduct />} />
-
-          <Route path="/login" exact element={<Login />} />
-          <Route path="/register" exact element={<Regiser />} />
-          <Route path="*" element={<Homepage />} />
-        </Switch>
-        <Footer />
-      </Router>
-    </GlobalStyle>
+            <Route
+              path="/manageproduct"
+              element={
+                <RequiredAuth>
+                  <ManageProduct />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              path="/manageproduct/edit/:id"
+              element={
+                <RequiredAuth>
+                  <EditProduct />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              path="/manageproduct/create"
+              element={
+                <RequiredAuth>
+                  <CreateProduct />
+                </RequiredAuth>
+              }
+            />
+            <Route path="/login" exact element={<Login />} />
+            <Route path="/register" exact element={<Regiser />} />
+            <Route path="*" element={<Homepage />} />
+          </Switch>
+          <Footer />
+        </Router>
+      </GlobalStyle>
+    </Suspense>
   );
 };
 

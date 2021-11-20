@@ -20,9 +20,12 @@ const product = createSlice({
         loaded: action.payload,
       };
     },
+    deleteProduct(state, action) {
+      state.data.splice(state.data.indexOf(action.payload, 1));
+    },
   },
 });
 
 const { reducer, actions } = product;
-export const { fetchAllProduct, setLoaded } = actions;
+export const { fetchAllProduct, setLoaded, deleteProduct } = actions;
 export default reducer;

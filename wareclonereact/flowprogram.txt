@@ -1,0 +1,25 @@
+Load trang chủ
+cho 1 biến load cho product trong store để nếu load được product mới hiện ra product còn không sẽ render ra màn hình loading
+get api về, gán cho products trong store ban đầu nếu chưa load được thì render màn hình loading
+
+trang manage product tương tự
+truyền id của prodcut vào btn để khi click vào các btn chỉ cần lấy ra id
+
+router vẫn chưa làm được nested router
+
+khi create or edit product thì luôn hiện form product, nếu là edit thì phải có truyền id của product lên link
+
+Không được edit type của sản phẩm
+
+Nếu có product thì link là create còn không thì link là edit
+
+Nếu là trạng thái edit thì vẫn gửi id còn nếu là create thì không gửi
+
+không gửi id trong payload, chỉ gửi id trong pathvariable với edit api
+
+sau khi xoá sản phẩm thì xoá luôn trong store để rerender
+
+login lấy object user trong item user trong localstorage
+
+logout xoá item user trong storage
+

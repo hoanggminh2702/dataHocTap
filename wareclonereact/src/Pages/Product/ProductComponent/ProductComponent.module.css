@@ -61,7 +61,7 @@
 .btn-container {
   position: absolute;
   top: 40%;
-  left: 35%;
+  left: 32%;
   visibility: hidden;
   transition: all linear 0.1s;
 }

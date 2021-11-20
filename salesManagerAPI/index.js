@@ -206,6 +206,7 @@ async function main() {
         .skip(skip)
         .limit(+limit)
         .exec();
+
       res.status(200).json({
         message: "Lấy dữ liệu product thành công",
         totalProducts: countDocuments,
@@ -279,23 +280,11 @@ async function main() {
   });
 
   // Update product
-  app.post("/api/product/update", async function (req, res) {
-    if (
-      !Object.keys(req.body).every((key) => {
-        if (key != "img" && req.body[key] == "") {
-          return false;
-        } else return true;
-      })
-    ) {
-      res.status(400).json({
-        message: "Không có trường nào được trống",
-      });
-      return;
-    }
-
+  app.post("/api/product/update/:id", async function (req, res) {
     try {
       // Check exist product
-      if (!(await ProductModel.findById(req.body.id))) {
+      if (!(await ProductModel.findById(req.params.id))) {
+        console.log("Không tồn tại sản phẩm này");
         res.status(400).json({
           message: "Không tồn tại sản phẩm này",
         });
@@ -318,7 +307,7 @@ async function main() {
 
       // Execute update
       const updateProduct = await ProductModel.findByIdAndUpdate(
-        { _id: req.body.id },
+        { _id: req.params.id },
         payload,
         {
           new: true,
@@ -329,6 +318,7 @@ async function main() {
         product: updateProduct,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: "Lỗi không xác định",
         err: err,
@@ -342,16 +332,16 @@ async function main() {
       if (req.params.id) {
         const findProduct = await ProductModel.findById(req.params.id).exec();
         if (!findProduct) {
+          console.log("Không tìm thấy sản phẩm");
           res.status(404).json({
             message: "Không tìm thấy sản phẩm",
-            err,
           });
           return;
         }
       } else {
+        console.log("Id không hợp lệ");
         res.status(400).json({
           message: "Id không hợp lệ",
-          err,
         });
         return;
       }

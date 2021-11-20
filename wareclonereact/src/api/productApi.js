@@ -9,16 +9,16 @@ const productApi = {
     const url = `/api/product/${id}`;
     return axiosClient.get(url);
   },
-  create: (data) => {
+  create: (payload) => {
     const url = `/api/product/create`;
-    return axiosClient.post(url, { ...data });
+    return axiosClient.post(url, { ...payload });
   },
-  edit: (data) => {
-    const url = `/api/product/update`;
-    return axiosClient.post(url, { ...data });
+  edit: (payload, id) => {
+    const url = `/api/product/update/${id}`;
+    return axiosClient.post(url, { ...payload });
   },
   delete(id) {
-    const url = `/api/product/${id}`;
+    const url = `/api/product/delete/${id}`;
     return axiosClient.post(url, {});
   },
 };
