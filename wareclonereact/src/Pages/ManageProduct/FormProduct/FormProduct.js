@@ -91,13 +91,16 @@ const FormProduct = ({ product }) => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const inputsArr = Array.from(e.target.querySelectorAll("input"));
+
     !product &&
       inputsArr.forEach((input) => {
         validateInput(input);
       });
+
     !product
       ? inputsArr.every((input) => {
-          return message[input.name !== ""];
+          console.log(message[input.name] !== "");
+          return message[input.name] === "";
         }) && submitToDb()
       : submitToDb();
   };

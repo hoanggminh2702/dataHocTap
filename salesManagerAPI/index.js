@@ -190,7 +190,7 @@ async function main() {
 
   // Get Products
   app.get("/api/product/getAll", async function (req, res) {
-    let limit = req.query.limit ?? 5;
+    let limit = req.query.limit ?? 8;
     let skip = req.query.page ?? 0;
     let name = req.query.name ?? "";
 
@@ -272,6 +272,7 @@ async function main() {
         product: saveProduct,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: "Có lỗi không xác định",
         err,
