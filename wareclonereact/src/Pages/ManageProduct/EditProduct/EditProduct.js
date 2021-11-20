@@ -7,7 +7,7 @@ import FormProduct from "../FormProduct/FormProduct";
 const EditProduct = () => {
   const { id } = useParams();
   let product = useSelector((state) =>
-    state.products.data.find((product) => {
+    state.products.all.data.find((product) => {
       return product._id == id;
     })
   );
@@ -16,7 +16,7 @@ const EditProduct = () => {
       product = res.product;
     });
   }
-  return <FormProduct product={product} />;
+  return <FormProduct product={product} action="edit" />;
 };
 
 export default EditProduct;

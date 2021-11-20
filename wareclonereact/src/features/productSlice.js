@@ -3,22 +3,23 @@ import { createSlice } from "@reduxjs/toolkit";
 const product = createSlice({
   name: "product",
   initialState: {
-    loaded: false,
-    data: [],
+    all: {
+      loaded: false,
+      data: [],
+    },
   },
   reducers: {
     fetchAllProduct(state, action) {
       const products = [...action.payload];
-      return {
-        ...state,
-        data: products,
-      };
+      const updateProduct = JSON.parse(JSON.stringify(state));
+      updateProduct.all.data = products;
+      return updateProduct;
     },
+
     setLoaded(state, action) {
-      return {
-        ...state,
-        loaded: action.payload,
-      };
+      const updateProduct = JSON.parse(JSON.stringify(state));
+      updateProduct.all.loaded = action.payload;
+      return updateProduct;
     },
   },
 });

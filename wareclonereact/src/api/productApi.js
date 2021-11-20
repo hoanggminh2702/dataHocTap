@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import axiosClient from "./axiosClient";
 
 const productApi = {
@@ -9,17 +10,41 @@ const productApi = {
     const url = `/api/product/${id}`;
     return axiosClient.get(url);
   },
-  create: (payload) => {
+  create: (payload, token) => {
     const url = `/api/product/create`;
-    return axiosClient.post(url, { ...payload });
+    return axiosClient.post(
+      url,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Beare ${token}`,
+        },
+      }
+    );
   },
-  edit: (payload, id) => {
+  edit: (payload, id, token) => {
     const url = `/api/product/update/${id}`;
-    return axiosClient.post(url, { ...payload });
+    return axiosClient.post(
+      url,
+      { ...payload },
+      {
+        headers: {
+          Authorization: `Beare ${token}`,
+        },
+      }
+    );
   },
-  delete(id) {
+  delete(id, token) {
     const url = `/api/product/delete/${id}`;
-    return axiosClient.post(url, {});
+    return axiosClient.post(
+      url,
+      {},
+      {
+        headers: {
+          Authorization: `Beare ${token}`,
+        },
+      }
+    );
   },
 };
 

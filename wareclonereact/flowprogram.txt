@@ -36,3 +36,7 @@ Bắt sự kiện resize của màn hình để set name cho phần user trong s
 
 Sử dụng queryselect all để lấy tất cả input trong form và thực hiện 1 lần validate cho tất cả các trường
 
+Thêm action vào trang props tránh trường hợp reload lại trang thì data không còn và trở thành trang create
+
+
+

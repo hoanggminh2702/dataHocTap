@@ -27,9 +27,9 @@ const TopProductComponent = () => {
     },
   ];
   const dispatch = useDispatch();
-  const isLoading = useSelector((state) => !state.products.loaded);
+  const isLoading = useSelector((state) => !state.products.all.loaded);
   const productsInfo = useSelector((state) => {
-    return state.products.data.map((product) => ({
+    return state.products.all.data.map((product) => ({
       id: product["_id"],
       name: product.name,
       type: product.type,

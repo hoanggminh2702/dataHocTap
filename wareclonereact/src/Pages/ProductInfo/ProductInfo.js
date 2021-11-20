@@ -12,7 +12,7 @@ const ProductInfo = () => {
   const { id } = useParams();
   const [product, setProduct] = useState();
   const findProduct = useSelector((state) =>
-    state.products.data.find((product) => {
+    state.products.all.data.find((product) => {
       return product.id === id;
     })
   );

@@ -26,7 +26,7 @@ const AllProductComponent = () => {
   ];
   const dispatch = useDispatch();
   const products = useSelector((state) => {
-    return state.products.data.map((product) => ({
+    return state.products.all.data.map((product) => ({
       id: product["_id"],
       name: product.name,
       type: product.type,
@@ -35,7 +35,7 @@ const AllProductComponent = () => {
     }));
   });
 
-  const isLoading = useSelector((state) => !state.products.loaded);
+  const isLoading = useSelector((state) => !state.products.all.loaded);
   useEffect(() => {
     setTimeout(() => {
       productApi

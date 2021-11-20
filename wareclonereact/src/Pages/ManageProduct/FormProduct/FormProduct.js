@@ -1,12 +1,19 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 import productApi from "../../../api/productApi";
 import styles from "./FormProduct.module.css";
 
 // import { showValidateMessage } from "../../../utils/validate";
 
-const FormProduct = ({ product }) => {
+const FormProduct = ({ product, action }) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!product && action === "edit") {
+      navigate("/manageproduct");
+    }
+  }, [product]);
   const [message, setMessage] = useState({
     name: "",
     desc: "",
