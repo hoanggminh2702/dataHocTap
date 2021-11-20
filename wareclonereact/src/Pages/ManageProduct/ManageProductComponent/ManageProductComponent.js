@@ -16,6 +16,7 @@ import styles from "./ManageProductComponent.module.css";
 import { useNavigate } from "react-router";
 
 const ManageProductComponent = () => {
+  console.log("manageproduct render");
   const navigate = useNavigate();
   const btns = [
     {
@@ -31,10 +32,12 @@ const ManageProductComponent = () => {
           productApi
             .delete(e.target.id)
             .then((res) => {
-              alert("Xoá thành công sản phẩm này");
+              alert(`Đã xoá thành công sản phẩm`);
+
               console.log(`Đã xoá sản phẩm`, res.product);
+              window.location = "/manageproduct";
             })
-            .then((err) => {
+            .catch((err) => {
               console.log(err);
               alert("Xoá sản phẩm thất bại");
             });
