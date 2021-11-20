@@ -3,8 +3,12 @@ import Menu from "../Menu/Menu";
 import MenuList from "./MenuList";
 import "./SecNavMobileComponent.css";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const SecNavMobileComponent = () => {
+  const username = useSelector((state) => state?.user.username);
+  const navigate = useNavigate();
   const [isDisplay, setIsDisplay] = useState(false);
 
   const handleMenuClick = () => {
@@ -24,8 +28,9 @@ const SecNavMobileComponent = () => {
       icon: "fa fa-search",
     },
     {
-      title: "User",
+      title: username || "User",
       icon: "fas fa-user",
+      onClick: () => navigate("/login"),
     },
     {
       title: "Cart",

@@ -29,7 +29,7 @@ const ProductInfo = () => {
     } else {
       setProduct(findProduct);
     }
-  }, []);
+  }, [id]);
   return (
     <>
       {" "}

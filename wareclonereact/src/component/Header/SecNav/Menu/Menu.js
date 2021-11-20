@@ -2,11 +2,15 @@ import clsx from "clsx";
 import { useDispatch } from "react-redux";
 
 import styles from "./Menu.module.css";
-import logout, { logOut, setUser } from "../../../../features/userSlice";
+import { logOut } from "../../../../features/userSlice";
+import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 const Menu = ({ isDisplay, onClick }) => {
   const dispatch = useDispatch();
-  console.log(logout);
+  const navigate = useNavigate();
+  const username = useSelector((state) => state?.user?.username);
+
   return (
     <div className={styles.container}>
       {isDisplay && <div className={styles.overlay} onClick={onClick}></div>}
@@ -16,13 +20,35 @@ const Menu = ({ isDisplay, onClick }) => {
         })}
       >
         <ul className={clsx(styles["menu-list"])}>
-          <li className={clsx(styles["menu-item"])}>Home</li>
+          <li
+            className={clsx(styles["menu-item"])}
+            onClick={() => {
+              onClick();
+              navigate("/");
+            }}
+          >
+            Home
+          </li>
           <li className={clsx(styles["menu-item"])}>Categories</li>
-          <li className={clsx(styles["menu-item"])}>Login</li>
+          <li
+            className={clsx(styles["menu-item"])}
+            onClick={
+              !username
+                ? () => {
+                    onClick();
+                    navigate("/login");
+                  }
+                : () => {}
+            }
+          >
+            {username || "Login"}
+          </li>
           <li
             className={clsx(styles["menu-item"])}
             onClick={() => {
               dispatch(logOut());
+              onClick();
+              navigate("/login");
             }}
           >
             Logout

@@ -93,9 +93,30 @@ export const showValidateMessage = (element, setMessage) => {
         });
       }
       break;
+
+    case "quantity":
+      if (!checkNumber(element.value)) {
+        setMessage((prev) => {
+          return {
+            ...prev,
+            [element.name]: `${element.name} phải là số`,
+          };
+        });
+      } else {
+        setMessage((prev) => {
+          return {
+            ...prev,
+            [element.name]: "",
+          };
+        });
+      }
     default:
   }
 };
+
+function checkNumber(str) {
+  return /^[0-9]*$/.test(str);
+}
 
 function removeAscent(str) {
   if (str === null || str === undefined) return str;

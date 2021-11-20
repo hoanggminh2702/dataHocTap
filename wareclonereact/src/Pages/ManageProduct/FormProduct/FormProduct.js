@@ -4,8 +4,47 @@ import React, { useState } from "react";
 import productApi from "../../../api/productApi";
 import styles from "./FormProduct.module.css";
 
+// import { showValidateMessage } from "../../../utils/validate";
+
 const FormProduct = ({ product }) => {
-  const onChangeValidate = () => {};
+  const [message, setMessage] = useState({
+    name: "",
+    desc: "",
+    price: "",
+    type: "",
+    quantity: "",
+  });
+
+  const onChangeValidate = (e) => {
+    if (e.target.value === "" && e.target.name !== "img") {
+      setMessage((prev) => {
+        return { ...prev, [e.target.name]: `Không để trống trường này` };
+      });
+    } else {
+      if (
+        e.target.name === "price" &&
+        !Number.isFinite(Number(e.target.value))
+      ) {
+        return setMessage((prev) => {
+          return { ...prev, [e.target.name]: `Trường này phải là số` };
+        });
+      } else if (
+        e.target.name === "quantity" &&
+        !Number.isInteger(Number(e.target.value))
+      ) {
+        return setMessage((prev) => {
+          return { ...prev, [e.target.name]: `Trường này phải là số nguyên` };
+        });
+      } else {
+        setMessage((prev) => {
+          return {
+            ...prev,
+            [e.target.name]: "",
+          };
+        });
+      }
+    }
+  };
   const flag = {
     typeField: !product ? false : true,
     action: product ? "Edit" : "Create",
@@ -18,10 +57,10 @@ const FormProduct = ({ product }) => {
     quantity: product?.quantity || "",
     img: product?.img || "",
   });
-  console.log(product);
   const errorImg =
     "https://st3.depositphotos.com/16262510/33733/v/1600/depositphotos_337332964-stock-illustration-photo-not-available-vector-icon.jpg";
   const handleProductValue = (e) => {
+    onChangeValidate(e);
     setPayload((prev) => {
       return {
         ...prev,
@@ -31,6 +70,7 @@ const FormProduct = ({ product }) => {
   };
   const handleOnSubmit = (e) => {
     e.preventDefault();
+
     productApi[flag.action.toLowerCase()](
       {
         ...payload,
@@ -64,6 +104,12 @@ const FormProduct = ({ product }) => {
               placeholder="Vui lòng nhập tên sản phẩm"
             />
           </div>
+          <p
+            className={clsx(styles["validate-message"])}
+            style={{ display: message.name ? "block" : "none" }}
+          >
+            {message.name}
+          </p>
           <div className={styles["form-group"]}>
             <label htmlFor="desc">Product Description</label>
             <input
@@ -73,6 +119,12 @@ const FormProduct = ({ product }) => {
               placeholder="Vui lòng nhập mô tả sản phẩm"
             />
           </div>
+          <p
+            className={clsx(styles["validate-message"])}
+            style={{ display: message.desc ? "block" : "none" }}
+          >
+            {message.desc}
+          </p>
           <div className={styles["form-group"]}>
             <label htmlFor="price">Product Price</label>
             <input
@@ -82,6 +134,12 @@ const FormProduct = ({ product }) => {
               placeholder="Vui lòng nhập giá sản phẩm"
             />
           </div>
+          <p
+            className={clsx(styles["validate-message"])}
+            style={{ display: message.price ? "block" : "none" }}
+          >
+            {message.price}
+          </p>
           <div className={styles["form-group"]}>
             <label htmlFor="type">Product Type</label>
             <input
@@ -92,6 +150,12 @@ const FormProduct = ({ product }) => {
               disabled={flag.typeField}
             />
           </div>
+          <p
+            className={clsx(styles["validate-message"])}
+            style={{ display: message.type ? "block" : "none" }}
+          >
+            {message.type}
+          </p>
           <div className={styles["form-group"]}>
             <label htmlFor="quantity">Product Quantity</label>
             <input
@@ -101,6 +165,12 @@ const FormProduct = ({ product }) => {
               placeholder="Vui lòng nhập số lượng sản phẩm"
             />
           </div>
+          <p
+            className={clsx(styles["validate-message"])}
+            style={{ display: message.quantity ? "block" : "none" }}
+          >
+            {message.quantity}
+          </p>
           <button>Lưu</button>
         </form>
         <div

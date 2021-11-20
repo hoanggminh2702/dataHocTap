@@ -23,3 +23,9 @@ login lấy object user trong item user trong localstorage
 
 logout xoá item user trong storage
 
+Thêm các function cho menu trực tiếp trong thẻ li, chèn thêm onClick để đóng menu
+
+Không thực hiện validate bằng file validate có sẵn mà validate luôn trong file formproduct
+
+Cách validate: nếu các trường bằng rỗng thì hiện thông báo, nếu không thì kiểm tra nếu trường quantity thì là số nguyên, price thì là số thực, còn lại thì để message bằng rỗng
+

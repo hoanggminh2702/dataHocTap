@@ -20,9 +20,6 @@ const product = createSlice({
         loaded: action.payload,
       };
     },
-    deleteProduct(state, action) {
-      state.data.splice(state.data.indexOf(action.payload, 1));
-    },
   },
 });
 

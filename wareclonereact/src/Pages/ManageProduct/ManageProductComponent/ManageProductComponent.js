@@ -1,13 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
 import TitleComponent from "../../../component/TitleComponent/TitleComponent";
-import {
-  deleteProduct,
-  fetchAllProduct,
-  setLoaded,
-} from "../../../features/productSlice";
+import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
 import Product from "../../Product/Product";
 
 import clsx from "clsx";
@@ -16,7 +12,6 @@ import styles from "./ManageProductComponent.module.css";
 import { useNavigate } from "react-router";
 
 const ManageProductComponent = () => {
-  console.log("manageproduct render");
   const navigate = useNavigate();
   const btns = [
     {

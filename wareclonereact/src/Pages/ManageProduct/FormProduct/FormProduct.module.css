@@ -77,6 +77,12 @@
   margin: auto;
 }
 
+.validate-message {
+  font-size: 1.4rem;
+  color: red;
+  margin: auto;
+}
+
 .img-preview {
   display: flex;
   flex-direction: column;
