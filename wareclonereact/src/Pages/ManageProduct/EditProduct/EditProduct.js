@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import productApi from "../../../api/productApi";
@@ -6,17 +6,8 @@ import FormProduct from "../FormProduct/FormProduct";
 
 const EditProduct = () => {
   const { id } = useParams();
-  let product = useSelector((state) =>
-    state.products.all.data.find((product) => {
-      return product._id == id;
-    })
-  );
-  if (!product) {
-    productApi.get(id).then((res) => {
-      product = res.product;
-    });
-  }
-  return <FormProduct product={product} action="edit" />;
+
+  return <FormProduct action="edit" id={id} />;
 };
 
 export default EditProduct;

@@ -38,5 +38,6 @@ Sử dụng queryselect all để lấy tất cả input trong form và thực h
 
 Thêm action vào trang props tránh trường hợp reload lại trang thì data không còn và trở thành trang create
 
+Nếu dùng !product thì khi refresh lại sẽ không có product nào được load
 
-
+Thêm action edit và sửa lại file form edit để chắc chắn rằng data được load khi f5

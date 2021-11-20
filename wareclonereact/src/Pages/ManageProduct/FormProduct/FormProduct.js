@@ -1,19 +1,47 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import productApi from "../../../api/productApi";
 import styles from "./FormProduct.module.css";
 
-// import { showValidateMessage } from "../../../utils/validate";
-
-const FormProduct = ({ product, action }) => {
-  const navigate = useNavigate();
+const FormProduct = ({ action, id }) => {
+  const [product, setProduct] = useState();
+  const [payload, setPayload] = useState({
+    name: product?.name || "",
+    desc: product?.desc || "",
+    price: product?.price || "",
+    type: product?.type || "",
+    quantity: product?.quantity || "",
+    img: product?.img || "",
+  });
+  const data = useSelector((state) =>
+    state.products.all.data.find((product) => {
+      return product._id == id;
+    })
+  );
   useEffect(() => {
-    if (!product && action === "edit") {
-      navigate("/manageproduct");
+    if (action === "edit") {
+      if (!data) {
+        console.log("abc");
+        productApi
+          .get(id)
+          .then((res) => {
+            const resData = { ...res.product };
+            delete resData._id;
+            setProduct(res.product);
+            setPayload({ ...resData });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        const resData = { ...data };
+        delete resData._id;
+        setProduct({ ...data });
+        setPayload(resData);
+      }
     }
-  }, [product]);
+  }, []);
   const [message, setMessage] = useState({
     name: "",
     desc: "",
@@ -50,21 +78,14 @@ const FormProduct = ({ product, action }) => {
     }
   };
   const flag = {
-    typeField: !product ? false : true,
-    action: product ? "Edit" : "Create",
+    typeField: action !== "edit" ? false : true,
+    action: action === "edit" ? "Edit" : "Create",
   };
-  const [payload, setPayload] = useState({
-    name: product?.name || "",
-    desc: product?.desc || "",
-    price: product?.price || "",
-    type: product?.type || "",
-    quantity: product?.quantity || "",
-    img: product?.img || "",
-  });
+
   const errorImg =
     "https://st3.depositphotos.com/16262510/33733/v/1600/depositphotos_337332964-stock-illustration-photo-not-available-vector-icon.jpg";
   const handleProductValue = (e) => {
-    !product && validateInput(e.target);
+    action != "edit" && validateInput(e.target);
     setPayload((prev) => {
       return {
         ...prev,
@@ -81,9 +102,9 @@ const FormProduct = ({ product, action }) => {
     productApi[flag.action.toLowerCase()](
       {
         ...payload,
-        type: product ? product.type : payload.type,
+        type: action === "edit" ? product.type : payload.type,
       },
-      product ? product._id : undefined
+      action === "edit" ? product._id : undefined
     )
       .then((res) => {
         console.log(`${flag.action} Successful`, res);
@@ -99,12 +120,12 @@ const FormProduct = ({ product, action }) => {
     e.preventDefault();
     const inputsArr = Array.from(e.target.querySelectorAll("input"));
 
-    !product &&
+    action != "edit" &&
       inputsArr.forEach((input) => {
         validateInput(input);
       });
 
-    !product
+    action != "edit"
       ? inputsArr.every((input) => {
           console.log(message[input.name] !== "");
           return message[input.name] === "";
