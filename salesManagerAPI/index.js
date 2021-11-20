@@ -189,7 +189,7 @@ async function main() {
   const ProductModel = mongoose.model("Products", productSchema);
 
   // Get Products
-  app.get("/api/getproducts", async function (req, res) {
+  app.get("/api/product/getAll", async function (req, res) {
     let limit = req.query.limit ?? 5;
     let skip = req.query.page ?? 0;
     let name = req.query.name ?? "";
@@ -243,10 +243,10 @@ async function main() {
   });
 
   //create Product
-  app.post("/api/createProduct", async function (req, res) {
+  app.post("/api/product/create", async function (req, res) {
     if (
       !Object.keys(req.body).every((key) => {
-        return req.body[key] !== "" && key != "img";
+        return (req.body[key] === "" && key === "img") || req.body[key] !== "";
       })
     ) {
       res.status(400).json("Không có trường nào được trống");
@@ -264,7 +264,6 @@ async function main() {
         price: Number(req.body.price),
         quantity: Number(req.body.quantity) > 0 ? Number(req.body.quantity) : 0,
       });
-
       const saveProduct = await newProduct.save();
 
       res.status(200).json({
@@ -280,10 +279,9 @@ async function main() {
   });
 
   // Update product
-  app.post("/api/updateProduct", async function (req, res) {
+  app.post("/api/product/update", async function (req, res) {
     if (
       !Object.keys(req.body).every((key) => {
-        console.log(key != "img" || req.body[key] !== "");
         if (key != "img" && req.body[key] == "") {
           return false;
         } else return true;
@@ -296,6 +294,7 @@ async function main() {
     }
 
     try {
+      // Check exist product
       if (!(await ProductModel.findById(req.body.id))) {
         res.status(400).json({
           message: "Không tồn tại sản phẩm này",
@@ -303,11 +302,23 @@ async function main() {
         return;
       }
 
-      const payload = req.body;
+      // update field
+      const payload = {
+        ...req.body,
+        price: Number(req.body.price),
+        quantity: Number(req.body.quantity),
+      };
       delete payload.id;
-      console.log(payload);
+      // check if field is invalid
+      Object.keys(payload).forEach((key) => {
+        if (key !== "img" && !req.body[key]) {
+          delete payload[key];
+        }
+      });
+
+      // Execute update
       const updateProduct = await ProductModel.findByIdAndUpdate(
-        req.body.id,
+        { _id: req.body.id },
         payload,
         {
           new: true,
@@ -320,11 +331,47 @@ async function main() {
     } catch (err) {
       res.status(500).json({
         message: "Lỗi không xác định",
+        err: err,
       });
     }
   });
 
-  //Listen on port
+  // Delete
+  app.post("/api/product/delete/:id", async function (req, res) {
+    try {
+      if (req.params.id) {
+        const findProduct = await ProductModel.findById(req.params.id).exec();
+        if (!findProduct) {
+          res.status(404).json({
+            message: "Không tìm thấy sản phẩm",
+            err,
+          });
+          return;
+        }
+      } else {
+        res.status(400).json({
+          message: "Id không hợp lệ",
+          err,
+        });
+        return;
+      }
+
+      const deleteProduct = await ProductModel.findOneAndDelete({
+        _id: req.params.id,
+      });
+      res.status(200).json({
+        message: `Bạn đã xoá sản phẩm với id ${req.params.id}`,
+        product: deleteProduct,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: "Lỗi hệ không xác định",
+        err,
+      });
+    }
+  });
+
+  // Listen on port
   app.listen(port, function () {
     console.log(`Now listening on port ${port}`);
   });

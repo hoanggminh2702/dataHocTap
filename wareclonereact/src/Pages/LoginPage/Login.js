@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
 const Login = () => {
   const user = useSelector((state) => state.user?.role);
-
+  console.log("render");
   return (
     <>
       {user === "admin" ? (
