@@ -14,28 +14,20 @@ import { authenticate, order } from "../../../utils/orders";
 import { add, update } from "../../../features/ordersSlice";
 const TopProductComponent = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const fetchProducts = useSelector((state) => state.products.all.data);
   const authen = useSelector((state) => state.user?.role);
-  const orders = useSelector((state) => state.orders);
-  console.log(orders);
-  const navigate = useNavigate();
   const btns = [
     {
-      title: "Buy",
+      title: "Add",
       onClick: (e) => {
         authenticate(e, authen, fetchProducts, dispatch, add, order);
       },
     },
     {
-      title: "Delete",
+      title: "Cancel",
       onClick: (e) => {
         authenticate(e, authen, fetchProducts, dispatch, update, order);
-      },
-    },
-    {
-      title: "Details",
-      onClick: (e) => {
-        navigate(`/product/${e.target.id}`);
       },
     },
   ];
@@ -45,6 +37,7 @@ const TopProductComponent = () => {
       id: product["_id"],
       name: product.name,
       type: product.type,
+      price: product.price,
       productImg: product.img,
     }));
   });
@@ -105,6 +98,10 @@ const TopProductComponent = () => {
       },
     ],
   };
+
+  const handleOnClick = (id) => {
+    navigate(`/product/${id}`);
+  };
   return (
     <div className={clsx("grid wide")}>
       {isLoading ? (
@@ -113,6 +110,7 @@ const TopProductComponent = () => {
         <Slider {...settings}>
           {productsInfo.map((productInfo, index) => (
             <Product
+              onClick={handleOnClick}
               key={index}
               productInfo={productInfo}
               btns={btns}

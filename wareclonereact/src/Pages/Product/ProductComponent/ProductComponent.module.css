@@ -20,7 +20,7 @@
 .product-img {
   display: block;
   transition: all linear 0.1s;
-  object-fit: cover;
+  object-fit: contain;
   padding: 10px;
 }
 

@@ -1,32 +1,41 @@
 import clsx from "clsx";
 import React from "react";
 import styles from "./ProductInCart.module.css";
-const ProductInCart = (props) => {
+const ProductInCart = ({ orders }) => {
   return (
-    <div className={clsx(styles.container)}>
-      <div className={clsx(styles.stt)}>1</div>
-      <div className={clsx(styles["img-container"])}>
-        <img
-          className={clsx(styles["img"])}
-          src="https://phucanhcdn.com/media/product/38475_aspire_a315_56_ha1.jpg"
-          alt=""
-        />
-      </div>
-      <div className={clsx(styles["info-container"])}>
-        <p className={clsx(styles["product-name"])}>Tên</p>
-        <span className={clsx(styles["product-type"])}>Loại</span>
-      </div>
-      <div className={clsx(styles["quantity-container"])}>
-        <input value="1" className={clsx(styles["product-quantity"])} />
-        <div className={clsx(styles["btn-container"])}>
-          <button className={clsx(styles["btn"])}>Tăng</button>
-          <button className={clsx(styles["btn"])}> Giảm</button>
-        </div>
-      </div>
-      <div className={clsx(styles["price-container"])}>
-        <span className={clsx(styles["product-price"])}>Price</span>
-      </div>
-    </div>
+    <table className={styles.container}>
+      <thead className={clsx(styles.header)}>
+        <tr className={clsx(styles["title-row"])}>
+          <th>STT</th>
+          <th>Hình ảnh</th>
+          <th>Thông tin</th>
+          <th>Số lượng</th>
+          <th>Thành tiền</th>
+        </tr>
+      </thead>
+      <tbody className={clsx(styles.content)}>
+        <tr className={clsx(styles["content-row"])}>
+          <td className={styles.td}>1</td>
+          <td className={clsx(styles["content-img-container"])}>
+            <img
+              className={clsx(styles["content-img"])}
+              src="https://product.hstatic.net/1000026716/product/tuf_gaming_f15_fx506hcb_hn139t_0409646a9fd94cdabfaef2cf14f555a8.png"
+              alt=""
+            />
+          </td>
+          <td className={styles.td}>
+            <div className={styles["product-info"]}>
+              <span className={styles["product-name"]}>
+                MacBook Air M1 2020
+              </span>
+              <span className={styles["product-type"]}>LAPTOP</span>
+            </div>
+          </td>
+          <td className={styles.td}>1</td>
+          <td className={styles.td}>1600$</td>
+        </tr>
+      </tbody>
+    </table>
   );
 };
 

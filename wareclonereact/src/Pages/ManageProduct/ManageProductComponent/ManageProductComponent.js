@@ -71,6 +71,9 @@ const ManageProductComponent = () => {
       dispatch(setLoaded(false));
     };
   }, []);
+  const handleOnClick = (id) => {
+    navigate(`/product/${id}`);
+  };
   return (
     <>
       {isLoading ? (
@@ -90,6 +93,7 @@ const ManageProductComponent = () => {
               {products.map((product, index) => (
                 <div key={index} className="col l-3 m-4 h-m-6 c-12">
                   <Product
+                    onClick={handleOnClick}
                     id={product._id}
                     productInfo={product}
                     btns={btns}

@@ -11,27 +11,21 @@ import { authenticate, order } from "../../../utils/orders.js";
 import Product from "../../Product/Product";
 
 const AllProductComponent = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const fetchProducts = useSelector((state) => state.products.all.data);
   const authen = useSelector((state) => state.user?.role);
-  const navigate = useNavigate();
   const btns = [
     {
-      title: "Buy",
+      title: "Add",
       onClick: (e) => {
         authenticate(e, authen, fetchProducts, dispatch, add, order);
       },
     },
     {
-      title: "Delete",
+      title: "Cancel",
       onClick: (e) => {
         authenticate(e, authen, fetchProducts, dispatch, update, order);
-      },
-    },
-    {
-      title: "Details",
-      onClick: (e) => {
-        navigate(`/product/${e.target.id}`);
       },
     },
   ];
@@ -63,6 +57,11 @@ const AllProductComponent = () => {
       setLoaded(false);
     };
   }, []);
+
+  const handleOnClick = (id) => {
+    navigate(`/product/${id}`);
+  };
+
   return (
     <>
       {isLoading ? (
@@ -73,6 +72,7 @@ const AllProductComponent = () => {
             {products.map((product, index) => (
               <div key={index} className="col l-3 m-4 h-m-6 c-12">
                 <Product
+                  onClick={handleOnClick}
                   productInfo={product}
                   btns={btns}
                   style={{ zIndex: "1" }}

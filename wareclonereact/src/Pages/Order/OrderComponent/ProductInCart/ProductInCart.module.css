@@ -1,70 +1,102 @@
 .container {
-  display: flex;
-  border: black 1px solid;
-  max-height: 20%;
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid gray;
+  border-collapse: collapse;
+}
+.header {
 }
 
-.stt {
-  flex-basis: 5%;
-  font-size: 3rem;
-  border: 1px solid black;
+.title-row {
 }
 
-.img-container {
-  display: flex;
-  border: 1px solid black;
-  flex-basis: 15%;
+.title-row th {
+  font-size: 2rem;
+  border: 1px solid gray;
 }
 
-.img {
-  width: 60%;
-  margin: auto;
+.content {
 }
 
-.info-container {
-  flex-basis: 50%;
-  border: 1px solid black;
+.td {
+  text-align: center;
+  font-size: 2.4rem;
+  border: 1px solid gray;
 }
 
-.product-name {
-  font-size: 1.8rem;
+.content-row {
+  background-color: transparent;
 }
 
-.product-type {
-  font-size: 1.8rem;
+.content-img-container {
+  width: 15%;
 }
 
-.quantity-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid black;
-  width: 10%;
-}
-
-.product-quantity {
-  font-size: 1.8rem;
-  height: 24px;
+.content-img {
   width: 100%;
 }
 
-.btn-container {
+.product-info {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.btn {
-  width: fit-content;
-  height: 24px;
-  font-size: 1.6rem;
+.product-name {
+  font-size: 2rem;
 }
 
-.price-conatiner {
-  flex-basis: 15%;
-  border: 1px solid black;
+.product-type {
+  font-size: 2rem;
 }
 
-.product-price {
-  font-size: 1.8rem;
+@media (min-width: 600px) and (max-width: 767px) {
+  .title-row th {
+    font-size: 1.6rem;
+  }
+
+  .td {
+    font-size: 1.6rem;
+  }
+  .product-name {
+    font-size: 1.3rem;
+  }
+
+  .product-type {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .title-row th {
+    font-size: 1.3rem;
+  }
+
+  .td {
+    font-size: 1.3rem;
+  }
+  .product-name {
+    font-size: 1.1rem;
+  }
+
+  .product-type {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .title-row th {
+    font-size: 1.1rem;
+  }
+
+  .td {
+    font-size: 1.3rem;
+  }
+  .product-name {
+    font-size: 1rem;
+  }
+
+  .product-type {
+    font-size: 1rem;
+  }
 }
