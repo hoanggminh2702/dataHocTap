@@ -362,6 +362,64 @@ async function main() {
     }
   });
 
+  // -------------------------------ORDERS-----------------------------
+  const orderSchema = new mongoose.Schema(
+    {
+      username: String,
+      boughtAt: Date,
+      products: [
+        {
+          _id: String,
+          quantity: Number,
+          total: Number,
+        },
+      ],
+    },
+    {
+      collection: "Orders",
+    }
+  );
+
+  const OrderModel = mongoose.model("Orders", orderSchema);
+
+  // Get All Orders
+  app.get("/api/order/getAll", async function (req, res) {
+    try {
+      const orders = await OrderModel.find({}).exec();
+      res.status(200).json({
+        message: "Thành công",
+        orders,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Lỗi hệ thống",
+        err,
+      });
+    }
+  });
+
+  // Create Order
+  app.post("/api/order/create", async function (req, res) {
+    try {
+      const newOrder = new OrderModel({
+        ...JSON.parse(JSON.stringify(req.body)),
+        boughtAt: Date.parse(req.body.boughtAt),
+      });
+      const result = await newOrder.save();
+      res.status(200).json({
+        message: "Thành công",
+        order: result,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Lỗi từ hệ thống",
+        err,
+      });
+    }
+  });
+
   // Listen on port
   app.listen(port, function () {
     console.log(`Now listening on port ${port}`);

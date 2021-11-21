@@ -36,7 +36,9 @@ const ProductComponent = (props) => {
           </span>
         </div>
         <div className={clsx(styles["product-details-right"])}>
-          <span className={clsx(styles["product-price"])}>1999$</span>
+          <span
+            className={clsx(styles["product-price"])}
+          >{`${props.productInfo.price}$`}</span>
         </div>
       </div>
       <div className={clsx(styles["btn-container"])}>

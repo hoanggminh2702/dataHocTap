@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const orders = createSlice({
   name: "orders",
-  initialState: JSON.parse(localStorage.getItem("card")) || { orders: [] },
+  initialState: JSON.parse(localStorage.getItem("cart")) || { orders: [] },
   reducers: {
     add(state, action) {
       const newState = JSON.parse(JSON.stringify(state));
@@ -52,9 +52,13 @@ const orders = createSlice({
       localStorage.setItem("cart", JSON.stringify(newState));
       return newState;
     },
+    remove(state, action) {
+      localStorage.removeItem("cart");
+      return { orders: [] };
+    },
   },
 });
 
 const { reducer, actions } = orders;
-export const { add, update } = actions;
+export const { add, update, remove } = actions;
 export default reducer;

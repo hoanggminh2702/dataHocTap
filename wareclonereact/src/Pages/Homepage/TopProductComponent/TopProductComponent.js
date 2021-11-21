@@ -16,7 +16,8 @@ const TopProductComponent = () => {
   const dispatch = useDispatch();
   const fetchProducts = useSelector((state) => state.products.all.data);
   const authen = useSelector((state) => state.user?.role);
-
+  const orders = useSelector((state) => state.orders);
+  console.log(orders);
   const navigate = useNavigate();
   const btns = [
     {

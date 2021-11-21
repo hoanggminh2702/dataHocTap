@@ -19,6 +19,7 @@ import FormProduct from "./Pages/ManageProduct/FormProduct/FormProduct";
 import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
 import EditProduct from "./Pages/ManageProduct/EditProduct/EditProduct";
 import CreateProduct from "./Pages/ManageProduct/CreateProduct/CreateProduct";
+import Order from "./Pages/Order/Order";
 
 const App = () => {
   const Login = React.lazy(() => import("./Pages/LoginPage/Login"));
@@ -59,6 +60,8 @@ const App = () => {
                 </RequiredAuth>
               }
             />
+            <Route path="/order" exact element={<Order />} />
+
             <Route path="/login" exact element={<Login />} />
             <Route path="/register" exact element={<Regiser />} />
             <Route path="*" element={<Homepage />} />
