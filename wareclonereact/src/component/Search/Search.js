@@ -2,6 +2,7 @@ import clsx from "clsx";
 import React, { useState } from "react";
 
 import styles from "./Search.module.css";
+import SearchComponent from "./SearchComponent/SearchComponent";
 
 const Search = ({ setIsSearch }) => {
   const [disappear, setDisappear] = useState(false);
@@ -24,7 +25,7 @@ const Search = ({ setIsSearch }) => {
           [styles["search-container--fadeOut"]]: disappear,
         })}
       >
-        Đây là thanh search
+        <SearchComponent />
       </div>
     </div>
   );

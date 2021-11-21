@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import "./topnav.css";
 import Search from "../../Search/Search.js";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 import Notification from "../../Notification/Notification";
 import User from "../../User/User";
+
 const TopNavComponent = () => {
   const [isSearch, setIsSearch] = useState(false);
   const ordersLength = useSelector((state) => state.orders.orders).length;

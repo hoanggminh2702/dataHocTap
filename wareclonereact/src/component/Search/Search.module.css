@@ -42,14 +42,30 @@
 }
 
 .search-container {
-  height: 100px;
+  height: 60px;
   width: var(--search-container--width);
   position: fixed;
-  top: 30%;
+  top: 40%;
   left: calc((100vw - var(--search-container--width)) / 2);
   background-color: white;
   z-index: 999999 !important;
   animation: fadeInAndGrowth ease-out var(--search-duration);
+}
+
+@media (max-width: 1023px) {
+  .search-container {
+    width: 80%;
+    left: calc((100% - 80%) / 2);
+  }
+}
+
+@media (max-width: 599px) {
+  .search-container {
+    top: 30%;
+    width: 90%;
+    left: calc((100% - 90%) / 2);
+    height: 45px;
+  }
 }
 
 .search-container--fadeOut {

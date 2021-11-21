@@ -192,17 +192,17 @@ async function main() {
   app.get("/api/product/getAll", async function (req, res) {
     let limit = req.query.limit ?? 8;
     let skip = req.query.page ?? 0;
-    let name = req.query.name ?? "";
+    let search = req.query.search ?? "";
 
-    let filter;
+    let filter = {};
 
-    if (name != "") filter = { name: name };
+    if (search != "") filter.name = new RegExp(search, "i");
 
     if (skip != "") skip = (skip - 1) * limit;
 
     try {
       const countDocuments = await ProductModel.countDocuments(filter).exec();
-      const products = await ProductModel.find({})
+      const products = await ProductModel.find(filter)
         .skip(skip)
         .limit(+limit)
         .exec();

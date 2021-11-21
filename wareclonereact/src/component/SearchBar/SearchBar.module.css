@@ -1,0 +1,22 @@
+.container {
+  height: 100%;
+}
+.search {
+  height: 100%;
+  width: 100%;
+  background-color: rgb(240, 240, 240);
+  outline: none;
+  border: none;
+  border-bottom: 1px transparent solid;
+  font-size: 3rem;
+}
+
+@media (max-width: 599px) {
+  .search {
+    font-size: 1.8rem;
+  }
+}
+
+.search:focus {
+  border-bottom: black 1px solid;
+}

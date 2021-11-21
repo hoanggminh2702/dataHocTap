@@ -6,10 +6,12 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import Notification from "../../../Notification/Notification";
+import Search from "../../../Search/Search";
 
 const SecNavMobileComponent = () => {
   const username = useSelector((state) => state?.user.username);
   const [maxLength, setMaxlength] = useState(10);
+  const [isSearch, setIsSearch] = useState(false);
 
   useEffect(() => {
     let firstWidth = window.innerWidth;
@@ -59,6 +61,9 @@ const SecNavMobileComponent = () => {
     {
       title: "Search",
       icon: "fa fa-search",
+      onClick: () => {
+        setIsSearch(true);
+      },
     },
     {
       title:
@@ -89,6 +94,7 @@ const SecNavMobileComponent = () => {
               )}
             </MenuList>
           ))}
+          {isSearch && <Search setIsSearch={setIsSearch} />}
         </ul>
       </div>
     </div>
