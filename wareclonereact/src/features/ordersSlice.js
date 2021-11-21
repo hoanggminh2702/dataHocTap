@@ -2,24 +2,59 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const orders = createSlice({
   name: "orders",
-  initialState: JSON.parse(localStorage.getItem("user"))?.cart || [],
+  initialState: JSON.parse(localStorage.getItem("card")) || { orders: [] },
   reducers: {
     add(state, action) {
-      const addOrders = [...state, action.payload];
-      localStorage.setItem(JSON.stringify(addOrders));
-      return addOrders;
-    },
-    remove(state, action) {
-      const updateOrder = [...state];
-      const result = updateOrder.filter((order) => {
-        return order?.item !== action.payload;
+      const newState = JSON.parse(JSON.stringify(state));
+      const newOrders = newState.orders;
+      const checkBought = newOrders.find((product) => {
+        return product._id == action.payload.id;
       });
-      localStorage.setItem(JSON.stringify(result));
-      return result;
+      if (checkBought) {
+        newOrders.forEach((product) => {
+          if (product._id == action.payload.id) {
+            product.quantity += 1;
+            product.total += +Number(action.payload.price);
+          }
+        });
+      } else {
+        newOrders.push({
+          _id: action.payload.id,
+          quantity: 1,
+          total: +Number(action.payload.price),
+        });
+      }
+
+      newState.orders = newOrders;
+      localStorage.setItem("cart", JSON.stringify(newState));
+      return newState;
+    },
+    update(state, action) {
+      const newState = JSON.parse(JSON.stringify(state));
+      const newOrders = newState.orders;
+      const checkBought = newOrders.find((product) => {
+        return product._id == action.payload.id;
+      });
+      if (checkBought) {
+        newOrders.forEach((product, index, object) => {
+          if (product._id == action.payload.id) {
+            if (product.quantity > 1) {
+              product.quantity -= 1;
+              product.total -= +Number(action.payload.price);
+            } else if (product.quantity === 1) {
+              object.splice(index, 1);
+            }
+          }
+        });
+      }
+
+      newState.orders = newOrders;
+      localStorage.setItem("cart", JSON.stringify(newState));
+      return newState;
     },
   },
 });
 
 const { reducer, actions } = orders;
-export const { add, remove } = actions;
+export const { add, update } = actions;
 export default reducer;

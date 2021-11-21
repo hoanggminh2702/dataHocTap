@@ -41,3 +41,11 @@ Thêm action vào trang props tránh trường hợp reload lại trang thì dat
 Nếu dùng !product thì khi refresh lại sẽ không có product nào được load
 
 Thêm action edit và sửa lại file form edit để chắc chắn rằng data được load khi f5
+
+Thực hiện viết 1 hàm authen và gọi tới hàm cần thực hiện để authen cho hàm đó
+
+Thực hiện tìm trong mảng product xem có phần tử nào có id trùng với id của product được click btn, nếu có thì truyền { id, quantity, price} của product đó vào action để thực hiện
+
+Trong action thực hiện quét qua state, nếu state có chứa product trong payload thì thực hiện tăng quantity lên, nếu chưa có thì gán bằng 1, nếu là hàm trừ thì trừ đi với những item có quantity đã mua lớn hơn 1, nếu bằng 1 thì sau khi trừ là bằng 0, nghĩa là xoá phần tử đó đi
+
+Nhớ thực sau khi viết api để show lên thì làm tròn đến 2 chữ số

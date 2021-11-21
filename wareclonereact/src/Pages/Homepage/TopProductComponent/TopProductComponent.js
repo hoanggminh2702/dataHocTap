@@ -10,13 +10,25 @@ import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
 import clsx from "clsx";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
 import { useNavigate } from "react-router";
+import { authenticate, order } from "../../../utils/orders";
+import { add, update } from "../../../features/ordersSlice";
 const TopProductComponent = () => {
+  const dispatch = useDispatch();
+  const fetchProducts = useSelector((state) => state.products.all.data);
+  const authen = useSelector((state) => state.user?.role);
+
   const navigate = useNavigate();
   const btns = [
     {
       title: "Buy",
       onClick: (e) => {
-        console.log(e.target);
+        authenticate(e, authen, fetchProducts, dispatch, add, order);
+      },
+    },
+    {
+      title: "Delete",
+      onClick: (e) => {
+        authenticate(e, authen, fetchProducts, dispatch, update, order);
       },
     },
     {
@@ -26,7 +38,6 @@ const TopProductComponent = () => {
       },
     },
   ];
-  const dispatch = useDispatch();
   const isLoading = useSelector((state) => !state.products.all.loaded);
   const productsInfo = useSelector((state) => {
     return state.products.all.data.map((product) => ({

@@ -5,18 +5,27 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import productApi from "../../../api/productApi";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
-import { add } from "../../../features/ordersSlice";
+import { add, update } from "../../../features/ordersSlice";
 import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
+import { authenticate, order } from "../../../utils/orders.js";
 import Product from "../../Product/Product";
 
 const AllProductComponent = () => {
   const dispatch = useDispatch();
+  const fetchProducts = useSelector((state) => state.products.all.data);
+  const authen = useSelector((state) => state.user?.role);
   const navigate = useNavigate();
   const btns = [
     {
       title: "Buy",
       onClick: (e) => {
-        console.log(e);
+        authenticate(e, authen, fetchProducts, dispatch, add, order);
+      },
+    },
+    {
+      title: "Delete",
+      onClick: (e) => {
+        authenticate(e, authen, fetchProducts, dispatch, update, order);
       },
     },
     {
