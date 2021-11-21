@@ -5,9 +5,17 @@ const orderApi = {
     const url = "/api/order/getAll";
     return axiosClient.get(url, { params });
   },
-  create(data) {
+  create(data, token) {
     const url = "/api/order/create";
-    return axiosClient.post(url, { ...data });
+    return axiosClient.post(
+      url,
+      { ...data },
+      {
+        headers: {
+          Authorization: `Beare ${token}`,
+        },
+      }
+    );
   },
 };
 

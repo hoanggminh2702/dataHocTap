@@ -1,7 +1,5 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { useParams } from "react-router";
-import productApi from "../../../api/productApi";
 import FormProduct from "../FormProduct/FormProduct";
 
 const EditProduct = () => {

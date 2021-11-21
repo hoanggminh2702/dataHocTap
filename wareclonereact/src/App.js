@@ -12,10 +12,7 @@ import { Navigate } from "react-router";
 
 import Regiser from "./Pages/RegisterPage/Regiser";
 import ManageProduct from "./Pages/ManageProduct/ManageProduct";
-import { useSelector } from "react-redux";
-import ProductInfo from "./Pages/ProductInfo/ProductInfo";
 import RequiredAuth from "./utils/RequiredAuth";
-import FormProduct from "./Pages/ManageProduct/FormProduct/FormProduct";
 import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
 import EditProduct from "./Pages/ManageProduct/EditProduct/EditProduct";
 import CreateProduct from "./Pages/ManageProduct/CreateProduct/CreateProduct";
@@ -23,7 +20,9 @@ import Order from "./Pages/Order/Order";
 
 const App = () => {
   const Login = React.lazy(() => import("./Pages/LoginPage/Login"));
-
+  const ProductInfo = React.lazy(() =>
+    import("./Pages/ProductInfo/ProductInfo")
+  );
   return (
     <Suspense fallback={<LoadingComponent />}>
       <GlobalStyle>

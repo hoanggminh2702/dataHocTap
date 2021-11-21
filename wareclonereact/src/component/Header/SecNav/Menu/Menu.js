@@ -5,6 +5,7 @@ import styles from "./Menu.module.css";
 import { logOut } from "../../../../features/userSlice";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import { remove } from "../../../../features/ordersSlice";
 
 const Menu = ({ isDisplay, onClick }) => {
   const dispatch = useDispatch();
@@ -47,6 +48,7 @@ const Menu = ({ isDisplay, onClick }) => {
             className={clsx(styles["menu-item"])}
             onClick={() => {
               dispatch(logOut());
+              dispatch(remove());
               onClick();
               navigate("/login");
             }}

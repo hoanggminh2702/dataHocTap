@@ -8,11 +8,11 @@ const orders = createSlice({
       const newState = JSON.parse(JSON.stringify(state));
       const newOrders = newState.orders;
       const checkBought = newOrders.find((product) => {
-        return product._id == action.payload.id;
+        return product._id === action.payload.id;
       });
       if (checkBought) {
         newOrders.forEach((product) => {
-          if (product._id == action.payload.id) {
+          if (product._id === action.payload.id) {
             product.quantity += 1;
             product.total += +Number(action.payload.price);
           }
@@ -22,6 +22,9 @@ const orders = createSlice({
           _id: action.payload.id,
           quantity: 1,
           total: +Number(action.payload.price),
+          name: action.payload.name,
+          img: action.payload.img,
+          type: action.payload.type,
         });
       }
 
@@ -33,11 +36,11 @@ const orders = createSlice({
       const newState = JSON.parse(JSON.stringify(state));
       const newOrders = newState.orders;
       const checkBought = newOrders.find((product) => {
-        return product._id == action.payload.id;
+        return product._id === action.payload.id;
       });
       if (checkBought) {
         newOrders.forEach((product, index, object) => {
-          if (product._id == action.payload.id) {
+          if (product._id === action.payload.id) {
             if (product.quantity > 1) {
               product.quantity -= 1;
               product.total -= +Number(action.payload.price);

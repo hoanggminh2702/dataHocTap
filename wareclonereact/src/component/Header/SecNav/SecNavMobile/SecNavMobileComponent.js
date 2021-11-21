@@ -5,6 +5,7 @@ import "./SecNavMobileComponent.css";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import Notification from "../../../Notification/Notification";
 
 const SecNavMobileComponent = () => {
   const username = useSelector((state) => state?.user.username);
@@ -70,31 +71,23 @@ const SecNavMobileComponent = () => {
     {
       title: "Cart",
       icon: "fas fa-shopping-cart",
+      onClick: () => navigate("/order"),
     },
   ];
+  const ordersLength = useSelector((state) => state.orders.orders).length;
   return (
     <div className="mobile-sec-nav__container">
       <div className="mobile-sec-nav__menu-container">
         <Menu isDisplay={isDisplay} onClick={handleHideMenu} />
         <ul className="mobile-sec-nav__menu-list">
-          {/* <li className="mobile-sec-nav__menu-btn menu__btn--hover">
-            <i className="mobile-sec-nav__menu-btn-icon fas fa-bars"></i>
-            <span className="mobile-sec-nav__menu-btn-title">Menu</span>
-          </li>
-          <li className="mobile-sec-nav__menu-btn menu__btn--hover">
-            <i className="mobile-sec-nav__menu-btn-icon fa fa-search"></i>
-            <span className="mobile-sec-nav__menu-btn-title">Search</span>
-          </li>
-          <li className="mobile-sec-nav__menu-btn menu__btn--hover">
-            <i className="mobile-sec-nav__menu-btn-icon fa fa-user"></i>
-            <span className="mobile-sec-nav__menu-btn-title">User</span>
-          </li>
-          <li className="mobile-sec-nav__menu-btn menu__btn--hover">
-            <i className="mobile-sec-nav__menu-btn-icon fa fa-shopping-cart"></i>
-            <span className="mobile-sec-nav__menu-btn-title">Cart</span>
-          </li> */}
           {itemAttributes.map((att, index) => (
-            <MenuList key={index} {...att} />
+            <MenuList key={index} {...att}>
+              {index === 3 && ordersLength ? (
+                <Notification top="-10px" right="-10px" />
+              ) : (
+                <></>
+              )}
+            </MenuList>
           ))}
         </ul>
       </div>

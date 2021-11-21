@@ -98,13 +98,16 @@ const FormProduct = ({ action, id }) => {
     validateInput(e.target);
   };
 
+  const user = useSelector((state) => state.user);
+
   const submitToDb = () => {
     productApi[flag.action.toLowerCase()](
       {
         ...payload,
         type: action === "edit" ? product.type : payload.type,
       },
-      action === "edit" ? product._id : undefined
+      action === "edit" ? product._id : user.token,
+      action === "edit" ? user.token : undefined
     )
       .then((res) => {
         console.log(`${flag.action} Successful`, res);

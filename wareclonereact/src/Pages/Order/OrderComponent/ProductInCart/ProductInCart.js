@@ -14,26 +14,28 @@ const ProductInCart = ({ orders }) => {
         </tr>
       </thead>
       <tbody className={clsx(styles.content)}>
-        <tr className={clsx(styles["content-row"])}>
-          <td className={styles.td}>1</td>
-          <td className={clsx(styles["content-img-container"])}>
-            <img
-              className={clsx(styles["content-img"])}
-              src="https://product.hstatic.net/1000026716/product/tuf_gaming_f15_fx506hcb_hn139t_0409646a9fd94cdabfaef2cf14f555a8.png"
-              alt=""
-            />
-          </td>
-          <td className={styles.td}>
-            <div className={styles["product-info"]}>
-              <span className={styles["product-name"]}>
-                MacBook Air M1 2020
-              </span>
-              <span className={styles["product-type"]}>LAPTOP</span>
-            </div>
-          </td>
-          <td className={styles.td}>1</td>
-          <td className={styles.td}>1600$</td>
-        </tr>
+        {orders.map((product, index) => {
+          return (
+            <tr key={index} className={clsx(styles["content-row"])}>
+              <td className={styles.td}>{index}</td>
+              <td className={clsx(styles["content-img-container"])}>
+                <img
+                  className={clsx(styles["content-img"])}
+                  src={product.img}
+                  alt=""
+                />
+              </td>
+              <td className={styles.td}>
+                <div className={styles["product-info"]}>
+                  <span className={styles["product-name"]}>{product.name}</span>
+                  <span className={styles["product-type"]}>{product.type}</span>
+                </div>
+              </td>
+              <td className={styles.td}>{product.quantity}</td>
+              <td className={styles.td}>{`${product.total}$`}</td>
+            </tr>
+          );
+        })}
       </tbody>
     </table>
   );

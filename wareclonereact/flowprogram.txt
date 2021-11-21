@@ -49,3 +49,11 @@ Thực hiện tìm trong mảng product xem có phần tử nào có id trùng v
 Trong action thực hiện quét qua state, nếu state có chứa product trong payload thì thực hiện tăng quantity lên, nếu chưa có thì gán bằng 1, nếu là hàm trừ thì trừ đi với những item có quantity đã mua lớn hơn 1, nếu bằng 1 thì sau khi trừ là bằng 0, nghĩa là xoá phần tử đó đi
 
 Nhớ thực sau khi viết api để show lên thì làm tròn đến 2 chữ số
+
+Thêm các thuộc tính cần thiết vào phần order để tiện lấy ra
+
+Sử dụng thẻ p để canh giữa cho chữ, nhớ sử dụng position cho thẻ cha để set position absolute cho thẻ con
+
+Check nếu chưa đăng nhập thì không hiện log out
+
+Sau khi log out nhớ set isDisplay = false nếu không nó sẽ hiện lại vì chưa mouse out

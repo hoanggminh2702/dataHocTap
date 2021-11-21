@@ -14,9 +14,13 @@ const ProductComponent = (props) => {
         }
         alt=""
         className={styles["product-img"]}
+        onClick={() => props.onClick(props.productInfo.id)}
       />
 
-      <div className={clsx(styles["product-details"])}>
+      <div
+        className={clsx(styles["product-details"])}
+        onClick={() => props.onClick(props.productInfo.id)}
+      >
         <div className={styles["product-details-left"]}>
           <span
             className={clsx(

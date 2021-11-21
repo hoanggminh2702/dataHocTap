@@ -30,6 +30,8 @@
 
 .content-img-container {
   width: 15%;
+  border-collapse: collapse;
+  border: 1px solid gray;
 }
 
 .content-img {

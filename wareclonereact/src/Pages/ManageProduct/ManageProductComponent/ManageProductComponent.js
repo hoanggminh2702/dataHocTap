@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productApi from "../../../api/productApi";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
@@ -13,6 +13,7 @@ import { useNavigate } from "react-router";
 
 const ManageProductComponent = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const btns = [
     {
       title: "Edit",
@@ -25,7 +26,7 @@ const ManageProductComponent = () => {
       onClick: (e) => {
         if (window.confirm("Bạn có chắc muốn xoá sản phẩm này?")) {
           productApi
-            .delete(e.target.id)
+            .delete(e.target.id, user.token)
             .then((res) => {
               alert(`Đã xoá thành công sản phẩm`);
 

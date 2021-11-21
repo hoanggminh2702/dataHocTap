@@ -244,123 +244,141 @@ async function main() {
   });
 
   //create Product
-  app.post("/api/product/create", async function (req, res) {
-    if (
-      !Object.keys(req.body).every((key) => {
-        return (req.body[key] === "" && key === "img") || req.body[key] !== "";
-      })
-    ) {
-      res.status(400).json("Không có trường nào được trống");
-      return;
-    }
-
-    try {
-      const checkExistType = await ProductModel.find({
-        type: req.body.type,
-      }).exec();
-
-      const newProduct = new ProductModel({
-        ...req.body,
-        _id: `${req.body.type}${checkExistType.length + 1}`,
-        price: Number(req.body.price),
-        quantity: Number(req.body.quantity) > 0 ? Number(req.body.quantity) : 0,
-      });
-      const saveProduct = await newProduct.save();
-
-      res.status(200).json({
-        message: "Thành công",
-        product: saveProduct,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        message: "Có lỗi không xác định",
-        err,
-      });
-    }
-  });
-
-  // Update product
-  app.post("/api/product/update/:id", async function (req, res) {
-    try {
-      // Check exist product
-      if (!(await ProductModel.findById(req.params.id))) {
-        console.log("Không tồn tại sản phẩm này");
-        res.status(400).json({
-          message: "Không tồn tại sản phẩm này",
-        });
+  app.post(
+    "/api/product/create",
+    authorization,
+    authenAdmin,
+    async function (req, res) {
+      if (
+        !Object.keys(req.body).every((key) => {
+          return (
+            (req.body[key] === "" && key === "img") || req.body[key] !== ""
+          );
+        })
+      ) {
+        res.status(400).json("Không có trường nào được trống");
         return;
       }
 
-      // update field
-      const payload = {
-        ...req.body,
-        price: Number(req.body.price),
-        quantity: Number(req.body.quantity),
-      };
-      delete payload.id;
-      // check if field is invalid
-      Object.keys(payload).forEach((key) => {
-        if (key !== "img" && !req.body[key]) {
-          delete payload[key];
-        }
-      });
+      try {
+        const checkExistType = await ProductModel.find({
+          type: req.body.type,
+        }).exec();
 
-      // Execute update
-      const updateProduct = await ProductModel.findByIdAndUpdate(
-        { _id: req.params.id },
-        payload,
-        {
-          new: true,
-        }
-      );
-      res.status(200).json({
-        message: "Update sản phẩm thành công",
-        product: updateProduct,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        message: "Lỗi không xác định",
-        err: err,
-      });
+        const newProduct = new ProductModel({
+          ...req.body,
+          _id: `${req.body.type}${checkExistType.length + 1}`,
+          price: Number(req.body.price),
+          quantity:
+            Number(req.body.quantity) > 0 ? Number(req.body.quantity) : 0,
+        });
+        const saveProduct = await newProduct.save();
+
+        res.status(200).json({
+          message: "Thành công",
+          product: saveProduct,
+        });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({
+          message: "Có lỗi không xác định",
+          err,
+        });
+      }
     }
-  });
+  );
 
-  // Delete
-  app.post("/api/product/delete/:id", async function (req, res) {
-    try {
-      if (req.params.id) {
-        const findProduct = await ProductModel.findById(req.params.id).exec();
-        if (!findProduct) {
-          console.log("Không tìm thấy sản phẩm");
-          res.status(404).json({
-            message: "Không tìm thấy sản phẩm",
+  // Update product
+  app.post(
+    "/api/product/update/:id",
+    authorization,
+    authenAdmin,
+    async function (req, res) {
+      try {
+        // Check exist product
+        if (!(await ProductModel.findById(req.params.id))) {
+          console.log("Không tồn tại sản phẩm này");
+          res.status(400).json({
+            message: "Không tồn tại sản phẩm này",
           });
           return;
         }
-      } else {
-        console.log("Id không hợp lệ");
-        res.status(400).json({
-          message: "Id không hợp lệ",
-        });
-        return;
-      }
 
-      const deleteProduct = await ProductModel.findOneAndDelete({
-        _id: req.params.id,
-      });
-      res.status(200).json({
-        message: `Bạn đã xoá sản phẩm với id ${req.params.id}`,
-        product: deleteProduct,
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: "Lỗi hệ không xác định",
-        err,
-      });
+        // update field
+        const payload = {
+          ...req.body,
+          price: Number(req.body.price),
+          quantity: Number(req.body.quantity),
+        };
+        delete payload.id;
+        // check if field is invalid
+        Object.keys(payload).forEach((key) => {
+          if (key !== "img" && !req.body[key]) {
+            delete payload[key];
+          }
+        });
+
+        // Execute update
+        const updateProduct = await ProductModel.findByIdAndUpdate(
+          { _id: req.params.id },
+          payload,
+          {
+            new: true,
+          }
+        );
+        res.status(200).json({
+          message: "Update sản phẩm thành công",
+          product: updateProduct,
+        });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({
+          message: "Lỗi không xác định",
+          err: err,
+        });
+      }
     }
-  });
+  );
+
+  // Delete
+  app.post(
+    "/api/product/delete/:id",
+    authorization,
+    authenAdmin,
+    async function (req, res) {
+      try {
+        if (req.params.id) {
+          const findProduct = await ProductModel.findById(req.params.id).exec();
+          if (!findProduct) {
+            console.log("Không tìm thấy sản phẩm");
+            res.status(404).json({
+              message: "Không tìm thấy sản phẩm",
+            });
+            return;
+          }
+        } else {
+          console.log("Id không hợp lệ");
+          res.status(400).json({
+            message: "Id không hợp lệ",
+          });
+          return;
+        }
+
+        const deleteProduct = await ProductModel.findOneAndDelete({
+          _id: req.params.id,
+        });
+        res.status(200).json({
+          message: `Bạn đã xoá sản phẩm với id ${req.params.id}`,
+          product: deleteProduct,
+        });
+      } catch (err) {
+        res.status(500).json({
+          message: "Lỗi hệ không xác định",
+          err,
+        });
+      }
+    }
+  );
 
   // -------------------------------ORDERS-----------------------------
   const orderSchema = new mongoose.Schema(
@@ -383,24 +401,29 @@ async function main() {
   const OrderModel = mongoose.model("Orders", orderSchema);
 
   // Get All Orders
-  app.get("/api/order/getAll", async function (req, res) {
-    try {
-      const orders = await OrderModel.find({}).exec();
-      res.status(200).json({
-        message: "Thành công",
-        orders,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        message: "Lỗi hệ thống",
-        err,
-      });
+  app.get(
+    "/api/order/getAll",
+    authorization,
+    authenAdmin,
+    async function (req, res) {
+      try {
+        const orders = await OrderModel.find({}).exec();
+        res.status(200).json({
+          message: "Thành công",
+          orders,
+        });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({
+          message: "Lỗi hệ thống",
+          err,
+        });
+      }
     }
-  });
+  );
 
   // Create Order
-  app.post("/api/order/create", async function (req, res) {
+  app.post("/api/order/create", authorization, async function (req, res) {
     try {
       const newOrder = new OrderModel({
         ...JSON.parse(JSON.stringify(req.body)),

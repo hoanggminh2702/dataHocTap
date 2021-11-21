@@ -3,6 +3,7 @@
   display: flex;
   flex-direction: column;
   padding: 6px;
+  z-index: 999;
 }
 
 .product-hover:hover .product-img {
@@ -75,6 +76,7 @@
   transform: scale(0%);
   transition: all linear 0.1s;
   cursor: pointer;
+  z-index: 9999;
 }
 
 .btn-hover:hover {
