@@ -4,8 +4,8 @@ const filter = createSlice({
   name: "filter",
   initialState: {
     search: "",
-    page: "",
-    limit: "",
+    page: 1,
+    limit: 8,
   },
   reducers: {
     setSearch(state, action) {

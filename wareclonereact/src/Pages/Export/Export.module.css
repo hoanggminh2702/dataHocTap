@@ -1,0 +1,59 @@
+.title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-family: "Times New Romans";
+  margin-bottom: 24px;
+}
+.container table {
+  width: 80%;
+  margin: auto;
+  border-collapse: collapse;
+}
+
+.container thead {
+}
+
+.container tr {
+}
+
+.th {
+  font-size: 1.6rem;
+  text-align: center;
+  border: 1px solid gray;
+}
+
+.td {
+  font-size: 1.4rem;
+  border: 1px solid gray;
+}
+
+@media (max-width: 767px) {
+  .container table {
+    width: 90%;
+  }
+
+  .th {
+    font-size: 1.4rem;
+  }
+
+  .td {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .container table {
+    width: 100%;
+  }
+
+  .th {
+    font-size: 1.2rem;
+  }
+
+  .td {
+    font-size: 1rem;
+  }
+  .title {
+    font-size: 1.8rem;
+  }
+}

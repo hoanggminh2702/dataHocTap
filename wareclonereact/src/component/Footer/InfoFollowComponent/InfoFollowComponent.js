@@ -26,7 +26,7 @@ const InfoFollowComponent = () => {
         <ul className="info__follow-social-list">
           <li className="info__follow-social-item">
             <a
-              href="#"
+              href="https://www.facebook.com/myh.vl/"
               className="info__follow-social-link-facebook-icon info__follow-social-link"
             >
               <i className="fab fa-facebook-f"></i>
@@ -35,7 +35,7 @@ const InfoFollowComponent = () => {
 
           <li className="info__follow-social-item">
             <a
-              href=""
+              href="https://www.instagram.com/fakelmm/"
               className="info__follow-social-link-instagram-icon info__follow-social-link"
             >
               <i className="fab fa-instagram"></i>

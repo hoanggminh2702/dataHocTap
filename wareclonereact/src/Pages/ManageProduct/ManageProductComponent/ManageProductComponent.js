@@ -56,22 +56,25 @@ const ManageProductComponent = () => {
   });
   const isLoading = useSelector((state) => !state.products.all.loaded);
   useEffect(() => {
-    setTimeout(() => {
-      productApi
-        .getAll()
-        .then((res) => {
-          const action = fetchAllProduct(res.products);
-          dispatch(action);
-          dispatch(setLoaded(true));
-        })
-        .catch((err) => {
-          console.log(err);
+    productApi
+      .getAll()
+      .then((res) => {
+        const action = fetchAllProduct({
+          data: res.products,
+          countDocs: res.totalProducts,
         });
-    }, 1000);
+        dispatch(action);
+        dispatch(setLoaded(true));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     return () => {
       dispatch(setLoaded(false));
     };
   }, []);
+  console.log(isLoading);
   const handleOnClick = (id) => {
     navigate(`/product/${id}`);
   };
@@ -88,7 +91,14 @@ const ManageProductComponent = () => {
               <button className={styles.btn} onClick={handleCreateOnClick}>
                 Create Product
               </button>
-              <button className={styles.btn}>Report</button>
+              <button
+                className={styles.btn}
+                onClick={(e) => {
+                  navigate(`/manageproduct/export`);
+                }}
+              >
+                Report
+              </button>
             </div>
             <div className="row">
               {products.map((product, index) => (

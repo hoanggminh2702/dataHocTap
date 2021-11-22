@@ -2,7 +2,6 @@ import React from "react";
 import { SpinnerCircularSplit } from "spinners-react";
 
 const LoadingComponent = () => {
-  console.log("Login render");
   return (
     <div style={{ display: "flex" }}>
       <SpinnerCircularSplit

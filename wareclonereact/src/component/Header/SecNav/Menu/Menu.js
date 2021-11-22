@@ -30,7 +30,6 @@ const Menu = ({ isDisplay, onClick }) => {
           >
             Home
           </li>
-          <li className={clsx(styles["menu-item"])}>Categories</li>
           <li
             className={clsx(styles["menu-item"])}
             onClick={

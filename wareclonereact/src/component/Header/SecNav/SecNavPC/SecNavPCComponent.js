@@ -8,9 +8,6 @@ const SecNavPCComponent = () => {
       <div className="pc-sec-nav__menu-container">
         <ul className="pc-sec-nav__menu-list">
           <li className="pc-sec-nav__menu-btn menu__btn--hover">
-            <span className="pc-sec-nav__menu-btn-title">categories</span>
-          </li>
-          <li className="pc-sec-nav__menu-btn menu__btn--hover">
             <span className="pc-sec-nav__menu-btn-title">contact</span>
           </li>
         </ul>

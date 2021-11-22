@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Product from "../../Product/Product";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -42,10 +42,15 @@ const TopProductComponent = () => {
     }));
   });
 
+  const sliceRef = useRef();
+
   useEffect(() => {
     setTimeout(() => {
       productApi.getAll().then((res) => {
-        const action = fetchAllProduct(res.products);
+        const action = fetchAllProduct({
+          data: res.products,
+          countDocs: res.totalProducts,
+        });
         dispatch(action);
         dispatch(setLoaded(true));
       });
@@ -56,7 +61,8 @@ const TopProductComponent = () => {
   }, []);
 
   const settings = {
-    dots: false,
+    dots: true,
+    dotsClass: "slick-dots slick-thumb",
     infinite: false,
     speed: 500,
     slidesToShow: 4,
@@ -107,14 +113,13 @@ const TopProductComponent = () => {
       {isLoading ? (
         <LoadingComponent />
       ) : (
-        <Slider {...settings}>
+        <Slider ref={sliceRef} {...settings}>
           {productsInfo.map((productInfo, index) => (
             <Product
               onClick={handleOnClick}
               key={index}
               productInfo={productInfo}
               btns={btns}
-              style={{ zIndex: "1" }}
             />
           ))}
         </Slider>

@@ -1,9 +1,8 @@
 import clsx from "clsx";
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
 import styles from "./SearchBar.module.css";
 
-const SearchBar = () => {
+const SearchBar = ({ handleDisappearOnclick }) => {
   const [searchValue, setSearchValue] = useState("");
   console.log(searchValue);
   return (
@@ -16,6 +15,7 @@ const SearchBar = () => {
         onKeyUp={(e) => {
           e.stopPropagation();
           if (e.keyCode === 13) {
+            handleDisappearOnclick();
             window.location = `/search/${searchValue}`;
           }
         }}

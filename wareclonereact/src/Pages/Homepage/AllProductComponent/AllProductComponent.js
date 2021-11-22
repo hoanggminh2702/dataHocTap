@@ -1,13 +1,15 @@
 import clsx from "clsx";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import productApi from "../../../api/productApi";
 import LoadingComponent from "../../../component/LoadingComponent/LoadingComponent";
+import { setPage } from "../../../features/filterSlice";
 import { add, update } from "../../../features/ordersSlice";
 import { fetchAllProduct, setLoaded } from "../../../features/productSlice";
 import { authenticate, order } from "../../../utils/orders.js";
+import Pagination from "../../Pagination/Pagination";
 import Product from "../../Product/Product";
 
 const AllProductComponent = () => {
@@ -38,26 +40,32 @@ const AllProductComponent = () => {
       productImg: product.img,
     }));
   });
-
+  const page = useSelector((state) => state.filter.page);
   const isLoading = useSelector((state) => !state.products.all.loaded);
+  const [curPage, setCurPage] = useState(page);
   useEffect(() => {
-    setTimeout(() => {
-      productApi
-        .getAll()
-        .then((res) => {
-          const action = fetchAllProduct(res.products);
-          dispatch(action);
-          dispatch(setLoaded(true));
-        })
-        .catch((err) => {
-          console.log(err);
+    const params = {
+      page: curPage,
+    };
+    productApi
+      .getAll(params)
+      .then((res) => {
+        const action = fetchAllProduct({
+          data: res.products,
+          countDocs: res.totalProducts,
         });
-    }, 1000);
+        dispatch(action);
+        dispatch(setLoaded(true));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     return () => {
       setLoaded(false);
     };
-  }, []);
-
+  }, [curPage]);
+  console.log("render");
   const handleOnClick = (id) => {
     navigate(`/product/${id}`);
   };
@@ -80,6 +88,7 @@ const AllProductComponent = () => {
               </div>
             ))}
           </div>
+          <Pagination setCurpage={setCurPage} />
         </div>
       )}
     </>

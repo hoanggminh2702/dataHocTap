@@ -8,22 +8,25 @@ import {
   Routes as Switch,
   Route,
 } from "react-router-dom";
-import { Navigate } from "react-router";
 
 import Regiser from "./Pages/RegisterPage/Regiser";
-import ManageProduct from "./Pages/ManageProduct/ManageProduct";
 import RequiredAuth from "./utils/RequiredAuth";
 import LoadingComponent from "./component/LoadingComponent/LoadingComponent";
 import EditProduct from "./Pages/ManageProduct/EditProduct/EditProduct";
 import CreateProduct from "./Pages/ManageProduct/CreateProduct/CreateProduct";
 import Order from "./Pages/Order/Order";
 import SearchPage from "./Pages/SearchPage/SearchPage";
+import Export from "./Pages/Export/Export";
 
 const App = () => {
   const Login = React.lazy(() => import("./Pages/LoginPage/Login"));
   const ProductInfo = React.lazy(() =>
     import("./Pages/ProductInfo/ProductInfo")
   );
+  const ManageProduct = React.lazy(() =>
+    import("./Pages/ManageProduct/ManageProduct")
+  );
+  const Homepage = React.lazy(() => import("./Pages/Homepage/Homepage"));
   return (
     <Suspense fallback={<LoadingComponent />}>
       <GlobalStyle>
@@ -32,10 +35,7 @@ const App = () => {
           <Switch>
             <Route index element={<Homepage />} />
             <Route exact path="/product/:id" element={<ProductInfo />} />
-            {/* <Route
-            path="/manageproduct/*"
-            element={user === "admin" ? <ManageProduct /> : <Navigate to="/" />}
-          /> */}
+
             <Route
               path="/manageproduct"
               element={
@@ -57,6 +57,14 @@ const App = () => {
               element={
                 <RequiredAuth>
                   <CreateProduct />
+                </RequiredAuth>
+              }
+            />
+            <Route
+              path="/manageproduct/export"
+              element={
+                <RequiredAuth>
+                  <Export />
                 </RequiredAuth>
               }
             />

@@ -50,7 +50,10 @@ const SearchPage = (props) => {
       productApi
         .getAll(params)
         .then((res) => {
-          const action = fetchAllProduct(res.products);
+          const action = fetchAllProduct({
+            data: res.products,
+            countDocs: res.countDocs,
+          });
           dispatch(action);
           dispatch(setLoaded(true));
         })

@@ -6,13 +6,15 @@ const product = createSlice({
     all: {
       loaded: false,
       data: [],
+      countDocs: "",
     },
   },
   reducers: {
     fetchAllProduct(state, action) {
-      const products = [...action.payload];
+      const products = [...action.payload.data];
       const updateProduct = JSON.parse(JSON.stringify(state));
       updateProduct.all.data = products;
+      updateProduct.all.countDocs = action.payload.countDocs;
       return updateProduct;
     },
 

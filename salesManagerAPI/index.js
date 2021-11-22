@@ -388,6 +388,7 @@ async function main() {
       products: [
         {
           _id: String,
+          name: String,
           quantity: Number,
           total: Number,
         },
@@ -438,6 +439,98 @@ async function main() {
       console.log(err);
       res.status(500).json({
         message: "Lỗi từ hệ thống",
+        err,
+      });
+    }
+  });
+
+  function genFilter() {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const endTime = new Date();
+    endTime.setHours(23, 59, 59, 999);
+    const end = new Date(endTime.getTime() - 30 * 86400 * 1000);
+    const filter = {
+      $gte: start,
+      $lt: end,
+    };
+    return filter;
+  }
+
+  // Get total revenue in month
+  app.get("/api/export/totalrevenue", async function (req, res) {
+    const filter = genFilter();
+    try {
+      const orders = await OrderModel.find(filter).exec();
+      const totalRevenue = orders.reduce((acc, cur) => {
+        return (
+          acc +
+          cur.products.reduce((init, index) => {
+            return init + index.total;
+          }, 0)
+        );
+      }, 0);
+      res.status(200).json({
+        message: "Thành công",
+        totalRevenue,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Lỗi hệ thống",
+        err,
+      });
+    }
+  });
+
+  // Top 10 product in summary
+  app.get("/api/export/top10Product", async function (req, res) {
+    const filter = genFilter();
+    try {
+      const orders = await OrderModel.find(filter).exec();
+
+      const productsSold = orders.reduce((acc, cur) => {
+        return acc.concat(cur.products);
+      }, []);
+
+      const productRevenue = [];
+
+      productsSold.forEach((product) => {
+        const isArr = productRevenue.map((pro) => {
+          return pro._id;
+        });
+
+        if (!isArr.includes(product._id)) {
+          productRevenue.push(product);
+        } else {
+          productRevenue[isArr.indexOf(product._id)].quantity +=
+            product.quantity;
+
+          productRevenue[isArr.indexOf(product._id)].total += product.total;
+        }
+      });
+
+      const top10Product = productsSold
+        .sort((first, sec) => {
+          if (first.total > sec.total) {
+            return -1;
+          } else if (first.total < sec.total) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
+        .slice(0, 10);
+
+      res.status(200).json({
+        message: "Thành công",
+        productRevenue,
+        top10Product,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: "Lỗi hệ thống",
         err,
       });
     }

@@ -32,7 +32,7 @@ const ProductInCart = ({ orders }) => {
                 </div>
               </td>
               <td className={styles.td}>{product.quantity}</td>
-              <td className={styles.td}>{`${product.total}$`}</td>
+              <td className={styles.td}>{`${product.total.toFixed(2)}$`}</td>
             </tr>
           );
         })}

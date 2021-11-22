@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import productApi from "../../api/productApi";
 import LoadingComponent from "../../component/LoadingComponent/LoadingComponent";
+import { add } from "../../features/ordersSlice";
 
 import styles from "./ProductInfo.module.css";
 
@@ -16,12 +17,12 @@ const ProductInfo = () => {
       return product.id === id;
     })
   );
+
   useEffect(() => {
     if (!findProduct) {
       productApi
         .get(id)
         .then((res) => {
-          console.log(res.product);
           setProduct(res.product);
           setIsLoading(false);
         })
@@ -30,9 +31,27 @@ const ProductInfo = () => {
       setProduct(findProduct);
     }
   }, [id]);
+  const role = useSelector((state) => state.user.role);
+  const dispatch = useDispatch();
+  const handleAdd = (e) => {
+    e.stopPropagation();
+    if (["admin", "staff"].includes(role)) {
+      const addProduct = {
+        id: product._id,
+        name: product.name,
+        img: product.img,
+        type: product.type,
+        price: product.price,
+      };
+      const action = add(addProduct);
+      dispatch(action);
+      alert("Đã thêm vào giỏ hàng");
+    } else {
+      alert("Bạn phải đăng nhập để mua hàng");
+    }
+  };
   return (
     <>
-      {" "}
       {isLoading ? (
         <LoadingComponent />
       ) : (
@@ -55,7 +74,11 @@ const ProductInfo = () => {
               </div>
               <div className={clsx(styles["product-info-bottom"])}>
                 <p className={clsx(styles["product-desc"])}>{product.desc}</p>
-                <button className={clsx(styles["add-cart-btn"])}>
+                <button
+                  id={product._id}
+                  className={clsx(styles["add-cart-btn"])}
+                  onClick={handleAdd}
+                >
                   Add to card
                 </button>
               </div>

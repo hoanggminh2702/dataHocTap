@@ -25,7 +25,7 @@ const Search = ({ setIsSearch }) => {
           [styles["search-container--fadeOut"]]: disappear,
         })}
       >
-        <SearchComponent />
+        <SearchComponent handleDisappearOnclick={handleDisappearOnclick} />
       </div>
     </div>
   );

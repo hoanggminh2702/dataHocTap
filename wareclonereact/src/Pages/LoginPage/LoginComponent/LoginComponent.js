@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 
 const LoginComponent = () => {
   const dispatch = useDispatch();
-  console.log("login component rerender");
 
   const [user, setUser] = useState({
     username: "",

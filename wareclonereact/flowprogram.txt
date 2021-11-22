@@ -57,3 +57,5 @@ Sử dụng thẻ p để canh giữa cho chữ, nhớ sử dụng position cho 
 Check nếu chưa đăng nhập thì không hiện log out
 
 Sau khi log out nhớ set isDisplay = false nếu không nó sẽ hiện lại vì chưa mouse out
+
+Truyền tất cả props vào style để thẻ trong nó nhận

@@ -26,6 +26,7 @@ const OrderComponent = ({ orders = [], user }) => {
       products: orders.map((product) => {
         return {
           _id: product._id,
+          name: product.name,
           quantity: product.quantity,
           total: product.total,
         };
